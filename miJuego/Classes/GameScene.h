@@ -11,8 +11,8 @@ public:
 	void goToPauseScene(Ref *pSender);
 	void goToGameOverScene(Ref *pSender);
 	virtual bool init();
-	void update();
-	bool isKeyPressed(EventKeyboard::KeyCode code);
+	//void update();
+	//bool isKeyPressed(EventKeyboard::KeyCode code);
 
 };
 
