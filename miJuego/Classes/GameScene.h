@@ -4,6 +4,8 @@
 
 class GameScene: public cocos2d::Layer
 {
+
+	
 public:
 	static cocos2d::Scene* createScene();
 	void goToPauseScene(Ref *pSender);

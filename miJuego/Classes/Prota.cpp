@@ -17,6 +17,18 @@ Prota::~Prota()
 {
 }
 
+Prota*::Prota::create()
+{
+	Prota* pSprite = new Prota();
+
+	return pSprite;
+}
+
+
+
+
+
+
 void Prota::setOrientacion(char orientacion) {
 	this->orientacion = orientacion;
 

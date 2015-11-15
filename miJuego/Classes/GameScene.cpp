@@ -2,7 +2,7 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
-#include "prota.h"
+#include "Prota.h"
 
 USING_NS_CC;
 
@@ -13,6 +13,7 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
+	
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -32,6 +33,8 @@ void GameScene::goToGameOverScene(Ref *pSender) {
 	Director::getInstance()->replaceScene(scene);
 }
 
+auto prota = Prota::create();
+
 bool GameScene::init()
 {
 	//////////////////////////////
@@ -41,8 +44,11 @@ bool GameScene::init()
 		return false;
 	}
 
-	Prota prota = Prota::create();
+	prota->setPosition(Vec2(0, 0));
+	addChild(prota);
 
+
+	
 	auto eventListener = EventListenerKeyboard::create();
 
 	eventListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
@@ -75,9 +81,9 @@ bool GameScene::init()
 		case EventKeyboard::KeyCode::KEY_S:
 			event->getCurrentTarget()->setPosition(loc.x, --loc.y);
 			break;
-		case EventKeyboard::KeyCode::KEY_SPACE:
+		/*case EventKeyboard::KeyCode::KEY_SPACE:
 			prota->embestir();
-			break;
+			break;*/
 	}
 };
 

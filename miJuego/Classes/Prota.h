@@ -4,7 +4,7 @@
 #include "Objeto.h"
 
 
-class Prota
+class Prota : public cocos2d::Sprite
 {
 	Sprite* sprite;
 	int vida;
@@ -18,6 +18,7 @@ public:
 
 	Prota();
 	~Prota();
+	static Prota* create();
 	void saltar();
 	void girar();
 	void embestir();
