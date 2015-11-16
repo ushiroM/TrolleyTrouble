@@ -1,10 +1,10 @@
 #include "Prota.h"
-
+#include "Assets.h"
 
 
 Prota::Prota()
 {
-	sprite = Sprite::create("vagoneta.png");
+	//sprite = Assets::imagenProta;
 	vida = 100;
 	orientacion = 'e';
 	velocidad = 10;
@@ -16,15 +16,6 @@ Prota::Prota()
 Prota::~Prota()
 {
 }
-
-Prota*::Prota::create()
-{
-	Prota* pSprite = new Prota();
-
-	return pSprite;
-}
-
-
 
 
 

@@ -2,7 +2,8 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
-#include "Prota.h"
+
+#include "Assets.h"
 
 USING_NS_CC;
 
@@ -23,7 +24,7 @@ Scene* GameScene::createScene()
 }
 
 
-void GameScene::goToPauseScene(Ref *pSender) {
+/*void GameScene::goToPauseScene(Ref *pSender) {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
 }
@@ -32,8 +33,8 @@ void GameScene::goToGameOverScene(Ref *pSender) {
 
 	Director::getInstance()->replaceScene(scene);
 }
+*/
 
-auto prota = Prota::create();
 
 bool GameScene::init()
 {
@@ -44,12 +45,14 @@ bool GameScene::init()
 		return false;
 	}
 
-	prota->setPosition(Vec2(0, 0));
-	addChild(prota);
+	prota = new Prota();
+	imagenProta = Sprite::create("vagoneta.png");
+	imagenProta->setPosition(Vec2(0, 0));
+	addChild(imagenProta);
 
 
 	
-	auto eventListener = EventListenerKeyboard::create();
+	/*auto eventListener = EventListenerKeyboard::create();
 
 	eventListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
 	
@@ -81,11 +84,11 @@ bool GameScene::init()
 		case EventKeyboard::KeyCode::KEY_S:
 			event->getCurrentTarget()->setPosition(loc.x, --loc.y);
 			break;
-		/*case EventKeyboard::KeyCode::KEY_SPACE:
+		case EventKeyboard::KeyCode::KEY_SPACE:
 			prota->embestir();
-			break;*/
-	}
-};
+			break;
+	}*/
+
 
 	
 	

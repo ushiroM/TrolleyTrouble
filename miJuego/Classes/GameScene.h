@@ -1,10 +1,12 @@
 #pragma once
 #include "cocos2d.h"
 #include <map>
+#include "Prota.h"
 
 class GameScene: public cocos2d::Layer
 {
-
+	Prota* prota;
+	Sprite* imagenProta;
 	
 public:
 	static cocos2d::Scene* createScene();
