@@ -45,9 +45,12 @@ bool GameScene::init()
 		return false;
 	}
 
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+
 	prota = new Prota();
 	imagenProta = Sprite::create("vagoneta.png");
-	imagenProta->setPosition(Vec2(0, 0));
+	imagenProta->setPosition(Vec2(Point((visibleSize.width / 2),
+		(visibleSize.height / 2))));
 	addChild(imagenProta);
 
 

@@ -39,14 +39,19 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("miJuego", Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
-#else
+/*#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+        glview = GLViewImpl::createWithRect("miJuego", Rect(0, 0, designResolutionSize.width, designResolutionSize.height));*/
+//#else
         glview = GLViewImpl::create("miJuego");
-#endif
+
+		
+//#endif
         director->setOpenGLView(glview);
     }
 
+	glview->setFrameSize(1920, 1080);
+	glview->setDesignResolutionSize(1920, 1080, ResolutionPolicy::EXACT_FIT); //añadido ahora
+	/*
     // turn on display FPS
     director->setDisplayStats(true);
 
@@ -74,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    // create a scene. it's an autorelease object
+    // create a scene. it's an autorelease object*/
     auto scene = MainMenuScene::createScene();
 
     // run

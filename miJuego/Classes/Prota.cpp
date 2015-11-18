@@ -4,7 +4,7 @@
 
 Prota::Prota()
 {
-	//sprite = Assets::imagenProta;
+	sprite = Sprite::create("vagoneta.png");
 	vida = 100;
 	orientacion = 'e';
 	velocidad = 10;

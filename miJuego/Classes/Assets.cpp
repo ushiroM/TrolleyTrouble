@@ -1,6 +1,6 @@
 #include "Assets.h"
-#include "cocos2d.h"
+USING_NS_CC;
 
-//imagenProta = Sprite::create("vagoneta.png");
+//Sprite* imagenProta = Sprite::create("vagoneta.png");
 
 

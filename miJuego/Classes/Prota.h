@@ -9,7 +9,7 @@
 
 class Prota
 {
-	
+private:
 	int vida;
 	int energia;
 	int velocidad;
@@ -18,7 +18,7 @@ class Prota
 	Objeto* objeto;
 
 public:
-	//Sprite* sprite;
+	Sprite* sprite;
 	Prota();
 	~Prota();
 	void saltar();
