@@ -19,6 +19,7 @@ private:
 
 public:
 	Sprite* sprite;
+	Vec2 posicion;
 	Prota();
 	~Prota();
 	void saltar();

@@ -5,7 +5,7 @@
 class Assets
 {
 public:
-//	static Sprite* imagenProta;
+//Sprite* imagenProta;
 	
 };
 

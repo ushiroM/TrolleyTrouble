@@ -17,12 +17,6 @@ Scene* MainMenuScene::createScene()
     // return the scene
     return scene;
 }
-void MainMenuScene::GoToGameScene(Ref *pSender) {
-	auto scene = GameScene::createScene();
-
-	Director::getInstance()->popScene();
-	Director::getInstance()->replaceScene(scene);
-}
 
 // on "init" you need to initialize your instance
 bool MainMenuScene::init()
@@ -36,7 +30,9 @@ bool MainMenuScene::init()
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	/*auto background = Sprite::create("images/MainMenuScreen/Background.png");
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto background = Sprite::create("MainMenu.jpg");
 
 	background->setPosition(Point((visibleSize.width / 2),
 		(visibleSize.height / 2)));
@@ -44,21 +40,25 @@ bool MainMenuScene::init()
 	addChild(background, 0);
 
 
-	auto menuTitle = MenuItemImage::create("images/MainMenuScreen/Game_Title.png",
-		"images/MainMenuScreen/Game_Title.png");
+	/*auto menuTitle = MenuItemImage::create("images/MainMenuScreen/Game_Title.png",
+		"images/MainMenuScreen/Game_Title.png");*/
 
 	auto playItem = MenuItemImage::create("images/MainMenuScreen/Play_Button.png", 
 		"images/MainMenuScreen/Play_Button(Click).png", 
 		CC_CALLBACK_1(MainMenuScene::GoToGameScene, this));
 
-	auto menu = Menu::create(menuTitle, playItem, NULL);
+	playItem->setPosition(origin);
 
-	menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
+	auto menu = Menu::create(playItem, NULL);
 
-	addChild(menu, 1);*/
 
-	prota = new Prota();
-	prota->sprite->setPosition(Vec2(0, (visibleSize.height / 2)));
+	//menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
+
+	addChild(menu, 1);
+
+	/*prota = new Prota();
+	prota->posicion = Vec2(0, (visibleSize.height / 2));
+	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
 	
@@ -66,51 +66,65 @@ bool MainMenuScene::init()
 
 	auto listener = EventListenerKeyboard::create();
 
-	listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
+	listener->onKeyPressed = CC_CALLBACK_2(MainMenuScene::onKeyPressed, this);
 	
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	this->scheduleUpdate();
+	this->scheduleUpdate();*/
 
 	
 
     return true;
 }
 
+void MainMenuScene::GoToGameScene(Ref *pSender) {
+	auto scene = GameScene::createScene();
 
-void MainMenuScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
+}
+
+
+/*void MainMenuScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	_pressedKey = keyCode;
 
 	switch (keyCode) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e')
+		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e') {
 			prota->setOrientacion('w');
+			removeChild(prota->sprite);
+			prota->sprite = Sprite::create("vagonetaIzquierdo.png");
+			addChild(prota->sprite);
+		}
 		break;
-	/*case EventKeyboard::KeyCode::KEY_A:
-		event->getCurrentTarget()->setPosition(--loc.x, loc.y); // cambiar orientacion(todavia sin hacer)
-		break;*/
+		
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w')
+		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w') {
 			prota->setOrientacion('e');
+			removeChild(prota->sprite);
+			prota->sprite = Sprite::create("vagoneta.png");
+			addChild(prota->sprite);
+		}
 		break;
-	/*case EventKeyboard::KeyCode::KEY_D:
-		event->getCurrentTarget()->setPosition(++loc.x, loc.y);
-		break;*/
+		
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's')
+		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's') {
 			prota->setOrientacion('n');
+			removeChild(prota->sprite);
+			prota->sprite = Sprite::create("vagonetaReverso.png");
+			addChild(prota->sprite);
+		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n')
+		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n') {
 			prota->setOrientacion('s');
+			removeChild(prota->sprite);
+			prota->sprite = Sprite::create("vagonetaFrontal.png");
+			addChild(prota->sprite);
+
+		}
 		break;
-	/*case EventKeyboard::KeyCode::KEY_S:
-		event->getCurrentTarget()->setPosition(loc.x, --loc.y);
-		break;*/
-	/*case EventKeyboard::KeyCode::KEY_SPACE:
-		prota->embestir();
-		break;*/
+	
 	}
 
 	
@@ -118,10 +132,30 @@ void MainMenuScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 void MainMenuScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	if (prota->getOrientacion() == 'e') prota->sprite->setPosition(Vec2(prota->sprite->getPosition().x + 5, prota->sprite->getPosition().y));
-	else if (prota->getOrientacion() == 'w') prota->sprite->setPosition(Vec2(prota->sprite->getPosition().x - 5, prota->sprite->getPosition().y));
-	else if (prota->getOrientacion() == 'n') prota->sprite->setPosition(Vec2(prota->sprite->getPosition().x, prota->sprite->getPosition().y + 5));
-	else if (prota->getOrientacion() == 's') prota->sprite->setPosition(Vec2(prota->sprite->getPosition().x, prota->sprite->getPosition().y - 5));
+	if (prota->getOrientacion() == 'e') {
+		prota->posicion = Vec2(prota->posicion.x + 5, prota->posicion.y);
+		prota->sprite->setPosition(prota->posicion);
+	
+	} 
 
+	else if (prota->getOrientacion() == 'w') {
+		prota->posicion = Vec2(prota->posicion.x - 5, prota->posicion.y);
+		prota->sprite->setPosition(prota->posicion);
+	
+	
+	} 
+		
+	else if (prota->getOrientacion() == 'n') {
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 5);
+		prota->sprite->setPosition(prota->posicion);
+	
+	} 
+	
+	else if (prota->getOrientacion() == 's') {
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5);
+		prota->sprite->setPosition(prota->posicion);
+	}
+	
+	
 
-}
+}*/

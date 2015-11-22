@@ -16,9 +16,9 @@ public:
 
 	void GoToGameScene(Ref *pSender);
 
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
+	//void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
 
-	void update(float dt);
+	//void update(float dt);
 
     virtual bool init();
     
