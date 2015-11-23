@@ -19,6 +19,11 @@ private:
 
 public:
 	Sprite* sprite;
+	Sprite* imagenFrontal;
+	Sprite* imagenIzquierda;
+	Sprite* imagenDerecha;
+	Sprite* imagenReverso;
+
 	Vec2 posicion;
 	Prota();
 	~Prota();
@@ -29,6 +34,7 @@ public:
 	void usarConsumible();
 	void setOrientacion(char);
 	char getOrientacion();
+	void cambiarSprite();
 
 };
 

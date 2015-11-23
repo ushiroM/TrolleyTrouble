@@ -1,5 +1,5 @@
 #include "Prota.h"
-#include "Assets.h"
+
 
 
 Prota::Prota()
@@ -9,7 +9,7 @@ Prota::Prota()
 	orientacion = 'e';
 	velocidad = 10;
 	energia = 100;
-	
+		
 }
 
 
@@ -28,5 +28,34 @@ void Prota::setOrientacion(char orientacion) {
 
 char Prota::getOrientacion() {
 	return this->orientacion;
+
+}
+
+void Prota::cambiarSprite() {
+	switch (orientacion) {
+	
+	case 'n':
+		imagenReverso = Sprite::create("vagonetaReverso.png");
+		sprite = imagenReverso;
+		break;
+	case 'e':
+		imagenDerecha = Sprite::create("vagoneta.png");
+		sprite = imagenDerecha;
+		break;
+	case 'w':
+		imagenIzquierda = Sprite::create("vagonetaIzquierdo.png");
+		sprite = imagenIzquierda;
+		break;
+	case 's':
+		imagenFrontal = Sprite::create("vagonetaFrontal.png");
+		sprite = imagenFrontal;
+		break;
+	
+	
+	
+	
+	}
+
+
 
 }

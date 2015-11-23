@@ -3,7 +3,6 @@
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
 
-#include "Assets.h"
 
 USING_NS_CC;
 
@@ -47,6 +46,14 @@ bool GameScene::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
+
+	auto background = Sprite::create("background.jpg");
+
+	background->setPosition(Point((visibleSize.width / 2),
+		(visibleSize.height / 2)));
+
+	addChild(background, 0);
+
 	prota = new Prota();
 	prota->posicion = Vec2(0, (visibleSize.height / 2));
 	prota->sprite->setPosition(prota->posicion);
@@ -76,7 +83,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e') {
 			prota->setOrientacion('w');
 			removeChild(prota->sprite);
-			prota->sprite = Sprite::create("vagonetaIzquierdo.png");
+			prota->cambiarSprite();
 			addChild(prota->sprite);
 		}
 		break;
@@ -85,7 +92,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w') {
 			prota->setOrientacion('e');
 			removeChild(prota->sprite);
-			prota->sprite = Sprite::create("vagoneta.png");
+			prota->cambiarSprite();
 			addChild(prota->sprite);
 		}
 		break;
@@ -94,7 +101,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's') {
 			prota->setOrientacion('n');
 			removeChild(prota->sprite);
-			prota->sprite = Sprite::create("vagonetaReverso.png");
+			prota->cambiarSprite();
 			addChild(prota->sprite);
 		}
 		break;
@@ -103,7 +110,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n') {
 			prota->setOrientacion('s');
 			removeChild(prota->sprite);
-			prota->sprite = Sprite::create("vagonetaFrontal.png");
+			prota->cambiarSprite();
 			addChild(prota->sprite);
 
 		}
