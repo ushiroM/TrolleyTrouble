@@ -1,4 +1,6 @@
-#pragma once
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 class Enemigo
 {
@@ -7,11 +9,11 @@ class Enemigo
 	int velocidad;
 	int tipo;
 
+
 public:
 	Enemigo();
-	~Enemigo();
 	void atacar();
 	void movimiento();
-
+	Sprite* sprite;
 };
 

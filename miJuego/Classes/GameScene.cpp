@@ -2,6 +2,7 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
+#include "Enemigo.h"
 
 
 USING_NS_CC;
@@ -9,17 +10,26 @@ USING_NS_CC;
 Scene* GameScene::createScene()
 {
 	// 'scene' is an autorelease object
-	auto scene = Scene::create();
+	auto scene = Scene::createWithPhysics();
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
 	
-
+	layer->setPhysicsWorld(scene->getPhysicsWorld());
 	// add layer as a child to scene
 	scene->addChild(layer);
 
+	scene->getPhysicsWorld()->setAutoStep(false);		 
+	scene->getPhysicsWorld()->step(0.001f);
+	scene->getPhysicsWorld()->setAutoStep(true);
+
 	// return the scene
 	return scene;
+}
+
+void GameScene::setPhysicsWorld(PhysicsWorld *world) {
+	mWorld = world;
+	mWorld->setGravity(Vec2::ZERO);
 }
 
 
@@ -47,18 +57,33 @@ bool GameScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
-	auto background = Sprite::create("background.jpg");
+	//auto background = Sprite::create("background.jpg");
 
-	background->setPosition(Point((visibleSize.width / 2),
-		(visibleSize.height / 2)));
+	//background->setPosition(Point((visibleSize.width / 2),
+		//(visibleSize.height / 2)));
 
-	addChild(background, 0);
+	//addChild(background, 0);
 
 	prota = new Prota();
+	auto body = PhysicsBody::createCircle(prota->sprite->getBoundingBox().size.width / 2);
+	body->setContactTestBitmask(true);
+	body->setDynamic(true);
+	prota->sprite->setPhysicsBody(body);
 	prota->posicion = Vec2(0, (visibleSize.height / 2));
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
+	Enemigo* enemigo = new Enemigo();
+	auto bodyenemigo = PhysicsBody::createCircle(enemigo->sprite->getBoundingBox().size.width / 2);
+	bodyenemigo->setContactTestBitmask(true);
+	//bodyenemigo->setDynamic(true);
+	enemigo->sprite->setPhysicsBody(bodyenemigo);
+	enemigo->sprite->setPosition(Vec2(1000, 500));
+	addChild(enemigo->sprite);
+
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 	_pressedKey = EventKeyboard::KeyCode::KEY_NONE;
 
@@ -84,7 +109,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			prota->setOrientacion('w');
 			removeChild(prota->sprite);
 			prota->cambiarSprite();
-			addChild(prota->sprite);
+			addChild(prota->sprite); 
 		}
 		break;
 
@@ -122,6 +147,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 }
 void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	
 
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5, prota->posicion.y);
@@ -149,4 +175,32 @@ void GameScene::update(float dt) {
 
 
 
+
+}
+
+bool GameScene::onContactBegin(PhysicsContact &contact) {
+
+	if (prota->getOrientacion() == 'e') {
+		prota->setOrientacion('w');
+		
+	}
+
+	else if (prota->getOrientacion() == 'w') {
+		prota->setOrientacion('e');
+
+	}
+
+	else if (prota->getOrientacion() == 'n') {
+		prota->setOrientacion('s');
+	}
+
+	else if (prota->getOrientacion() == 's') {
+		prota->setOrientacion('n');
+	}
+
+	removeChild(prota->sprite);
+	prota->cambiarSprite();
+	addChild(prota->sprite);
+
+	return true;
 }
