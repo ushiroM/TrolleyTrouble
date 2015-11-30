@@ -7,7 +7,7 @@ Prota::Prota()
 	sprite = Sprite::create("vagoneta.png");
 	vida = 100;
 	orientacion = 'e';
-	velocidad = 10;
+	velocidad = 5;
 	energia = 100;
 		
 }
@@ -31,24 +31,24 @@ char Prota::getOrientacion() {
 
 }
 
+void Prota::setVelocidad(int velocidad) {
+	this->velocidad = velocidad;
+}
+
 void Prota::cambiarSprite() {
 	switch (orientacion) {
 	
 	case 'n':
-		imagenReverso = Sprite::create("vagonetaReverso.png");
-		sprite = imagenReverso;
+		sprite->setTexture("vagonetaReverso.png");
 		break;
 	case 'e':
-		imagenDerecha = Sprite::create("vagoneta.png");
-		sprite = imagenDerecha;
+		sprite->setTexture("vagoneta.png");
 		break;
 	case 'w':
-		imagenIzquierda = Sprite::create("vagonetaIzquierdo.png");
-		sprite = imagenIzquierda;
+		sprite->setTexture("vagonetaIzquierdo.png");
 		break;
 	case 's':
-		imagenFrontal = Sprite::create("vagonetaFrontal.png");
-		sprite = imagenFrontal;
+		sprite->setTexture("vagonetaFrontal.png");
 		break;
 	
 	

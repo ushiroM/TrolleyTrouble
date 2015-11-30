@@ -11,6 +11,7 @@ private:
 	EventKeyboard::KeyCode _pressedKey;
 	PhysicsWorld *mWorld;
 	PhysicsBody *body;
+	int velocidadanterior;
 
 	
 public:
@@ -23,6 +24,7 @@ public:
 	//bool isKeyPressed(EventKeyboard::KeyCode code);
 	void setPhysicsWorld(PhysicsWorld *world);
 	bool onContactBegin(PhysicsContact &contact);
+	void frenar(float);
 
 	CREATE_FUNC(GameScene);
 

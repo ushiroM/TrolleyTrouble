@@ -34,7 +34,7 @@ bool MainMenuScene::init()
 
 	auto background = Sprite::create("MainMenu.jpg");
 
-	background->setPosition(Vec2(0,0));
+	background->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height)/2));
 
 	addChild(background, 0);
 
@@ -63,7 +63,7 @@ bool MainMenuScene::init()
 void MainMenuScene::GoToGameScene(Ref *pSender) {
 	auto scene = GameScene::createScene();
 
-	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.2, scene));
 }
 
 

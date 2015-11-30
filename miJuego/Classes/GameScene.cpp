@@ -15,12 +15,13 @@ Scene* GameScene::createScene()
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
 	
-	layer->setPhysicsWorld(scene->getPhysicsWorld());
+	layer->setPhysicsWorld(scene->getPhysicsWorld());
+
 	// add layer as a child to scene
 	scene->addChild(layer);
 
-	scene->getPhysicsWorld()->setAutoStep(false);		 
-	scene->getPhysicsWorld()->step(0.001f);
+	scene->getPhysicsWorld()->setAutoStep(false);
+	scene->getPhysicsWorld()->step(1.0f);
 	scene->getPhysicsWorld()->setAutoStep(true);
 
 	// return the scene
@@ -65,25 +66,56 @@ bool GameScene::init()
 	//addChild(background, 0);
 
 	prota = new Prota();
-	auto body = PhysicsBody::createCircle(prota->sprite->getBoundingBox().size.width / 2);
+	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
-	prota->posicion = Vec2(0, (visibleSize.height / 2));
+	prota->posicion = Vec2(200, (visibleSize.height / 2));
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
+	
 	Enemigo* enemigo = new Enemigo();
-	auto bodyenemigo = PhysicsBody::createCircle(enemigo->sprite->getBoundingBox().size.width / 2);
+	auto bodyenemigo = PhysicsBody::createBox(enemigo->sprite->getBoundingBox().size);
 	bodyenemigo->setContactTestBitmask(true);
-	//bodyenemigo->setDynamic(true);
+	bodyenemigo->setDynamic(false);
 	enemigo->sprite->setPhysicsBody(bodyenemigo);
-	enemigo->sprite->setPosition(Vec2(1000, 500));
+	enemigo->sprite->setPosition(Vec2(35, (visibleSize.height) / 2));
 	addChild(enemigo->sprite);
+
+	Enemigo* enemigo2 = new Enemigo();
+	auto bodyenemigo2 = PhysicsBody::createBox(enemigo2->sprite->getBoundingBox().size);
+	bodyenemigo2->setContactTestBitmask(true);
+	bodyenemigo2->setDynamic(false);
+	enemigo2->sprite->setPhysicsBody(bodyenemigo2);
+	enemigo2->sprite->setPosition(Vec2((visibleSize.width) - 35, (visibleSize.height)/2));
+	addChild(enemigo2->sprite);
+
+	Enemigo* enemigo3 = new Enemigo();
+	enemigo3->sprite = Sprite::create("paredtest2.png");
+	auto bodyenemigo3 = PhysicsBody::createBox(enemigo3->sprite->getBoundingBox().size);
+	bodyenemigo3->setContactTestBitmask(true);
+	bodyenemigo3->setDynamic(false);
+	enemigo3->sprite->setPhysicsBody(bodyenemigo3);
+	enemigo3->sprite->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height) - 35));
+	addChild(enemigo3->sprite);
+
+	Enemigo* enemigo4 = new Enemigo();
+	enemigo4->sprite = Sprite::create("paredtest2.png");
+	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size);
+	bodyenemigo4->setContactTestBitmask(true);
+	bodyenemigo4->setDynamic(false);
+	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
+	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
+	addChild(enemigo4->sprite);
+
+
+
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
-	getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+
 
 	_pressedKey = EventKeyboard::KeyCode::KEY_NONE;
 
@@ -107,69 +139,75 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e') {
 			prota->setOrientacion('w');
-			removeChild(prota->sprite);
 			prota->cambiarSprite();
-			addChild(prota->sprite); 
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w') {
 			prota->setOrientacion('e');
-			removeChild(prota->sprite);
 			prota->cambiarSprite();
-			addChild(prota->sprite);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's') {
 			prota->setOrientacion('n');
-			removeChild(prota->sprite);
 			prota->cambiarSprite();
-			addChild(prota->sprite);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n') {
 			prota->setOrientacion('s');
-			removeChild(prota->sprite);
 			prota->cambiarSprite();
-			addChild(prota->sprite);
 
 		}
+		break;
+
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		velocidadanterior = prota->velocidad;
+		prota->velocidad = 100;
+		if (prota->getOrientacion() == 'e') prota->sprite->setTexture("embestirDerecho.png");
+		else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("embestirIzquierdo.png");
+		this->schedule(schedule_selector(GameScene::frenar), 0.02f);
 		break;
 
 	}
 
 
 }
+
+void GameScene::frenar(float dt) {
+	prota->velocidad = velocidadanterior;
+	prota->cambiarSprite();
+}
+
+
 void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	
 
 	if (prota->getOrientacion() == 'e') {
-		prota->posicion = Vec2(prota->posicion.x + 5, prota->posicion.y);
+		prota->posicion = Vec2(prota->posicion.x + prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
 
 	}
 
 	else if (prota->getOrientacion() == 'w') {
-		prota->posicion = Vec2(prota->posicion.x - 5, prota->posicion.y);
+		prota->posicion = Vec2(prota->posicion.x - prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
 
 
 	}
 
 	else if (prota->getOrientacion() == 'n') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 5);
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + prota->velocidad);
 		prota->sprite->setPosition(prota->posicion);
 
 	}
 
 	else if (prota->getOrientacion() == 's') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5);
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - prota->velocidad);
 		prota->sprite->setPosition(prota->posicion);
 	}
 
@@ -198,9 +236,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 		prota->setOrientacion('n');
 	}
 
-	removeChild(prota->sprite);
 	prota->cambiarSprite();
-	addChild(prota->sprite);
 
 	return true;
 }

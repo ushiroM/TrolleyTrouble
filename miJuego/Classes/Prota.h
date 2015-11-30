@@ -12,7 +12,7 @@ class Prota
 private:
 	int vida;
 	int energia;
-	int velocidad;
+	
 	char orientacion;
 	Consumible* consumible;
 	Objeto* objeto;
@@ -23,17 +23,16 @@ public:
 	Sprite* imagenIzquierda;
 	Sprite* imagenDerecha;
 	Sprite* imagenReverso;
-
+	int velocidad;
 	Vec2 posicion;
 	Prota();
 	~Prota();
 	void saltar();
-	void girar();
-	void embestir();
 	void usarObjeto();
 	void usarConsumible();
 	void setOrientacion(char);
 	char getOrientacion();
+	void setVelocidad(int);
 	void cambiarSprite();
 
 };
