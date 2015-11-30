@@ -84,6 +84,7 @@ bool GameScene::init()
 	addChild(enemigo->sprite);
 
 	Enemigo* enemigo2 = new Enemigo();
+	enemigo2->sprite = Sprite::create("paredtest12.png");
 	auto bodyenemigo2 = PhysicsBody::createBox(enemigo2->sprite->getBoundingBox().size);
 	bodyenemigo2->setContactTestBitmask(true);
 	bodyenemigo2->setDynamic(false);
@@ -92,7 +93,7 @@ bool GameScene::init()
 	addChild(enemigo2->sprite);
 
 	Enemigo* enemigo3 = new Enemigo();
-	enemigo3->sprite = Sprite::create("paredtest2.png");
+	enemigo3->sprite = Sprite::create("pared test22.png");
 	auto bodyenemigo3 = PhysicsBody::createBox(enemigo3->sprite->getBoundingBox().size);
 	bodyenemigo3->setContactTestBitmask(true);
 	bodyenemigo3->setDynamic(false);
@@ -166,11 +167,14 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
-		velocidadanterior = prota->velocidad;
-		prota->velocidad = 100;
-		if (prota->getOrientacion() == 'e') prota->sprite->setTexture("embestirDerecho.png");
-		else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("embestirIzquierdo.png");
-		this->schedule(schedule_selector(GameScene::frenar), 0.02f);
+		if (placando == false) {
+			placando = true;
+			velocidadanterior = prota->velocidad;
+			prota->velocidad = 3;
+			if (prota->getOrientacion() == 'e') prota->sprite->setTexture("embestirDerecho.png");
+			else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("embestirIzquierdo.png");
+			this->schedule(schedule_selector(GameScene::frenar), 0.5f);
+		}
 		break;
 
 	}
@@ -179,8 +183,10 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 }
 
 void GameScene::frenar(float dt) {
+	this->unschedule(schedule_selector(GameScene::frenar));
 	prota->velocidad = velocidadanterior;
 	prota->cambiarSprite();
+	placando = false;
 }
 
 
@@ -188,26 +194,26 @@ void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	if (prota->getOrientacion() == 'e') {
-		prota->posicion = Vec2(prota->posicion.x + prota->velocidad, prota->posicion.y);
+		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
 
 	}
 
 	else if (prota->getOrientacion() == 'w') {
-		prota->posicion = Vec2(prota->posicion.x - prota->velocidad, prota->posicion.y);
+		prota->posicion = Vec2(prota->posicion.x - 5*prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
 
 
 	}
 
 	else if (prota->getOrientacion() == 'n') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + prota->velocidad);
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 5*prota->velocidad);
 		prota->sprite->setPosition(prota->posicion);
 
 	}
 
 	else if (prota->getOrientacion() == 's') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - prota->velocidad);
+		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5*prota->velocidad);
 		prota->sprite->setPosition(prota->posicion);
 	}
 
@@ -217,6 +223,7 @@ void GameScene::update(float dt) {
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
+	if (placando == true) frenar(0.0);
 
 	if (prota->getOrientacion() == 'e') {
 		prota->setOrientacion('w');

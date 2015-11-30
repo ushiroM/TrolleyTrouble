@@ -23,7 +23,7 @@ public:
 	Sprite* imagenIzquierda;
 	Sprite* imagenDerecha;
 	Sprite* imagenReverso;
-	int velocidad;
+	float velocidad;
 	Vec2 posicion;
 	Prota();
 	~Prota();

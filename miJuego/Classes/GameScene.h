@@ -12,6 +12,7 @@ private:
 	PhysicsWorld *mWorld;
 	PhysicsBody *body;
 	int velocidadanterior;
+	bool placando = false;
 
 	
 public:
