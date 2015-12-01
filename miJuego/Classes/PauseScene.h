@@ -10,6 +10,9 @@ public:
 	void resumeGameScene(Ref *pSender);
 	void goToMainMenu(Ref *pSender);
 	void retryGameScene(Ref *pSender);
+	virtual bool init();
+
+	CREATE_FUNC(PauseScene);
 
 };
 

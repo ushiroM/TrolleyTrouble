@@ -34,16 +34,16 @@ void GameScene::setPhysicsWorld(PhysicsWorld *world) {
 }
 
 
-/*void GameScene::goToPauseScene(Ref *pSender) {
+void GameScene::goToPauseScene(Ref *pSender) {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
 }
-void GameScene::goToGameOverScene(Ref *pSender) {
+/*void GameScene::goToGameOverScene(Ref *pSender) {
 	auto scene = GameOverScene::createScene();
 
 	Director::getInstance()->replaceScene(scene);
-}
-*/
+}*/
+
 
 
 bool GameScene::init()
@@ -176,11 +176,16 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			this->schedule(schedule_selector(GameScene::frenar), 0.5f);
 		}
 		break;
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		goToPauseScene(this);
+		break;
 
 	}
-
+	
 
 }
+
+
 
 void GameScene::frenar(float dt) {
 	this->unschedule(schedule_selector(GameScene::frenar));

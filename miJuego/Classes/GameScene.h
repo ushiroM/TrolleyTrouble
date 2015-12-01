@@ -17,7 +17,7 @@ private:
 	
 public:
 	static cocos2d::Scene* createScene();
-	//void goToPauseScene(Ref *pSender);
+	void goToPauseScene(Ref *pSender);
 	//void goToGameOverScene(Ref *pSender);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
 	void update(float dt);
