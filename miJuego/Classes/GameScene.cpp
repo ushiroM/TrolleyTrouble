@@ -58,12 +58,12 @@ bool GameScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
-	//auto background = Sprite::create("background.jpg");
+	auto background = Sprite::create("fondo.png");
 
-	//background->setPosition(Point((visibleSize.width / 2),
-		//(visibleSize.height / 2)));
+	background->setPosition(Point((visibleSize.width / 2),
+		(visibleSize.height / 2)));
 
-	//addChild(background, 0);
+	addChild(background, 0);
 
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);

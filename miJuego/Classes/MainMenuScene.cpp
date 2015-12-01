@@ -46,7 +46,7 @@ bool MainMenuScene::init()
 		"images/MainMenuScreen/Play_Button(Click).png", 
 		CC_CALLBACK_1(MainMenuScene::GoToGameScene, this));
 
-	playItem->setPosition(Vec2(0, 0));
+	playItem->setPosition(Vec2(0, -200));
 
 	auto menu = Menu::create(playItem, NULL);
 
