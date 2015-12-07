@@ -115,6 +115,15 @@ bool GameScene::init()
 	barraEnergia->setPosition(Vec2(0, 690));
 	addChild(barraEnergia);
 
+	energyLabel->setPosition(Vec2(270, 690));
+	addChild(energyLabel);
+
+	lifeLabel->setPosition(Vec2(1010, 690));
+	addChild(lifeLabel);
+
+	barraVida->setPosition(Vec2(1280, 690));
+	addChild(barraVida);
+
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
@@ -204,6 +213,8 @@ void GameScene::update(float dt) {
 
 	barraEnergia->setScaleX(prota->energia*4);
 	if (prota->energia < 100) prota->energia++;
+
+	barraVida->setScaleX(prota->vida * 4);
 
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);

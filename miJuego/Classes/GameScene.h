@@ -14,6 +14,9 @@ private:
 	int velocidadanterior;
 	bool placando = false;
 	Sprite* barraEnergia = Sprite::create("energia.png");
+	Sprite* barraVida = Sprite::create("vida.png");
+	Sprite* energyLabel = Sprite::create("Energy_Label.png");
+	Sprite* lifeLabel = Sprite::create("Life_Label.png");
 
 	
 public:
