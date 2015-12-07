@@ -112,16 +112,16 @@ bool GameScene::init()
 	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
 	addChild(enemigo4->sprite);
 
-	barraEnergia->setPosition(Vec2(0, 690));
+	barraEnergia->setPosition(Vec2(0, 660));
 	addChild(barraEnergia);
 
-	energyLabel->setPosition(Vec2(270, 690));
+	energyLabel->setPosition(Vec2(270, 660));
 	addChild(energyLabel);
 
-	lifeLabel->setPosition(Vec2(1010, 690));
+	lifeLabel->setPosition(Vec2(270, 700));
 	addChild(lifeLabel);
 
-	barraVida->setPosition(Vec2(1280, 690));
+	barraVida->setPosition(Vec2(0, 700));
 	addChild(barraVida);
 
 
