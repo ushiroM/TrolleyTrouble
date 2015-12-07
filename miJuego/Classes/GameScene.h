@@ -13,6 +13,7 @@ private:
 	PhysicsBody *body;
 	int velocidadanterior;
 	bool placando = false;
+	Sprite* barraEnergia = Sprite::create("energia.png");
 
 	
 public:

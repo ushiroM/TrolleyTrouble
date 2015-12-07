@@ -65,6 +65,8 @@ bool GameScene::init()
 
 	addChild(background, 0);
 
+	
+
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
 	body->setContactTestBitmask(true);
@@ -110,7 +112,8 @@ bool GameScene::init()
 	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
 	addChild(enemigo4->sprite);
 
-
+	barraEnergia->setPosition(Vec2(0, 690));
+	addChild(barraEnergia);
 
 
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -167,7 +170,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
-		if (placando == false) {
+		if (placando == false && prota->energia >= 70) {
+			prota->energia = prota->energia - 70;
 			placando = true;
 			velocidadanterior = prota->velocidad;
 			prota->velocidad = 3;
@@ -197,6 +201,9 @@ void GameScene::frenar(float dt) {
 
 void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+
+	barraEnergia->setScaleX(prota->energia*4);
+	if (prota->energia < 100) prota->energia++;
 
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);

@@ -11,13 +11,14 @@ class Prota
 {
 private:
 	int vida;
-	int energia;
+	
 	
 	char orientacion;
 	Consumible* consumible;
 	Objeto* objeto;
 
 public:
+	int energia;
 	Sprite* sprite;
 	Sprite* imagenFrontal;
 	Sprite* imagenIzquierda;
