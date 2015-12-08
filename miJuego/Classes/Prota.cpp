@@ -4,7 +4,7 @@
 
 Prota::Prota()
 {
-	sprite = Sprite::create("vagoneta.png");
+	sprite = Sprite::create("vafoneta.png");
 	vida = 100;
 	orientacion = 'e';
 	velocidad = 1;
@@ -39,16 +39,16 @@ void Prota::cambiarSprite() {
 	switch (orientacion) {
 	
 	case 'n':
-		sprite->setTexture("vagonetaReverso.png");
+		sprite->setTexture("vafonetaReverso.png");
 		break;
 	case 'e':
-		sprite->setTexture("vagoneta.png");
+		sprite->setTexture("vafoneta.png");
 		break;
 	case 'w':
-		sprite->setTexture("vagonetaIzquierdo.png");
+		sprite->setTexture("vafonetaIzquierdo.png");
 		break;
 	case 's':
-		sprite->setTexture("vagonetaFrontal.png");
+		sprite->setTexture("vafonetaFrontal.png");
 		break;
 	
 	
