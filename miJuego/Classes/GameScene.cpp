@@ -112,6 +112,16 @@ bool GameScene::init()
 	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
 	addChild(enemigo4->sprite);
 
+	Enemigo* enemigo5 = new Enemigo();
+	enemigo5->sprite = Sprite::create("enemijo.png");
+	enemigo5->sprite->setTag(10);
+	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size);
+	bodyenemigo5->setContactTestBitmask(true);
+	bodyenemigo5->setDynamic(false);
+	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
+	enemigo5->sprite->setPosition(Vec2(200,200));
+	addChild(enemigo5->sprite);
+
 	barraEnergia->setPosition(Vec2(0, 660));
 	addChild(barraEnergia);
 
@@ -183,10 +193,10 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			prota->energia = prota->energia - 70;
 			placando = true;
 			velocidadanterior = prota->velocidad;
-			prota->velocidad = 3;
+			prota->velocidad = 2;
 			if (prota->getOrientacion() == 'e') prota->sprite->setTexture("emfestirDerecho.png");
 			else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("emfestirIzquierdo.png");
-			this->schedule(schedule_selector(GameScene::frenar), 0.5f);
+			this->schedule(schedule_selector(GameScene::frenar), 0.3f);
 		}
 		break;
 	case EventKeyboard::KeyCode::KEY_ESCAPE:
@@ -246,7 +256,36 @@ void GameScene::update(float dt) {
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
-	if (placando == true) frenar(0.0);
+
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+
+	if (nodeA && nodeB)
+	{
+		if (nodeA->getTag() == 10)
+		{
+			if (placando == true) {
+				removeChild(nodeA, true);
+				frenar(0.0);
+			}
+			else {
+				prota->vida = prota->vida - 20;
+			}
+		}
+		else if (nodeB->getTag() == 10)
+		{
+			if (placando == true) {
+				removeChild(nodeB, true);
+				frenar(0.0);
+			}
+			else {
+				prota->vida = prota->vida - 20;
+			}
+		}
+		else {
+			frenar(0.0);
+		}
+	}
 
 	if (prota->getOrientacion() == 'e') {
 		prota->setOrientacion('w');
