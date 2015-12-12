@@ -57,15 +57,36 @@ bool GameScene::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-
+	/*
 	auto background = Sprite::create("fondo.png");
 
 	background->setPosition(Point((visibleSize.width / 2),
 		(visibleSize.height / 2)));
 
 	addChild(background, 0);
+	*/
 
-	
+	// create a TMX map
+	auto map = TMXTiledMap::create("sala.tmx");
+	auto layer = map->getLayer("Layer0");
+	addChild(map, 0, 1);
+
+	// all tiles are aliased by default, let's set them anti-aliased
+	for (const auto& child : map->getChildren())
+	{
+		static_cast<SpriteBatchNode*>(child)->getTexture()->setAntiAliasTexParameters();
+	}
+
+	/*
+	Size s = layer->getLayerSize();
+	for (int x = 0; x < s.width; ++x)
+	{
+		for (int y = 0; y < s.height; ++y)
+		{
+			layer->setTileGID(newGid, Vec2(x, y));
+		}
+	}
+	*/
 
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
@@ -76,7 +97,7 @@ bool GameScene::init()
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
-	
+	/*
 	Enemigo* enemigo = new Enemigo();
 	auto bodyenemigo = PhysicsBody::createBox(enemigo->sprite->getBoundingBox().size);
 	bodyenemigo->setContactTestBitmask(true);
@@ -84,7 +105,8 @@ bool GameScene::init()
 	enemigo->sprite->setPhysicsBody(bodyenemigo);
 	enemigo->sprite->setPosition(Vec2(35, (visibleSize.height) / 2));
 	addChild(enemigo->sprite);
-
+	
+	
 	Enemigo* enemigo2 = new Enemigo();
 	enemigo2->sprite = Sprite::create("paredtest12.png");
 	auto bodyenemigo2 = PhysicsBody::createBox(enemigo2->sprite->getBoundingBox().size);
@@ -111,6 +133,7 @@ bool GameScene::init()
 	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
 	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
 	addChild(enemigo4->sprite);
+	*/
 
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemijo.png");
