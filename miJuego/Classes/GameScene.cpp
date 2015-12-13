@@ -14,7 +14,7 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
-	
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 
 	// add layer as a child to scene
@@ -38,11 +38,11 @@ void GameScene::goToPauseScene(Ref *pSender) {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
 }
-/*void GameScene::goToGameOverScene(Ref *pSender) {
+void GameScene::goToGameOverScene(Ref *pSender) {
 	auto scene = GameOverScene::createScene();
 
 	Director::getInstance()->replaceScene(scene);
-}*/
+}
 
 
 
@@ -70,6 +70,7 @@ bool GameScene::init()
 
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
+	prota->sprite->setTag(5);
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
@@ -122,7 +123,7 @@ bool GameScene::init()
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(false);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
-	enemigo5->sprite->setPosition(Vec2(200,200));
+	enemigo5->sprite->setPosition(Vec2(700,200));
 	addChild(enemigo5->sprite);
 
 	barraEnergia->setPosition(Vec2(0, 660));
@@ -153,6 +154,8 @@ bool GameScene::init()
 
 	this->scheduleUpdate();
 	
+
+
 
 
 	return true;
@@ -224,8 +227,9 @@ void GameScene::crearSala() {
 
 	// create a TMX map
 	auto map = TMXTiledMap::create("sala.tmx");
-	auto layer = map->getLayer("Layer0");
+	auto layer = map->getLayer("sala");
 	addChild(map, 0, 1);
+
 
 	// all tiles are aliased by default, let's set them anti-aliased
 	for (const auto& child : map->getChildren())
@@ -233,24 +237,46 @@ void GameScene::crearSala() {
 		static_cast<SpriteBatchNode*>(child)->getTexture()->setAntiAliasTexParameters();
 	}
 	
-	Size s = layer->getLayerSize();
+	auto s = layer->getLayerSize();
 	for (int x = 0; x < s.width; ++x){
 		for (int y = 0; y < s.height; ++y){
-			auto tileGID = layer->getTileGIDAt(Vec2(x, y));
-			Dictionary *propiedades = (map->getPropertiesForGID(tileGID));
-
+			int tileGID = layer->getTileGIDAt(Vec2(x, y));
+			
+			switch (tileGID) {
+			case 2:
+				nuevaPared(layer->getTileAt(Vec2(x, y)));
+			
+			
 			}
+
+		
 		}
 	}
 }
+
+void GameScene::nuevaPared(Sprite* tile) {
+
+	
+	auto bodye = PhysicsBody::createBox(tile->getBoundingBox().size);
+	bodye->setContactTestBitmask(true);
+	bodye->setDynamic(false);
+	tile->setPhysicsBody(bodye);
+
+
+
+}
+
+
 void GameScene::update(float dt) {
+
+	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	barraEnergia->setScaleX(prota->energia*4);
 	if (prota->energia < 100) prota->energia++;
 
 	barraVida->setScaleX(prota->vida * 4);
-
+	b = true;
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
@@ -275,62 +301,69 @@ void GameScene::update(float dt) {
 		prota->sprite->setPosition(prota->posicion);
 	}
 
-
-
+	
 
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
 
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (b) {
+		b = false;
+		auto nodeA = contact.getShapeA()->getBody()->getNode();
+		auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-	if (nodeA && nodeB)
-	{
-		if (nodeA->getTag() == 10)
-		{
-			if (placando == true) {
-				removeChild(nodeA, true);
-				frenar(0.0);
-			}
-			else {
-				prota->vida = prota->vida - 20;
-			}
-		}
-		else if (nodeB->getTag() == 10)
-		{
-			if (placando == true) {
-				removeChild(nodeB, true);
-				frenar(0.0);
-			}
-			else {
-				prota->vida = prota->vida - 20;
-			}
-		}
-		else {
-			frenar(0.0);
-		}
-	}
 
-	if (prota->getOrientacion() == 'e') {
-		prota->setOrientacion('w');
+		if (nodeA && nodeB)
+		{
+			if (nodeA->getTag() == 5 || nodeB->getTag() == 5) {
+				if (nodeA->getTag() == 10)
+				{
+					if (placando == true) {
+						removeChild(nodeA, true);
+						frenar(0.0);
+					}
+					else {
+						prota->vida = prota->vida - 20;
+						if (prota->vida <= 0) goToGameOverScene(this);
+					}
+				}
+				else if (nodeB->getTag() == 10)
+				{
+					if (placando == true) {
+						removeChild(nodeB, true);
+						frenar(0.0);
+					}
+					else {
+						prota->vida = prota->vida - 20;
+					}
+				}
+				else {
+					frenar(0.0);
+				}
+
+				if (prota->getOrientacion() == 'e') {
+					prota->setOrientacion('w');
+
+				}
+
+				else if (prota->getOrientacion() == 'w') {
+					prota->setOrientacion('e');
+
+				}
+
+				else if (prota->getOrientacion() == 'n') {
+					prota->setOrientacion('s');
+				}
+
+				else if (prota->getOrientacion() == 's') {
+					prota->setOrientacion('n');
+				}
+
+				prota->cambiarSprite();
+			}
+		}
+
 		
 	}
-
-	else if (prota->getOrientacion() == 'w') {
-		prota->setOrientacion('e');
-
-	}
-
-	else if (prota->getOrientacion() == 'n') {
-		prota->setOrientacion('s');
-	}
-
-	else if (prota->getOrientacion() == 's') {
-		prota->setOrientacion('n');
-	}
-
-	prota->cambiarSprite();
-
 	return true;
 }

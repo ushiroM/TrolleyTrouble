@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="12" height="9" tilewidth="109" tileheight="80">
- <tileset firstgid="1" name="tileset" tilewidth="109" tileheight="80">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="9" tilewidth="109" tileheight="80" nextobjectid="1">
+ <tileset firstgid="1" name="tileset" tilewidth="109" tileheight="80" tilecount="2">
   <image source="tileset.png" trans="ffffff" width="256" height="128"/>
   <tile id="1">
    <properties>
@@ -8,7 +8,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="12" height="9">
+ <layer name="sala" width="12" height="9">
   <data>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -36,14 +36,14 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -84,14 +84,14 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="2"/>
    <tile gid="2"/>
