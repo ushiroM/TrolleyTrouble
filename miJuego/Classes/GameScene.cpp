@@ -66,27 +66,7 @@ bool GameScene::init()
 	addChild(background, 0);
 	*/
 
-	// create a TMX map
-	auto map = TMXTiledMap::create("sala.tmx");
-	auto layer = map->getLayer("Layer0");
-	addChild(map, 0, 1);
-
-	// all tiles are aliased by default, let's set them anti-aliased
-	for (const auto& child : map->getChildren())
-	{
-		static_cast<SpriteBatchNode*>(child)->getTexture()->setAntiAliasTexParameters();
-	}
-
-	/*
-	Size s = layer->getLayerSize();
-	for (int x = 0; x < s.width; ++x)
-	{
-		for (int y = 0; y < s.height; ++y)
-		{
-			layer->setTileGID(newGid, Vec2(x, y));
-		}
-	}
-	*/
+	crearSala();
 
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
@@ -240,7 +220,29 @@ void GameScene::frenar(float dt) {
 	placando = false;
 }
 
+void GameScene::crearSala() {
 
+	// create a TMX map
+	auto map = TMXTiledMap::create("sala.tmx");
+	auto layer = map->getLayer("Layer0");
+	addChild(map, 0, 1);
+
+	// all tiles are aliased by default, let's set them anti-aliased
+	for (const auto& child : map->getChildren())
+	{
+		static_cast<SpriteBatchNode*>(child)->getTexture()->setAntiAliasTexParameters();
+	}
+	
+	Size s = layer->getLayerSize();
+	for (int x = 0; x < s.width; ++x){
+		for (int y = 0; y < s.height; ++y){
+			auto tileGID = layer->getTileGIDAt(Vec2(x, y));
+			Dictionary *propiedades = (map->getPropertiesForGID(tileGID));
+
+			}
+		}
+	}
+}
 void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 

@@ -30,7 +30,7 @@ public:
 	void setPhysicsWorld(PhysicsWorld *world);
 	bool onContactBegin(PhysicsContact &contact);
 	void frenar(float);
-
+	void crearSala();
 	CREATE_FUNC(GameScene);
 
 };
