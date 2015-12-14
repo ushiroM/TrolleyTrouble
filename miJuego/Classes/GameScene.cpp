@@ -14,7 +14,7 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 
 	// add layer as a child to scene
@@ -39,9 +39,8 @@ void GameScene::goToPauseScene(Ref *pSender) {
 	Director::getInstance()->pushScene(scene);
 }
 void GameScene::goToGameOverScene(Ref *pSender) {
-	auto scene = GameOverScene::createScene();
-
-	Director::getInstance()->replaceScene(scene);
+	auto escenaGameOver = GameOverScene::createScene();
+	Director::getInstance()->replaceScene(escenaGameOver);
 }
 
 
@@ -223,6 +222,25 @@ void GameScene::frenar(float dt) {
 	placando = false;
 }
 
+void GameScene::rotarProta() {
+
+	if (prota->getOrientacion() == 'e') {
+		prota->setOrientacion('w');
+
+	}
+	else if (prota->getOrientacion() == 'w') {
+		prota->setOrientacion('e');
+
+	}
+	else if (prota->getOrientacion() == 'n') {
+		prota->setOrientacion('s');
+	}
+	else if (prota->getOrientacion() == 's') {
+		prota->setOrientacion('n');
+	}
+	prota->cambiarSprite();
+}
+
 void GameScene::crearSala() {
 
 	// create a TMX map
@@ -245,25 +263,18 @@ void GameScene::crearSala() {
 			switch (tileGID) {
 			case 2:
 				nuevaPared(layer->getTileAt(Vec2(x, y)));
-			
-			
 			}
-
-		
 		}
 	}
 }
 
 void GameScene::nuevaPared(Sprite* tile) {
 
-	
 	auto bodye = PhysicsBody::createBox(tile->getBoundingBox().size);
 	bodye->setContactTestBitmask(true);
 	bodye->setDynamic(false);
+	tile->setTag(1);
 	tile->setPhysicsBody(bodye);
-
-
-
 }
 
 
@@ -280,14 +291,11 @@ void GameScene::update(float dt) {
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
-
 	}
 
 	else if (prota->getOrientacion() == 'w') {
 		prota->posicion = Vec2(prota->posicion.x - 5*prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
-
-
 	}
 
 	else if (prota->getOrientacion() == 'n') {
@@ -301,7 +309,7 @@ void GameScene::update(float dt) {
 		prota->sprite->setPosition(prota->posicion);
 	}
 
-	
+	if (prota->vida <= 0) goToGameOverScene(this); //HUAAAAAAAAAAOOOO
 
 }
 
@@ -324,7 +332,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					}
 					else {
 						prota->vida = prota->vida - 20;
-						if (prota->vida <= 0) goToGameOverScene(this);
+						rotarProta();
 					}
 				}
 				else if (nodeB->getTag() == 10)
@@ -335,35 +343,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					}
 					else {
 						prota->vida = prota->vida - 20;
+						rotarProta();
 					}
 				}
-				else {
+				else if (nodeA->getTag()==1 || nodeB->getTag()==1){
 					frenar(0.0);
+					prota->vida = prota->vida - 20;
+					rotarProta();
 				}
-
-				if (prota->getOrientacion() == 'e') {
-					prota->setOrientacion('w');
-
-				}
-
-				else if (prota->getOrientacion() == 'w') {
-					prota->setOrientacion('e');
-
-				}
-
-				else if (prota->getOrientacion() == 'n') {
-					prota->setOrientacion('s');
-				}
-
-				else if (prota->getOrientacion() == 's') {
-					prota->setOrientacion('n');
-				}
-
-				prota->cambiarSprite();
 			}
 		}
-
-		
 	}
 	return true;
 }

@@ -26,14 +26,10 @@ Scene* GameOverScene::createScene()
 
 void GameOverScene::goToMainMenu(Ref *pSender) {
 	auto scene = MainMenuScene::createScene();
-
-	Director::getInstance()->popScene();
 	Director::getInstance()->replaceScene(scene);
 }
 void GameOverScene::retryGameScene(Ref *pSender) {
 	auto scene = GameScene::createScene();
-
-	Director::getInstance()->popScene();
 	Director::getInstance()->replaceScene(scene);
 }
 

@@ -33,6 +33,7 @@ public:
 	void frenar(float);
 	void crearSala();
 	void nuevaPared(Sprite* sprite);
+	void rotarProta();
 	CREATE_FUNC(GameScene);
 
 };
