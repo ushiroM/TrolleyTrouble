@@ -18,7 +18,7 @@ private:
 	Sprite* energyLabel = Sprite::create("Energy_Label.png");
 	Sprite* lifeLabel = Sprite::create("Life_Label.png");
 	bool b = true;
-	
+	TMXTiledMap* map = TMXTiledMap::create("piso.tmx");
 	
 public:
 	static cocos2d::Scene* createScene();
@@ -33,7 +33,9 @@ public:
 	void frenar(float);
 	void crearSala();
 	void nuevaPared(Sprite* sprite);
+	void addColision(Sprite* sprite, int tipo);
 	void rotarProta();
+	void centerViewport();
 	CREATE_FUNC(GameScene);
 
 };

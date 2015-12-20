@@ -3,8 +3,6 @@
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
 #include "Enemigo.h"
-
-
 USING_NS_CC;
 
 Scene* GameScene::createScene()
@@ -14,7 +12,7 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 
 	// add layer as a child to scene
@@ -28,11 +26,11 @@ Scene* GameScene::createScene()
 	return scene;
 }
 
+
 void GameScene::setPhysicsWorld(PhysicsWorld *world) {
 	mWorld = world;
 	mWorld->setGravity(Vec2::ZERO);
 }
-
 
 void GameScene::goToPauseScene(Ref *pSender) {
 	auto scene = PauseScene::createScene();
@@ -43,8 +41,6 @@ void GameScene::goToGameOverScene(Ref *pSender) {
 	Director::getInstance()->replaceScene(escenaGameOver);
 }
 
-
-
 bool GameScene::init()
 {
 	//////////////////////////////
@@ -54,18 +50,9 @@ bool GameScene::init()
 		return false;
 	}
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-
-	/*
-	auto background = Sprite::create("fondo.png");
-
-	background->setPosition(Point((visibleSize.width / 2),
-		(visibleSize.height / 2)));
-
-	addChild(background, 0);
-	*/
-
 	crearSala();
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
@@ -73,47 +60,9 @@ bool GameScene::init()
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
-	prota->posicion = Vec2(200, (visibleSize.height / 2));
+	prota->posicion = Vec2(100, visibleSize.height /2);
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
-
-	/*
-	Enemigo* enemigo = new Enemigo();
-	auto bodyenemigo = PhysicsBody::createBox(enemigo->sprite->getBoundingBox().size);
-	bodyenemigo->setContactTestBitmask(true);
-	bodyenemigo->setDynamic(false);
-	enemigo->sprite->setPhysicsBody(bodyenemigo);
-	enemigo->sprite->setPosition(Vec2(35, (visibleSize.height) / 2));
-	addChild(enemigo->sprite);
-	
-	
-	Enemigo* enemigo2 = new Enemigo();
-	enemigo2->sprite = Sprite::create("paredtest12.png");
-	auto bodyenemigo2 = PhysicsBody::createBox(enemigo2->sprite->getBoundingBox().size);
-	bodyenemigo2->setContactTestBitmask(true);
-	bodyenemigo2->setDynamic(false);
-	enemigo2->sprite->setPhysicsBody(bodyenemigo2);
-	enemigo2->sprite->setPosition(Vec2((visibleSize.width) - 35, (visibleSize.height)/2));
-	addChild(enemigo2->sprite);
-
-	Enemigo* enemigo3 = new Enemigo();
-	enemigo3->sprite = Sprite::create("pared test22.png");
-	auto bodyenemigo3 = PhysicsBody::createBox(enemigo3->sprite->getBoundingBox().size);
-	bodyenemigo3->setContactTestBitmask(true);
-	bodyenemigo3->setDynamic(false);
-	enemigo3->sprite->setPhysicsBody(bodyenemigo3);
-	enemigo3->sprite->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height) - 35));
-	addChild(enemigo3->sprite);
-
-	Enemigo* enemigo4 = new Enemigo();
-	enemigo4->sprite = Sprite::create("paredtest2.png");
-	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size);
-	bodyenemigo4->setContactTestBitmask(true);
-	bodyenemigo4->setDynamic(false);
-	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
-	enemigo4->sprite->setPosition(Vec2((visibleSize.width) / 2, 35));
-	addChild(enemigo4->sprite);
-	*/
 
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemijo.png");
@@ -152,10 +101,6 @@ bool GameScene::init()
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	this->scheduleUpdate();
-	
-
-
-
 
 	return true;
 }
@@ -209,11 +154,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	}
-	
-
 }
-
-
 
 void GameScene::frenar(float dt) {
 	this->unschedule(schedule_selector(GameScene::frenar));
@@ -226,11 +167,9 @@ void GameScene::rotarProta() {
 
 	if (prota->getOrientacion() == 'e') {
 		prota->setOrientacion('w');
-
 	}
 	else if (prota->getOrientacion() == 'w') {
 		prota->setOrientacion('e');
-
 	}
 	else if (prota->getOrientacion() == 'n') {
 		prota->setOrientacion('s');
@@ -240,47 +179,50 @@ void GameScene::rotarProta() {
 	}
 	prota->cambiarSprite();
 }
+/*
+void GameScene::centerViewport()
+{
+	CCSize scrollPantalla = CCDirector::getInstance()->getWinSize();
+	float x = scrollPantalla.width / 2.0;
+	float y = scrollPantalla.height / 4.0;
 
+	if (prota->posicion.x > (prota->posicion.x / 4.0f)) {
+		x = scrollPantalla.width/2.0 - prota->posicion.x;
+	}
+	y = scrollPantalla.height/4.0 - prota->posicion.y;
+	this->setPosition(ccp(x, y));
+}
+*/
 void GameScene::crearSala() {
 
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 	// create a TMX map
-	auto map = TMXTiledMap::create("sala.tmx");
-	auto layer = map->getLayer("sala");
+	auto layer = map->getLayer("piso");
 	addChild(map, 0, 1);
-
-
-	// all tiles are aliased by default, let's set them anti-aliased
-	for (const auto& child : map->getChildren())
-	{
-		static_cast<SpriteBatchNode*>(child)->getTexture()->setAntiAliasTexParameters();
-	}
 	
-	auto s = layer->getLayerSize();
-	for (int x = 0; x < s.width; ++x){
-		for (int y = 0; y < s.height; ++y){
+	Size s = layer->getLayerSize();
+	for (int x = 0; x < s.width; x++){
+		for (int y = 0; y < s.height; y++){
 			int tileGID = layer->getTileGIDAt(Vec2(x, y));
-			
-			switch (tileGID) {
-			case 2:
-				nuevaPared(layer->getTileAt(Vec2(x, y)));
+			if (tileGID != 0 && tileGID != 4){
+				addColision(layer->getTileAt(Vec2(x, y)), tileGID);
 			}
 		}
 	}
+	map->setPosition(Vec2(0, -2880));
 }
 
-void GameScene::nuevaPared(Sprite* tile) {
-
-	auto bodye = PhysicsBody::createBox(tile->getBoundingBox().size);
+void GameScene::addColision(Sprite * sprite, int tipo)
+{
+	auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
 	bodye->setContactTestBitmask(true);
 	bodye->setDynamic(false);
-	tile->setTag(1);
-	tile->setPhysicsBody(bodye);
+	sprite->setTag(tipo);
+	sprite->setPhysicsBody(bodye);
 }
-
 
 void GameScene::update(float dt) {
 
-	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	barraEnergia->setScaleX(prota->energia*4);
@@ -311,32 +253,24 @@ void GameScene::update(float dt) {
 
 	if (prota->vida <= 0) goToGameOverScene(this); //HUAAAAAAAAAAOOOO
 
+	//centerViewport();
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
 
+	float x = map->getPositionX();
+	float y = map->getPositionY();
 	if (b) {
 		b = false;
 		auto nodeA = contact.getShapeA()->getBody()->getNode();
 		auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-
 		if (nodeA && nodeB)
 		{
-			if (nodeA->getTag() == 5 || nodeB->getTag() == 5) {
-				if (nodeA->getTag() == 10)
+			if (nodeA->getTag() == 5) {
+				switch (nodeB->getTag())
 				{
-					if (placando == true) {
-						removeChild(nodeA, true);
-						frenar(0.0);
-					}
-					else {
-						prota->vida = prota->vida - 20;
-						rotarProta();
-					}
-				}
-				else if (nodeB->getTag() == 10)
-				{
+				case 10:
 					if (placando == true) {
 						removeChild(nodeB, true);
 						frenar(0.0);
@@ -345,11 +279,46 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						prota->vida = prota->vida - 20;
 						rotarProta();
 					}
-				}
-				else if (nodeA->getTag()==1 || nodeB->getTag()==1){
+					break;
+				case 2:
 					frenar(0.0);
 					prota->vida = prota->vida - 20;
 					rotarProta();
+					break;
+				case 1:
+					prota->posicion = Vec2(prota->posicion.x+200, prota->posicion.y);
+					prota->sprite->setPosition(prota->posicion);
+					map->setPosition(Vec2(x + 1308, y));
+					break;
+				default:
+					break;
+				}
+			}
+			else if (nodeB->getTag() == 5) {
+				switch (nodeA->getTag())
+				{
+				case 10:
+					if (placando == true) {
+						removeChild(nodeA, true);
+						frenar(0.0);
+					}
+					else {
+						prota->vida = prota->vida - 20;
+						rotarProta();
+					}
+					break;
+				case 2:
+					frenar(0.0);
+					prota->vida = prota->vida - 20;
+					rotarProta();
+					break;
+				case 1:
+					prota->posicion = Vec2(prota->posicion.x + 200, prota->posicion.y);
+					prota->sprite->setPosition(prota->posicion);
+					map->setPosition(Vec2(x + 1308, y));
+					break;
+				default:
+					break;
 				}
 			}
 		}

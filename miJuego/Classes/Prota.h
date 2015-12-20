@@ -10,9 +10,7 @@
 class Prota
 {
 private:
-	
-	
-	
+
 	char orientacion;
 	Consumible* consumible;
 	Objeto* objeto;
