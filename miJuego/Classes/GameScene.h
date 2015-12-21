@@ -19,6 +19,9 @@ private:
 	Sprite* lifeLabel = Sprite::create("Life_Label.png");
 	bool b = true;
 	TMXTiledMap* map = TMXTiledMap::create("piso.tmx");
+	bool cruzarPuerta;
+	float scrollX;
+	float scrollY;
 	
 public:
 	static cocos2d::Scene* createScene();
@@ -32,10 +35,9 @@ public:
 	bool onContactBegin(PhysicsContact &contact);
 	void frenar(float);
 	void crearSala();
-	void nuevaPared(Sprite* sprite);
 	void addColision(Sprite* sprite, int tipo);
 	void rotarProta();
-	void centerViewport();
+	void centerViewport(float scrollX, float scrollY);
 	CREATE_FUNC(GameScene);
 
 };

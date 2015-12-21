@@ -9,7 +9,7 @@ Scene* GameScene::createScene()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
-
+	
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -53,17 +53,18 @@ bool GameScene::init()
 	crearSala();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-
 	prota = new Prota();
 	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
 	prota->sprite->setTag(5);
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
-	prota->posicion = Vec2(100, visibleSize.height /2);
-	prota->sprite->setPosition(prota->posicion);
+	auto spritePos = Vec3(visibleSize.width / 2, visibleSize.height / 2, 0);
+	prota->posicion = Vec2(200, visibleSize.height /2);
+	prota->sprite->setPosition3D(spritePos);
 	addChild(prota->sprite);
-
+	CCFollow* pFollowA = CCFollow::create(prota->sprite, CCRect::Rect(0.0f, 0.0f, CCDirector::sharedDirector()->getWinSizeInPixels().width, CCDirector::sharedDirector()->getWinSizeInPixels().height));
+	runAction(pFollowA);
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemijo.png");
 	enemigo5->sprite->setTag(10);
@@ -179,20 +180,7 @@ void GameScene::rotarProta() {
 	}
 	prota->cambiarSprite();
 }
-/*
-void GameScene::centerViewport()
-{
-	CCSize scrollPantalla = CCDirector::getInstance()->getWinSize();
-	float x = scrollPantalla.width / 2.0;
-	float y = scrollPantalla.height / 4.0;
 
-	if (prota->posicion.x > (prota->posicion.x / 4.0f)) {
-		x = scrollPantalla.width/2.0 - prota->posicion.x;
-	}
-	y = scrollPantalla.height/4.0 - prota->posicion.y;
-	this->setPosition(ccp(x, y));
-}
-*/
 void GameScene::crearSala() {
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -223,8 +211,14 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 
 void GameScene::update(float dt) {
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
+	if (cruzarPuerta == true) {
+		centerViewport(scrollX, scrollY);
+		cruzarPuerta = false;
 
+	}
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	
 	barraEnergia->setScaleX(prota->energia*4);
 	if (prota->energia < 100) prota->energia++;
 
@@ -253,7 +247,26 @@ void GameScene::update(float dt) {
 
 	if (prota->vida <= 0) goToGameOverScene(this); //HUAAAAAAAAAAOOOO
 
-	//centerViewport();
+	
+}
+
+
+void GameScene::centerViewport(float scrollX, float scrollY) {
+	/*
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+
+	float x = visibleSize.width / 2.0;
+	float y = visibleSize.height / 4.0;
+
+	if (prota->posicion.x > (prota->posicion.x / 4.0f)) {
+		x = visibleSize.width / 2.0 - prota->posicion.x;
+	}
+	y = visibleSize.height / 4.0 - prota->posicion.y;
+	*/
+	float x = this->getPositionX();
+	float y = this->getPositionY();
+	
+	this->setPosition(Vec2(x+scrollX, y+scrollY));
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
@@ -288,7 +301,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 				case 1:
 					prota->posicion = Vec2(prota->posicion.x+200, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
-					map->setPosition(Vec2(x + 1308, y));
+					scrollX = -1308;
+					scrollY = 0;
+					cruzarPuerta = true;
+					break;
+				case 3:
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 220);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 0;
+					scrollY = 720;
+					cruzarPuerta = true;
 					break;
 				default:
 					break;
@@ -315,7 +337,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 				case 1:
 					prota->posicion = Vec2(prota->posicion.x + 200, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
-					map->setPosition(Vec2(x + 1308, y));
+					scrollX = -1308;
+					scrollY = 0;
+					cruzarPuerta = true;
+					break;
+				case 3:
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y -220);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 0;
+					scrollY = 720;
+					cruzarPuerta = true;
 					break;
 				default:
 					break;
