@@ -63,8 +63,7 @@ bool GameScene::init()
 	prota->posicion = Vec2(200, visibleSize.height /2);
 	prota->sprite->setPosition3D(spritePos);
 	addChild(prota->sprite);
-	CCFollow* pFollowA = CCFollow::create(prota->sprite, CCRect::Rect(0.0f, 0.0f, CCDirector::sharedDirector()->getWinSizeInPixels().width, CCDirector::sharedDirector()->getWinSizeInPixels().height));
-	runAction(pFollowA);
+
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemijo.png");
 	enemigo5->sprite->setTag(10);
@@ -72,19 +71,23 @@ bool GameScene::init()
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(false);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
-	enemigo5->sprite->setPosition(Vec2(700,200));
+	enemigo5->sprite->setPosition(Vec2(700,500));
 	addChild(enemigo5->sprite);
 
 	barraEnergia->setPosition(Vec2(0, 660));
+	barraEnergia->setAnchorPoint(Vec2(0, 0));
 	addChild(barraEnergia);
 
 	energyLabel->setPosition(Vec2(270, 660));
+	energyLabel->setAnchorPoint(Vec2(0, 0));
 	addChild(energyLabel);
 
 	lifeLabel->setPosition(Vec2(270, 700));
+	lifeLabel->setAnchorPoint(Vec2(0, 0));
 	addChild(lifeLabel);
 
 	barraVida->setPosition(Vec2(0, 700));
+	barraVida->setAnchorPoint(Vec2(0, 0));
 	addChild(barraVida);
 
 
@@ -186,13 +189,14 @@ void GameScene::crearSala() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	// create a TMX map
 	auto layer = map->getLayer("piso");
+	map->setPosition(Vec2(0, -2880));
 	addChild(map, 0, 1);
 	
 	Size s = layer->getLayerSize();
 	for (int x = 0; x < s.width; x++){
 		for (int y = 0; y < s.height; y++){
 			int tileGID = layer->getTileGIDAt(Vec2(x, y));
-			if (tileGID != 0 && tileGID != 4){
+			if (tileGID != 4 && tileGID !=0 ){
 				addColision(layer->getTileAt(Vec2(x, y)), tileGID);
 			}
 		}
@@ -252,20 +256,14 @@ void GameScene::update(float dt) {
 
 
 void GameScene::centerViewport(float scrollX, float scrollY) {
-	/*
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-
-	float x = visibleSize.width / 2.0;
-	float y = visibleSize.height / 4.0;
-
-	if (prota->posicion.x > (prota->posicion.x / 4.0f)) {
-		x = visibleSize.width / 2.0 - prota->posicion.x;
-	}
-	y = visibleSize.height / 4.0 - prota->posicion.y;
-	*/
+	
 	float x = this->getPositionX();
 	float y = this->getPositionY();
 	
+	/*barraEnergia->setPosition(Vec2(barraEnergia->getPositionX() + scrollX, barraEnergia->getPositionY() + scrollY));
+	barraVida->setPosition(Vec2(barraVida->getPositionX() + scrollX, barraVida->getPositionY() + scrollY));
+	energyLabel->setPosition(Vec2(energyLabel->getPositionX() + scrollX, energyLabel->getPositionY() + scrollY));
+	lifeLabel->setPosition(Vec2(lifeLabel->getPositionX() + scrollX, lifeLabel->getPositionY() + scrollY));*/
 	this->setPosition(Vec2(x+scrollX, y+scrollY));
 }
 
@@ -299,9 +297,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					rotarProta();
 					break;
 				case 1:
-					prota->posicion = Vec2(prota->posicion.x+200, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
+					scrollY = 0;
+					cruzarPuerta = true;
+					break;
+				case 5:
+					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
@@ -310,6 +315,13 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
+					cruzarPuerta = true;
+					break;
+				case 6:
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 220);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 0;
+					scrollY = -720;
 					cruzarPuerta = true;
 					break;
 				default:
@@ -335,9 +347,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					rotarProta();
 					break;
 				case 1:
-					prota->posicion = Vec2(prota->posicion.x + 200, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
+					scrollY = 0;
+					cruzarPuerta = true;
+					break;
+				case 5:
+					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
@@ -346,6 +365,13 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
+					cruzarPuerta = true;
+					break;
+				case 6:
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 220);
+					prota->sprite->setPosition(prota->posicion);
+					scrollX = 0;
+					scrollY = -720;
 					cruzarPuerta = true;
 					break;
 				default:
