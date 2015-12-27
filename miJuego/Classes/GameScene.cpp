@@ -269,7 +269,6 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 void GameScene::update(float dt) {
 
 	if (cruzarPuerta == true) {
-		cruzarPuerta = false;
 		centerViewport(scrollX, scrollY);
 	}
 
@@ -323,7 +322,10 @@ void GameScene::centerViewport(float scrollX, float scrollY) {
 bool GameScene::onContactEnd(PhysicsContact &contact) {
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
-	if(nodeA->getTag() == 11 || nodeB->getTag() == 11) girar = false;
+	if (nodeA != nullptr && nodeB != nullptr) {
+		if (nodeA->getTag() == 11 || nodeB->getTag() == 11) girar = false;
+	}
+	cruzarPuerta = false;
 	return true;
 }
 
