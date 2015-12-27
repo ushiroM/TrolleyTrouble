@@ -53,14 +53,15 @@ bool GameScene::init()
 	crearSala();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	
 	prota = new Prota();
-	auto body = PhysicsBody::createBox(prota->sprite->getBoundingBox().size);
+	Size protasize = Size(prota->sprite->getBoundingBox().size.width - 20, prota->sprite->getBoundingBox().size.height - 20);
+	auto body = PhysicsBody::createBox(protasize);
 	prota->sprite->setTag(5);
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
-	//auto spritePos = Vec3(visibleSize.width / 2, visibleSize.height / 2, 0);
-	prota->posicion = Vec2(200, 280);
+	prota->posicion = Vec2(218, 280);
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
@@ -71,7 +72,7 @@ bool GameScene::init()
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(false);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
-	enemigo5->sprite->setPosition(Vec2(700,500));
+	enemigo5->sprite->setPosition(Vec2(750,500));
 	addChild(enemigo5->sprite);
 
 	barraEnergia->setPosition(Vec2(0, 660));
@@ -86,7 +87,7 @@ bool GameScene::init()
 	barraVida->setPosition(Vec2(0, 700));
 	addChild(barraVida);
 
-
+	
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
 	contactListener->onContactSeparate = CC_CALLBACK_1(GameScene::onContactEnd, this);
@@ -102,7 +103,8 @@ bool GameScene::init()
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	this->scheduleUpdate();
-
+	
+	
 	return true;
 }
 
@@ -112,34 +114,75 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	switch (keyCode) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' && girar == true) {
+			if (prota->getOrientacion() == 's') {
+				prota->posicion = Vec2(posicruce.x, posicruce.y - 50);
+				prota->sprite->setPosition(prota->posicion);
+			}
+
+			else {
+				prota->posicion = Vec2(posicruce.x, posicruce.y + 50);
+				prota->sprite->setPosition(prota->posicion);
+			}
+			
+			
 			prota->setOrientacion('w');
 			prota->cambiarSprite();
-			prota->sprite->setPosition(posicruce);
+			
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
+			
+			if (prota->getOrientacion() == 's') {
+				prota->posicion = Vec2(posicruce.x, posicruce.y - 50);
+				prota->sprite->setPosition(prota->posicion);
+			}
+
+			else {
+				prota->posicion = Vec2(posicruce.x, posicruce.y + 50);
+				prota->sprite->setPosition(prota->posicion);
+			}
 			prota->setOrientacion('e');
 			prota->cambiarSprite();
-			prota->sprite->setPosition(posicruce);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' && girar == true) {
+			if (prota->getOrientacion() == 'w') {
+				prota->posicion = Vec2(posicruce.x - 63, posicruce.y);
+				prota->sprite->setPosition(prota->posicion);
+			}
+
+			else {
+				prota->posicion = Vec2(posicruce.x + 65, posicruce.y);
+				prota->sprite->setPosition(prota->posicion);
+			}
+			
+			
 			prota->setOrientacion('n');
 			prota->cambiarSprite();
-			prota->sprite->setPosition(posicruce);
+			
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' && girar == true) {
+			if (prota->getOrientacion() == 'w') {
+				prota->posicion = Vec2(posicruce.x - 63, posicruce.y);
+				prota->sprite->setPosition(prota->posicion);
+			}
+
+			else {
+				prota->posicion = Vec2(posicruce.x + 65, posicruce.y);
+				prota->sprite->setPosition(prota->posicion);
+			}
+			
+			
 			prota->setOrientacion('s');
 			prota->cambiarSprite();
-			prota->sprite->setPosition(posicruce);
-
+			
 		}
 		break;
 
@@ -191,7 +234,7 @@ void GameScene::crearSala() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	// create a TMX map
 	auto layer = map->getLayer("piso");
-	map->setPosition(Vec2(0, -2880));
+	map->setPosition(Vec2(-218, -2480));
 	addChild(map, 0, 1);
 	
 	Size s = layer->getLayerSize();
@@ -206,12 +249,21 @@ void GameScene::crearSala() {
 }
 
 void GameScene::addColision(Sprite * sprite, int tipo)
-{
-	auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
-	bodye->setContactTestBitmask(true);
-	bodye->setDynamic(false);
-	sprite->setTag(tipo);
-	sprite->setPhysicsBody(bodye);
+{	
+	if (tipo == 11) {
+		auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size/2);
+		bodye->setContactTestBitmask(true);
+		bodye->setDynamic(false);
+		sprite->setTag(tipo);
+		sprite->setPhysicsBody(bodye);
+	}
+	else {
+		auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
+		bodye->setContactTestBitmask(true);
+		bodye->setDynamic(false);
+		sprite->setTag(tipo);
+		sprite->setPhysicsBody(bodye);
+	}
 }
 
 void GameScene::update(float dt) {
@@ -303,7 +355,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					if (a) {
 						a = false;
 						frenar(0.0);
-						prota->vida = prota->vida - 20;
+						//prota->vida = prota->vida - 20;
 						rotarProta();
 					}
 					break;
@@ -337,7 +389,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					break;
 				case 11:
 					girar = true;
-					posicruce = nodeB->getPosition();
+					posicruce = nodeA->getPosition();
 					break;
 				default:
 					break;
@@ -360,7 +412,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					if (a) {
 						a = false;
 						frenar(0.0);
-						prota->vida = prota->vida - 20;
+						//prota->vida = prota->vida - 20;
 						rotarProta();
 					}
 					break;
@@ -394,7 +446,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					break;
 				case 11:
 					girar = true;
-					posicruce = nodeA->getPosition();
+					posicruce = nodeB->getPosition();
 					break;
 				default:
 					break;

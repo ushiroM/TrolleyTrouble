@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="45" tilewidth="109" tileheight="80" nextobjectid="1">
+ <tileset firstgid="1" name="tilesetrailes" tilewidth="109" tileheight="80" tilecount="12">
+  <image source="tilesetrailes.png" width="512" height="256"/>
+ </tileset>
+ <layer name="pifo" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJzt10EKgCAQQFHNCqr737cWtRlGmxZljn/xCGIIfgpZDCFEAGjI+rLafVqvvDeLq3w32nPkbO7ZtdHrvzcJm7helsOkzGuz6ce9va0vvb57peFk/caW5mv3WXrHk7W3NF+7z7qfc/vTw35+2qt9jzz3tr6+2tlBOz/cnTda6e1tfen13dvT/z4AAAAAAAAAfG0HQxkQ1w==
+  </data>
+ </layer>
+</map>
