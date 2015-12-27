@@ -23,6 +23,8 @@ private:
 	bool cruzarPuerta;
 	float scrollX;
 	float scrollY;
+	bool girar = false;
+	Vec2 posicruce;
 	
 public:
 	static cocos2d::Scene* createScene();
@@ -34,6 +36,7 @@ public:
 	//bool isKeyPressed(EventKeyboard::KeyCode code);
 	void setPhysicsWorld(PhysicsWorld *world);
 	bool onContactBegin(PhysicsContact &contact);
+	bool onContactEnd(PhysicsContact &contact);
 	void frenar(float);
 	void crearSala();
 	void addColision(Sprite* sprite, int tipo);

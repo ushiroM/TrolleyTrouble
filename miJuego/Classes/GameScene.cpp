@@ -60,7 +60,7 @@ bool GameScene::init()
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
 	//auto spritePos = Vec3(visibleSize.width / 2, visibleSize.height / 2, 0);
-	prota->posicion = Vec2(200, visibleSize.height /2);
+	prota->posicion = Vec2(200, 280);
 	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
@@ -89,6 +89,7 @@ bool GameScene::init()
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
+	contactListener->onContactSeparate = CC_CALLBACK_1(GameScene::onContactEnd, this);
 	getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 
@@ -110,30 +111,34 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 
 	switch (keyCode) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e') {
+		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' && girar == true) {
 			prota->setOrientacion('w');
 			prota->cambiarSprite();
+			prota->sprite->setPosition(posicruce);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w') {
+		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
 			prota->setOrientacion('e');
 			prota->cambiarSprite();
+			prota->sprite->setPosition(posicruce);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's') {
+		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' && girar == true) {
 			prota->setOrientacion('n');
 			prota->cambiarSprite();
+			prota->sprite->setPosition(posicruce);
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n') {
+		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' && girar == true) {
 			prota->setOrientacion('s');
 			prota->cambiarSprite();
+			prota->sprite->setPosition(posicruce);
 
 		}
 		break;
@@ -165,19 +170,20 @@ void GameScene::frenar(float dt) {
 
 void GameScene::rotarProta() {
 
-	if (prota->getOrientacion() == 'e') {
-		prota->setOrientacion('w');
-	}
-	else if (prota->getOrientacion() == 'w') {
-		prota->setOrientacion('e');
-	}
-	else if (prota->getOrientacion() == 'n') {
-		prota->setOrientacion('s');
-	}
-	else if (prota->getOrientacion() == 's') {
-		prota->setOrientacion('n');
-	}
-	prota->cambiarSprite();
+		if (prota->getOrientacion() == 'e') {
+			prota->setOrientacion('w');
+		}
+		else if (prota->getOrientacion() == 'w') {
+			prota->setOrientacion('e');
+		}
+		else if (prota->getOrientacion() == 'n') {
+			prota->setOrientacion('s');
+		}
+		else if (prota->getOrientacion() == 's') {
+			prota->setOrientacion('n');
+		}
+		prota->cambiarSprite();
+
 }
 
 void GameScene::crearSala() {
@@ -216,6 +222,7 @@ void GameScene::update(float dt) {
 	}
 
 	a = true;
+	
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
@@ -259,6 +266,13 @@ void GameScene::centerViewport(float scrollX, float scrollY) {
 	energyLabel->setPosition(Vec2(energyLabel->getPositionX() + scrollX, energyLabel->getPositionY() + scrollY));
 	lifeLabel->setPosition(Vec2(lifeLabel->getPositionX() + scrollX, lifeLabel->getPositionY() + scrollY));*/
 	this->setPosition(Vec2(x+scrollX, y+scrollY));
+}
+
+bool GameScene::onContactEnd(PhysicsContact &contact) {
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if(nodeA->getTag() == 11 || nodeB->getTag() == 11) girar = false;
+	return true;
 }
 
 bool GameScene::onContactBegin(PhysicsContact &contact) {
@@ -321,6 +335,10 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					scrollY = -720;
 					cruzarPuerta = true;
 					break;
+				case 11:
+					girar = true;
+					posicruce = nodeB->getPosition();
+					break;
 				default:
 					break;
 				}
@@ -373,6 +391,10 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					scrollX = 0;
 					scrollY = -720;
 					cruzarPuerta = true;
+					break;
+				case 11:
+					girar = true;
+					posicruce = nodeA->getPosition();
 					break;
 				default:
 					break;
