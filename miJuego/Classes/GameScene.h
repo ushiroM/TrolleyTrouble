@@ -18,6 +18,7 @@ private:
 	Sprite* energyLabel = Sprite::create("Energy_Label.png");
 	Sprite* lifeLabel = Sprite::create("Life_Label.png");
 	bool b = true;
+	bool a = true;
 	TMXTiledMap* map = TMXTiledMap::create("piso.tmx");
 	bool cruzarPuerta;
 	float scrollX;

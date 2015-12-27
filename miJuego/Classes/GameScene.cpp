@@ -59,9 +59,9 @@ bool GameScene::init()
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
 	prota->sprite->setPhysicsBody(body);
-	auto spritePos = Vec3(visibleSize.width / 2, visibleSize.height / 2, 0);
+	//auto spritePos = Vec3(visibleSize.width / 2, visibleSize.height / 2, 0);
 	prota->posicion = Vec2(200, visibleSize.height /2);
-	prota->sprite->setPosition3D(spritePos);
+	prota->sprite->setPosition(prota->posicion);
 	addChild(prota->sprite);
 
 	Enemigo* enemigo5 = new Enemigo();
@@ -75,19 +75,15 @@ bool GameScene::init()
 	addChild(enemigo5->sprite);
 
 	barraEnergia->setPosition(Vec2(0, 660));
-	barraEnergia->setAnchorPoint(Vec2(0, 0));
 	addChild(barraEnergia);
 
 	energyLabel->setPosition(Vec2(270, 660));
-	energyLabel->setAnchorPoint(Vec2(0, 0));
 	addChild(energyLabel);
 
 	lifeLabel->setPosition(Vec2(270, 700));
-	lifeLabel->setAnchorPoint(Vec2(0, 0));
 	addChild(lifeLabel);
 
 	barraVida->setPosition(Vec2(0, 700));
-	barraVida->setAnchorPoint(Vec2(0, 0));
 	addChild(barraVida);
 
 
@@ -196,12 +192,12 @@ void GameScene::crearSala() {
 	for (int x = 0; x < s.width; x++){
 		for (int y = 0; y < s.height; y++){
 			int tileGID = layer->getTileGIDAt(Vec2(x, y));
-			if (tileGID != 4 && tileGID !=0 ){
+			if (tileGID != 4 && tileGID != 8){
 				addColision(layer->getTileAt(Vec2(x, y)), tileGID);
 			}
 		}
 	}
-	map->setPosition(Vec2(0, -2880));
+	//map->setPosition(Vec2(0, -2880));
 }
 
 void GameScene::addColision(Sprite * sprite, int tipo)
@@ -216,10 +212,11 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 void GameScene::update(float dt) {
 
 	if (cruzarPuerta == true) {
-		centerViewport(scrollX, scrollY);
 		cruzarPuerta = false;
-
+		centerViewport(scrollX, scrollY);
 	}
+
+	a = true;
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
@@ -227,7 +224,7 @@ void GameScene::update(float dt) {
 	if (prota->energia < 100) prota->energia++;
 
 	barraVida->setScaleX(prota->vida * 4);
-	b = true;
+	
 	if (prota->getOrientacion() == 'e') {
 		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
 		prota->sprite->setPosition(prota->posicion);
@@ -250,8 +247,6 @@ void GameScene::update(float dt) {
 	}
 
 	if (prota->vida <= 0) goToGameOverScene(this); //HUAAAAAAAAAAOOOO
-
-	
 }
 
 
@@ -292,33 +287,36 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					}
 					break;
 				case 2:
-					frenar(0.0);
-					prota->vida = prota->vida - 20;
-					rotarProta();
+					if (a) {
+						a = false;
+						frenar(0.0);
+						prota->vida = prota->vida - 20;
+						rotarProta();
+					}
 					break;
 				case 1:
-					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x + 218, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
 				case 5:
-					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x - 218, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
 				case 3:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 220);
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 160);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
 				case 6:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 220);
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 160);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
@@ -342,33 +340,36 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					}
 					break;
 				case 2:
-					frenar(0.0);
-					prota->vida = prota->vida - 20;
-					rotarProta();
+					if (a) {
+						a = false;
+						frenar(0.0);
+						prota->vida = prota->vida - 20;
+						rotarProta();
+					}
 					break;
 				case 1:
-					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x + 218, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
 				case 5:
-					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+					prota->posicion = Vec2(prota->posicion.x - 218, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
 				case 3:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y -220);
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 160);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
 				case 6:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 220);
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 160);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
@@ -380,5 +381,6 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 			}
 		}
 	}
+	b = true;
 	return true;
 }
