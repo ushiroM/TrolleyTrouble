@@ -65,8 +65,8 @@ bool GameScene::init()
 	addChild(prota->sprite);
 
 	Enemigo* enemigo5 = new Enemigo();
-	enemigo5->sprite = Sprite::create("enemijo.png");
-	enemigo5->sprite->setTag(10);
+	enemigo5->sprite = Sprite::create("enemifo.png");
+	enemigo5->sprite->setTag(99);
 	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size);
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(false);
@@ -192,12 +192,11 @@ void GameScene::crearSala() {
 	for (int x = 0; x < s.width; x++){
 		for (int y = 0; y < s.height; y++){
 			int tileGID = layer->getTileGIDAt(Vec2(x, y));
-			if (tileGID != 4 && tileGID != 8){
+			if (tileGID != 0 && tileGID != 1 && tileGID != 6 && tileGID != 3){
 				addColision(layer->getTileAt(Vec2(x, y)), tileGID);
 			}
 		}
 	}
-	//map->setPosition(Vec2(0, -2880));
 }
 
 void GameScene::addColision(Sprite * sprite, int tipo)
@@ -276,7 +275,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 			if (nodeA->getTag() == 5) {
 				switch (nodeB->getTag())
 				{
-				case 10:
+				case 99:							//colisionar con un enemigo
 					if (placando == true) {
 						removeChild(nodeB, true);
 						frenar(0.0);
@@ -286,7 +285,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 2:
+				case 10:								//colisionar con una pared
 					if (a) {
 						a = false;
 						frenar(0.0);
@@ -294,29 +293,29 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 1:
-					prota->posicion = Vec2(prota->posicion.x + 218, prota->posicion.y);
+				case 9:								//colisionar con una puerta hacia la derecha
+					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 5:
-					prota->posicion = Vec2(prota->posicion.x - 218, prota->posicion.y);
+				case 5:								//colisionar con una puerta hacia la izquierda
+					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 3:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 160);
+				case 2:								//colisionar con una puerta hacia arriba
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
-				case 6:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 160);
+				case 4:								//colisionar con una puerta hacia abajo
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
@@ -329,7 +328,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 			else if (nodeB->getTag() == 5) {
 				switch (nodeA->getTag())
 				{
-				case 10:
+				case 99:					//colisionar con enemigo
 					if (placando == true) {
 						removeChild(nodeA, true);
 						frenar(0.0);
@@ -339,7 +338,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 2:
+				case 10:						//colisionar con una pared
 					if (a) {
 						a = false;
 						frenar(0.0);
@@ -347,29 +346,29 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 1:
-					prota->posicion = Vec2(prota->posicion.x + 218, prota->posicion.y);
+				case 9:								//colisionar con una puerta hacia la derecha
+					prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = -1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 5:
-					prota->posicion = Vec2(prota->posicion.x - 218, prota->posicion.y);
+				case 5:								//colisionar con una puerta hacia la izquierda
+					prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 1308;
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 3:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 160);
+				case 2:								//colisionar con una puerta hacia arriba
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
-				case 6:
-					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 160);
+				case 4:								//colisionar con una puerta hacia abajo
+					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
