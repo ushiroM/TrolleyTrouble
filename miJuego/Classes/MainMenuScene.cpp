@@ -33,14 +33,8 @@ bool MainMenuScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	auto background = Sprite::create("MainMenu.jpg");
-
 	background->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height)/2));
-
 	addChild(background, 0);
-
-
-	/*auto menuTitle = MenuItemImage::create("images/MainMenuScreen/Game_Title.png",
-		"images/MainMenuScreen/Game_Title.png");*/
 
 	auto playItem = MenuItemImage::create("images/MainMenuScreen/Play_Button.png", 
 		"images/MainMenuScreen/Play_Button(Click).png", 
@@ -49,13 +43,7 @@ bool MainMenuScene::init()
 	playItem->setPosition(Vec2(0, -200));
 
 	auto menu = Menu::create(playItem, NULL);
-
-
-	//menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
-
 	addChild(menu, 1);
-
-	
 
     return true;
 }
@@ -63,7 +51,6 @@ bool MainMenuScene::init()
 void MainMenuScene::GoToGameScene(Ref *pSender) {
 	auto scene = GameScene::createScene();
 	Director::getInstance()->replaceScene(scene);
-	
 }
 
 
