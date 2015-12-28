@@ -24,7 +24,8 @@ private:
 	float scrollX;
 	float scrollY;
 	bool girar = false;
-	Vec2 posicruce;
+	Vec2 posiCruce;
+	Vec2 posiCurva;
 	
 public:
 	static cocos2d::Scene* createScene();

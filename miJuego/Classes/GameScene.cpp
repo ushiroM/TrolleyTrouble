@@ -116,12 +116,12 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' && girar == true) {
 			if (prota->getOrientacion() == 's') {
-				prota->posicion = Vec2(posicruce.x, posicruce.y - 50);
+				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
 
 			else {
-				prota->posicion = Vec2(posicruce.x, posicruce.y + 50);
+				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
 			
@@ -136,12 +136,12 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
 			
 			if (prota->getOrientacion() == 's') {
-				prota->posicion = Vec2(posicruce.x, posicruce.y - 50);
+				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
 
 			else {
-				prota->posicion = Vec2(posicruce.x, posicruce.y + 50);
+				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
 			prota->setOrientacion('e');
@@ -152,12 +152,12 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' && girar == true) {
 			if (prota->getOrientacion() == 'w') {
-				prota->posicion = Vec2(posicruce.x - 63, posicruce.y);
+				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
 
 			else {
-				prota->posicion = Vec2(posicruce.x + 65, posicruce.y);
+				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
 			
@@ -171,12 +171,12 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' && girar == true) {
 			if (prota->getOrientacion() == 'w') {
-				prota->posicion = Vec2(posicruce.x - 63, posicruce.y);
+				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
 
 			else {
-				prota->posicion = Vec2(posicruce.x + 65, posicruce.y);
+				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
 			
@@ -245,7 +245,7 @@ void GameScene::crearSala() {
 	for (int x = 0; x < s.width; x++){
 		for (int y = 0; y < s.height; y++){
 			int tileGID = layer->getTileGIDAt(Vec2(x, y)); //guardarse el GID del tile actual
-			if (tileGID != 0 && tileGID != 1 && tileGID != 6 && tileGID != 3){ //si no es un tile de raíl recto, vacío, o de suelo
+			if (tileGID != 0 && tileGID != 1 && tileGID != 2 && tileGID != 3){ //si no es un tile de raíl recto, vacío, o de suelo
 				addColision(layer->getTileAt(Vec2(x, y)), tileGID); //añadirle una caja de colisión al tile
 			}
 		}
@@ -255,20 +255,31 @@ void GameScene::crearSala() {
 //función que añade cajas de colisión a los tiles, y un tag para las colisiones
 void GameScene::addColision(Sprite * sprite, int tipo)
 {	
-	if (tipo == 11) { //si el tile es un cruce de vías 
-		auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size/2);
-		bodye->setContactTestBitmask(true);
-		bodye->setDynamic(false);
-		sprite->setTag(tipo);
-		sprite->setPhysicsBody(bodye);
+	PhysicsBody* bodye;
+	switch (tipo){
+	case 22:	//si el tile es un cruce de vías 
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
+		break;
+	case 18:
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		break;
+	case 14:
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		break;
+	case 10:
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		break;
+	case 6:
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		break;
+	default:	//cualquier otro tile
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
+		break;
 	}
-	else { //cualquier otro tile
-		auto bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
-		bodye->setContactTestBitmask(true);
-		bodye->setDynamic(false);
-		sprite->setTag(tipo);
-		sprite->setPhysicsBody(bodye);
-	}
+	bodye->setContactTestBitmask(true);
+	bodye->setDynamic(false);
+	sprite->setTag(tipo);
+	sprite->setPhysicsBody(bodye);
 }
 
 //función que se ejecuta periódicamente
@@ -359,7 +370,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 10:								//colisionar con una pared
+				case 21:								//colisionar con una pared
 					if (a) {
 						a = false;
 						frenar(0.0);
@@ -381,23 +392,74 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 2:								//colisionar con una puerta hacia arriba
+				case 13:								//colisionar con una puerta hacia arriba
 					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
-				case 4:								//colisionar con una puerta hacia abajo
+				case 17:								//colisionar con una puerta hacia abajo
 					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
 					cruzarPuerta = true;
 					break;
-				case 11:							//colisionar con un cruce
+				case 22:							//colisionar con un cruce
 					girar = true;
-					posicruce = nodeA->getPosition();
+					posiCruce = nodeA->getPosition();
+					break;
+				case 18:							//colisionar con una curva de derecha-abajo
+					posiCurva = nodeA->getPosition();
+					if (prota->getOrientacion() == 'w') {
+						prota->setOrientacion('s');
+						prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+					}else{
+						prota->setOrientacion('e');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y +50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 14:							//colisionar con una curva de derecha-arriba
+					posiCurva = nodeA->getPosition();
+					if (prota->getOrientacion() == 'w') {
+						prota->setOrientacion('n');
+						prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+					}
+					else{
+						prota->setOrientacion('e');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 10:							//colisionar con una curva de izquierda-abajo
+					posiCurva = nodeA->getPosition();
+					if (prota->getOrientacion() == 'e') {
+						prota->setOrientacion('s');
+						prota->posicion = Vec2(posiCurva.x +65, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('w');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y +50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 6:							//colisionar con una curva de izquierda-arriba
+					posiCurva = nodeA->getPosition();
+					if (prota->getOrientacion() == 'e') {
+						prota->setOrientacion('n');
+						prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('w');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
 					break;
 				default:
 					break;
@@ -417,7 +479,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						rotarProta();
 					}
 					break;
-				case 10:						//colisionar con una pared
+				case 21:						//colisionar con una pared
 					if (a) {
 						a = false;
 						frenar(0.0);
@@ -439,23 +501,75 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					scrollY = 0;
 					cruzarPuerta = true;
 					break;
-				case 2:								//colisionar con una puerta hacia arriba
+				case 13:								//colisionar con una puerta hacia arriba
 					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = 720;
 					cruzarPuerta = true;
 					break;
-				case 4:								//colisionar con una puerta hacia abajo
+				case 17:								//colisionar con una puerta hacia abajo
 					prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
 					prota->sprite->setPosition(prota->posicion);
 					scrollX = 0;
 					scrollY = -720;
 					cruzarPuerta = true;
 					break;
-				case 11:							//colisionar con un cruce
+				case 22:							//colisionar con un cruce
 					girar = true;
-					posicruce = nodeB->getPosition();
+					posiCruce = nodeB->getPosition();
+					break;
+				case 18:							//colisionar con una curva de derecha-abajo
+					posiCurva = nodeB->getPosition();
+					if (prota->getOrientacion() == 'w') {
+						prota->setOrientacion('s');
+						prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('e');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 14:							//colisionar con una curva de derecha-arriba
+					posiCurva = nodeB->getPosition();
+					if (prota->getOrientacion() == 'w') {
+						prota->setOrientacion('n');
+						prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('e');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 10:							//colisionar con una curva de izquierda-abajo
+					posiCurva = nodeB->getPosition();
+					if (prota->getOrientacion() == 'e') {
+						prota->setOrientacion('s');
+						prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('w');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
+					break;
+				case 6:							//colisionar con una curva de izquierda-arriba
+					posiCurva = nodeB->getPosition();
+					if (prota->getOrientacion() == 'e') {
+						prota->setOrientacion('n');
+						prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+					}
+					else {
+						prota->setOrientacion('w');
+						prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+					}
+					prota->sprite->setPosition(prota->posicion);
+					prota->cambiarSprite();
 					break;
 				default:
 					break;
