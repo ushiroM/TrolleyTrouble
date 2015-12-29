@@ -4,7 +4,7 @@
 
 Enemigo::Enemigo()
 {
-	sprite = Sprite::create("paredtest.png");
+	sprite = Sprite::create("enemifo.png");
 }
 
 

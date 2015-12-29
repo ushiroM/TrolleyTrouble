@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Prota.h"
 
+
 class GameScene: public cocos2d::Layer
 {
 private:
@@ -26,6 +27,8 @@ private:
 	bool girar = false;
 	Vec2 posiCruce;
 	Vec2 posiCurva;
+	Sprite **enemigos;
+	
 	
 public:
 	static cocos2d::Scene* createScene();
@@ -34,7 +37,6 @@ public:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
 	void update(float dt);
 	virtual bool init();
-	//bool isKeyPressed(EventKeyboard::KeyCode code);
 	void setPhysicsWorld(PhysicsWorld *world);
 	bool onContactBegin(PhysicsContact &contact);
 	bool onContactEnd(PhysicsContact &contact);

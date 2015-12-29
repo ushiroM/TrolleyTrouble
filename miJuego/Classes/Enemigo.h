@@ -4,6 +4,7 @@ USING_NS_CC;
 
 class Enemigo
 {
+private:
 	int vida;
 	int ataque;
 	int velocidad;
@@ -11,6 +12,7 @@ class Enemigo
 
 
 public:
+	Vec2 posicion;
 	Enemigo();
 	void atacar();
 	void movimiento();
