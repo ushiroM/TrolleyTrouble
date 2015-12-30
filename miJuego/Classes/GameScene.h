@@ -27,7 +27,8 @@ private:
 	bool girar = false;
 	Vec2 posiCruce;
 	Vec2 posiCurva;
-	Sprite **enemigos;
+	Sprite **enemigos;
+
 	
 	
 public:

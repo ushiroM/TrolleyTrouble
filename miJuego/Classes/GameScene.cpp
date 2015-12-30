@@ -13,12 +13,12 @@ Scene* GameScene::createScene()
 	
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
+	
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //que se vean las colisiones de las cajas
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 
 	// add layer as a child to scene
 	scene->addChild(layer);
-
 	scene->getPhysicsWorld()->setAutoStep(false);
 	scene->getPhysicsWorld()->step(1.0f);
 	scene->getPhysicsWorld()->setAutoStep(true); //esperar a que carguen las físicas
@@ -97,7 +97,10 @@ bool GameScene::init()
 	enemigos[1] = enemigo4->sprite;
 	//crear el HUD
 	barraEnergia->setPosition(Vec2(0, 660));
+	barraEnergia->setAnchorPoint(Vec2(0.f, 0.5f));
 	addChild(barraEnergia);
+
+
 
 	energyLabel->setPosition(Vec2(270, 660));
 	addChild(energyLabel);
@@ -106,6 +109,7 @@ bool GameScene::init()
 	addChild(lifeLabel);
 
 	barraVida->setPosition(Vec2(0, 700));
+	barraVida->setAnchorPoint(Vec2(0.f, 0.5f));
 	addChild(barraVida);
 
 	//crear eventos para cuando 2 cajas de box2d empiezan a colisionar, y dejan de colisionar
@@ -317,9 +321,9 @@ void GameScene::update(float dt) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
 	//actualizar la barra de vida según la vida actual
-	barraEnergia->setScaleX(prota->energia*4);
+	barraEnergia->setScaleX(prota->energia*2);
 	if (prota->energia < 100) prota->energia++;
-	barraVida->setScaleX(prota->vida * 4);
+	barraVida->setScaleX(prota->vida*2);
 	
 	//mover al prota según la dirección que mira
 	if (prota->getOrientacion() == 'e') {
@@ -352,6 +356,10 @@ void GameScene::centerViewport(float scrollX, float scrollY) {
 	
 	float x = this->getPositionX();
 	float y = this->getPositionY();
+	barraEnergia->setPosition(Vec2(barraEnergia->getPositionX() - scrollX, barraEnergia->getPositionY() - scrollY));
+	barraVida->setPosition(Vec2(barraVida->getPositionX() - scrollX, barraVida->getPositionY() - scrollY));
+	energyLabel->setPosition(Vec2(energyLabel->getPositionX() - scrollX, energyLabel->getPositionY() - scrollY));
+	lifeLabel->setPosition(Vec2(lifeLabel->getPositionX() - scrollX, lifeLabel->getPositionY() - scrollY));
 	this->setPosition(Vec2(x+scrollX, y+scrollY));
 }
 
@@ -397,7 +405,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					if (a) {
 						a = false;
 						frenar(0.0);
-						//prota->vida = prota->vida - 20;
+						prota->vida = prota->vida - 20;
 						rotarProta();
 					}
 					break;
@@ -506,7 +514,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 					if (a) {
 						a = false;
 						frenar(0.0);
-						//prota->vida = prota->vida - 20;
+						prota->vida = prota->vida - 20;
 						rotarProta();
 					}
 					break;
