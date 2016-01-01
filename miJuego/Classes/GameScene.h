@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "Prota.h"
-
+#include "Enemigo.h"
 
 class GameScene: public cocos2d::Layer
 {
@@ -27,7 +27,7 @@ private:
 	bool girar = false;
 	Vec2 posiCruce;
 	Vec2 posiCurva;
-	Sprite **enemigos;
+	std::vector<Enemigo*> enemigos;
 
 	
 	

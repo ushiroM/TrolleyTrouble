@@ -2,7 +2,7 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
-#include "Enemigo.h"
+
 USING_NS_CC;
 
 
@@ -55,8 +55,7 @@ bool GameScene::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	enemigos = new Sprite*[5];
-	
+			
 	//crear el prota y aádirle su cuerpo de box2d
 	prota = new Prota();
 	Size protasize = Size(prota->sprite->getBoundingBox().size.width - 20, prota->sprite->getBoundingBox().size.height - 20);
@@ -80,9 +79,8 @@ bool GameScene::init()
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
 	enemigo5->sprite->setPosition(Vec2(750,500));
 	addChild(enemigo5->sprite);
-
-	enemigos[0] = enemigo5->sprite;
-
+	enemigos.push_back(enemigo5);
+	
 
 	Enemigo* enemigo4 = new Enemigo();
 	enemigo4->sprite = Sprite::create("enemifo.png");
@@ -93,8 +91,8 @@ bool GameScene::init()
 	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
 	enemigo4->sprite->setPosition(Vec2(750, 600));
 	addChild(enemigo4->sprite);
-
-	enemigos[1] = enemigo4->sprite;
+	enemigos.push_back(enemigo4);
+	
 	//crear el HUD
 	barraEnergia->setPosition(Vec2(0, 660));
 	barraEnergia->setAnchorPoint(Vec2(0.f, 0.5f));
@@ -314,10 +312,10 @@ void GameScene::update(float dt) {
 	a = true;
 
 
-	enemigos[0]->setPosition(enemigos[0]->getPositionX() + 5, enemigos[0]->getPositionY());
+	enemigos[0]->sprite->setPosition(enemigos[0]->sprite->getPositionX() + 5, enemigos[0]->sprite->getPositionY());
+	
 
-	enemigos[1]->setPosition(enemigos[1]->getPositionX() + 5, enemigos[1]->getPositionY());
-
+	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
 	//actualizar la barra de vida según la vida actual
