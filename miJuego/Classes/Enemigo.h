@@ -8,10 +8,11 @@ private:
 	int vida;
 	int ataque;
 	int velocidad;
-	int tipo;
+	
 
 
 public:
+	int tipo;
 	Vec2 posicion;
 	Enemigo();
 	void atacar();
