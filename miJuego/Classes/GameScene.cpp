@@ -215,8 +215,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			placando = true;
 			velocidadanterior = prota->velocidad;
 			prota->velocidad = 2;
-			if (prota->getOrientacion() == 'e') prota->sprite->setTexture("emfestirDerecho.png");
-			else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("emfestirIzquierdo.png");
+			if (prota->getOrientacion() == 'e') prota->sprite->setTexture("prota/embestirDerecho.png");
+			else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("prota/embestirIzquierdo.png");
 			this->schedule(schedule_selector(GameScene::frenar), 0.3f);
 		}
 		break;

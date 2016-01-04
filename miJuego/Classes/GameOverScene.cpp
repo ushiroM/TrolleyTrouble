@@ -42,7 +42,7 @@ bool GameOverScene::init() {
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto background = Sprite::create("gameOver.png");
+	auto background = Sprite::create("menus/GameOverScreen/gameOver.png");
 
 	background->setPosition(Vec2((visibleSize.width) / 2, (visibleSize.height) / 2));
 

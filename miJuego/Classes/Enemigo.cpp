@@ -4,7 +4,7 @@
 
 Enemigo::Enemigo()
 {
-	sprite = Sprite::create("enemifo.png");
+	sprite = Sprite::create("enemigos/enemifo.png");
 }
 
 

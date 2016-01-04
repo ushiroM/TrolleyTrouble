@@ -46,7 +46,7 @@ bool PauseScene::init() {
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	auto background = Sprite::create("MainMenu.jpg");
+	auto background = Sprite::create("menus/MainMenuScreen/MainMenu.jpg");
 
 	background->setPosition(Vec2((visibleSize.width) / 2, (visibleSize.height) / 2));
 
@@ -54,11 +54,11 @@ bool PauseScene::init() {
 
 
 	auto ResumeGame = MenuItemImage::create("Play_Button.png",
-		"images/MainMenuScreen/Play_Button(Click).png",
+		"menus/MainMenuScreen/Play_Button(Click).png",
 		CC_CALLBACK_1(PauseScene::resumeGameScene, this));
 
 	auto MainMenu = MenuItemImage::create("Menu_Button.png",
-		"images/MainMenuScreen/Play_Button(Click).png",
+		"menus/MainMenuScreen/Play_Button(Click).png",
 		CC_CALLBACK_1(PauseScene::goToMainMenu, this));
 
 

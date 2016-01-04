@@ -32,12 +32,12 @@ bool MainMenuScene::init()
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto background = Sprite::create("MainMenu.jpg");
+	auto background = Sprite::create("menus/MainMenuScreen/MainMenu.jpg");
 	background->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height)/2));
 	addChild(background, 0);
 
-	auto playItem = MenuItemImage::create("images/MainMenuScreen/Play_Button.png", 
-		"images/MainMenuScreen/Play_Button(Click).png", 
+	auto playItem = MenuItemImage::create("menus/MainMenuScreen/Play_Button.png", 
+		"menus/MainMenuScreen/Play_Button(Click).png", 
 		CC_CALLBACK_1(MainMenuScene::GoToGameScene, this));
 
 	playItem->setPosition(Vec2(0, -200));
