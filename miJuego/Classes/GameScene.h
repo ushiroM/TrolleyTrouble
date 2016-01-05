@@ -16,8 +16,8 @@ private:
 	bool placando = false;
 	Sprite* barraEnergia = Sprite::create("energia.png");
 	Sprite* barraVida = Sprite::create("vida.png");
-	Sprite* energyLabel = Sprite::create("Energy_Label.png");
-	Sprite* lifeLabel = Sprite::create("Life_Label.png");
+	Sprite* hud = Sprite::create("hud/hudtile.png");
+	
 	bool b = true;
 	bool a = true;
 	TMXTiledMap* map = TMXTiledMap::create("piso.tmx");
