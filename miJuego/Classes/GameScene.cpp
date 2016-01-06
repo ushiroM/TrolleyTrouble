@@ -155,7 +155,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
 			
 			if (prota->getOrientacion() == 's') {
-				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 50);
+				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 45);
 				prota->sprite->setPosition(prota->posicion);
 			}
 
@@ -285,7 +285,7 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 	switch (tipo){
 	
 	case 25: case 34: case 43: case 52: case 61: case 70: case 79: case 16:
-		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
 		break;
 		
 
@@ -480,7 +480,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeA->getPosition();
 						if (prota->getOrientacion() == 'w') {
 							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x - 68, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('e');
@@ -493,20 +493,20 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeA->getPosition();
 						if (prota->getOrientacion() == 'w') {
 							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+							prota->posicion = Vec2(posiCurva.x, posiCurva.y -40);
 						}
-						prota->sprite->setPosition(prota->posicion);
 						prota->cambiarSprite();
+						prota->sprite->setPosition(prota->posicion);
 						break;
 					case 16: case 52:						//colisionar con una curva de izquierda-abajo
 						posiCurva = nodeA->getPosition();
 						if (prota->getOrientacion() == 'e') {
 							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('w');
@@ -519,11 +519,11 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeA->getPosition();
 						if (prota->getOrientacion() == 'e') {
 							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
 						}
 						prota->sprite->setPosition(prota->posicion);
 						prota->cambiarSprite();
@@ -597,24 +597,24 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeB->getPosition();
 						if (prota->getOrientacion() == 'w') {
 							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x -68, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('e');
 							prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
 						}
-						prota->sprite->setPosition(prota->posicion);
 						prota->cambiarSprite();
+						prota->sprite->setPosition(prota->posicion);
 						break;
 					case 61: case 34:							//colisionar con una curva de derecha-arriba
 						posiCurva = nodeB->getPosition();
 						if (prota->getOrientacion() == 'w') {
 							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x - 63, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 40);
 						}
 						prota->sprite->setPosition(prota->posicion);
 						prota->cambiarSprite();
@@ -623,7 +623,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeB->getPosition();
 						if (prota->getOrientacion() == 'e') {
 							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('w');
@@ -636,11 +636,11 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						posiCurva = nodeB->getPosition();
 						if (prota->getOrientacion() == 'e') {
 							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x + 65, posiCurva.y);
+							prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
 						}
 						else {
 							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 50);
+							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
 						}
 						prota->sprite->setPosition(prota->posicion);
 						prota->cambiarSprite();
