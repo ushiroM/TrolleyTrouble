@@ -286,22 +286,40 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 	
 	case 25: case 34: case 43: case 52: case 61: case 70: case 79: case 16:
 		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
+		bodye->setContactTestBitmask(true);
+		bodye->setDynamic(false);
+		sprite->setTag(tipo);
+		sprite->setPhysicsBody(bodye);
 		break;
 		
 
 	case 49: case 88:	//si el tile es un cruce de vías 
 		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
+		bodye->setContactTestBitmask(true);
+		bodye->setDynamic(false);
+		sprite->setTag(tipo);
+		sprite->setPhysicsBody(bodye);
+		break;
+
+	/*case 48: case 66: case 68: case 86:  //paredes horizontales
+		bodye = PhysicsBody::createBox(Size(sprite->getBoundingBox().size.width/10, sprite->getBoundingBox().size.height));
 		break;
 	
-	
+	case 57: case 77: case 24: case 4:
+		bodye = PhysicsBody::createBox(Size(sprite->getBoundingBox().size.width, sprite->getBoundingBox().size.height/10));
+		break;*/
+
 	default:	//cualquier otro tile
-		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
+		if (tipo != 48 && tipo != 66 && tipo != 68 && tipo != 86 && tipo != 57 && tipo != 77 && tipo != 24 && tipo != 4) {
+			bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
+			bodye->setContactTestBitmask(true);
+			bodye->setDynamic(false);
+			sprite->setTag(tipo);
+			sprite->setPhysicsBody(bodye);
+		}
 		break;
 	}
-	bodye->setContactTestBitmask(true);
-	bodye->setDynamic(false);
-	sprite->setTag(tipo);
-	sprite->setPhysicsBody(bodye);
+	
 }
 
 //función que se ejecuta periódicamente
@@ -326,26 +344,28 @@ void GameScene::update(float dt) {
 	if (prota->energia < 100) prota->energia++;
 	barraVida->setScaleX(prota->vida*3);
 	
-	//mover al prota según la dirección que mira
-	if (prota->getOrientacion() == 'e') {
-		prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
-		prota->sprite->setPosition(prota->posicion);
-	}
+	if (cruzarPuerta == false) {
+		//mover al prota según la dirección que mira
+		if (prota->getOrientacion() == 'e') {
+			prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
+			prota->sprite->setPosition(prota->posicion);
+		}
 
-	else if (prota->getOrientacion() == 'w') {
-		prota->posicion = Vec2(prota->posicion.x - 5*prota->velocidad, prota->posicion.y);
-		prota->sprite->setPosition(prota->posicion);
-	}
+		else if (prota->getOrientacion() == 'w') {
+			prota->posicion = Vec2(prota->posicion.x - 5 * prota->velocidad, prota->posicion.y);
+			prota->sprite->setPosition(prota->posicion);
+		}
 
-	else if (prota->getOrientacion() == 'n') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 5*prota->velocidad);
-		prota->sprite->setPosition(prota->posicion);
+		else if (prota->getOrientacion() == 'n') {
+			prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 5 * prota->velocidad);
+			prota->sprite->setPosition(prota->posicion);
 
-	}
+		}
 
-	else if (prota->getOrientacion() == 's') {
-		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5*prota->velocidad);
-		prota->sprite->setPosition(prota->posicion);
+		else if (prota->getOrientacion() == 's') {
+			prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5 * prota->velocidad);
+			prota->sprite->setPosition(prota->posicion);
+		}
 	}
 
 	if (cruzarPuerta == true) {
@@ -446,33 +466,41 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						}
 						break;
 					case 23: case 59:								//colisionar con una puerta hacia la derecha
-						prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = -1308;
-						scrollY = 0;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = -1308;
+							scrollY = 0;
+							cruzarPuerta = true;
+						}
 						break;
 					case 5: case 41:								//colisionar con una puerta hacia la izquierda
-						prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 1308;
-						scrollY = 0;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 1308;
+							scrollY = 0;
+							cruzarPuerta = true;
+						}
 						break;
 					case 14: case 50:							//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
-						prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 0;
-						scrollY = 720;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 0;
+							scrollY = 720;
+							cruzarPuerta = true;
+						}
 						break;
 					
 					case 32: case 103:							//colisionar con una puerta hacia abajo en IDIOMA NEL ¬¬
-						prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 0;
-						scrollY = -720;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 0;
+							scrollY = -720;
+							cruzarPuerta = true;
+						}
 						break;
 					case 49: case 88:							//colisionar con un cruce
 						girar = true;
@@ -564,32 +592,40 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						}
 						break;
 					case 23: case 59:							//colisionar con una puerta hacia la derecha
-						prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = -1308;
-						scrollY = 0;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = -1308;
+							scrollY = 0;
+							cruzarPuerta = true;
+						}
 						break;
 					case 5: case 41:								//colisionar con una puerta hacia la izquierda
-						prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 1308;
-						scrollY = 0;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 1308;
+							scrollY = 0;
+							cruzarPuerta = true;
+						}
 						break;
 					case 14: case 50:						//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
-						prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 0;
-						scrollY = 720;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 0;
+							scrollY = 720;
+							cruzarPuerta = true;
+						}
 						break;
 					case 32: case 103:							//colisionar con una puerta hacia abajo EN IDIOMA NEL ¬¬
-						prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
-						prota->sprite->setPosition(prota->posicion);
-						scrollX = 0;
-						scrollY = -720;
-						cruzarPuerta = true;
+						if (cruzarPuerta == false) {
+							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
+							prota->sprite->setPosition(prota->posicion);
+							scrollX = 0;
+							scrollY = -720;
+							cruzarPuerta = true;
+						}
 						break;
 					case 49: case 88:							//colisionar con un cruce
 						girar = true;
