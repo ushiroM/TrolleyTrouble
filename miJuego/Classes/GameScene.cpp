@@ -72,7 +72,7 @@ bool GameScene::init()
 	
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemifo.png");
-	enemigo5->sprite->setTag(99);
+	enemigo5->sprite->setTag(111);
 	enemigo5->tipo = 1;
 	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size);
 	bodyenemigo5->setContactTestBitmask(true);
@@ -85,7 +85,7 @@ bool GameScene::init()
 
 	Enemigo* enemigo4 = new Enemigo();
 	enemigo4->sprite = Sprite::create("enemifo.png");
-	enemigo4->sprite->setTag(98);
+	enemigo4->sprite->setTag(110);
 	enemigo4->tipo = 1;
 	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size);
 	bodyenemigo4->setContactTestBitmask(true);
@@ -176,7 +176,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			}
 
 			else {
-				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
+				prota->posicion = Vec2(posiCruce.x + 67, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
 			
@@ -295,7 +295,7 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 	
 	
 	default:	//cualquier otro tile
-		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
+		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 4);
 		break;
 	}
 	bodye->setContactTestBitmask(true);
@@ -307,9 +307,7 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {
 
-	if (cruzarPuerta == true) {
-		centerViewport(scrollX, scrollY); //cambair la cámara al cruzar puertas
-	}
+	
 
 	a = true;
 
@@ -348,6 +346,10 @@ void GameScene::update(float dt) {
 	else if (prota->getOrientacion() == 's') {
 		prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 5*prota->velocidad);
 		prota->sprite->setPosition(prota->posicion);
+	}
+
+	if (cruzarPuerta == true) {
+		centerViewport(scrollX, scrollY); //cambair la cámara al cruzar puertas
 	}
 
 	//si no queda vida, ir a la pantalla de game over
@@ -390,8 +392,8 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 		if (nodeA && nodeB) //si ninguno es null
 		{
-			if (nodeA->getTag() > 100 || nodeB->getTag() > 1000) { //cambiar
-				if (nodeA->getTag() > 90 && nodeB->getTag() == 21) {
+			if (nodeA->getTag() > 109 || nodeB->getTag() > 109) { //cambiar
+				if (nodeA->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 6 || nodeB->getTag() == 7 || nodeB->getTag() == 15 || nodeB->getTag() == 24 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 73 || nodeB->getTag() == 75 || nodeB->getTag() == 77 || nodeB->getTag() == 84 || nodeB->getTag() == 86 || nodeB->getTag() == 93 || nodeB->getTag() == 95 || nodeB->getTag() == 96 || nodeB->getTag() == 102 || nodeB->getTag() == 104 || nodeB->getTag() == 105 || nodeB->getTag() == 31 || nodeB->getTag() == 40 || nodeB->getTag() == 58 || nodeB->getTag() == 67 || nodeB->getTag() == 76 || nodeB->getTag() == 85 || nodeB->getTag() == 94 || nodeB->getTag() == 97)) {
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeA->getTag()) {
@@ -402,7 +404,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						}
 					}
 				}
-				else if (nodeB->getTag() > 1000 && nodeA->getTag() == 201) { //cambiar
+				else if (nodeB->getTag() > 109 && (nodeA->getTag() == 4 || nodeA->getTag() == 6 || nodeA->getTag() == 7 || nodeA->getTag() == 15 || nodeA->getTag() == 24 || nodeA->getTag() == 48 || nodeA->getTag() == 57 || nodeA->getTag() == 66 || nodeA->getTag() == 68 || nodeA->getTag() == 73 || nodeA->getTag() == 75 || nodeA->getTag() == 77 || nodeA->getTag() == 84 || nodeA->getTag() == 86 || nodeA->getTag() == 93 || nodeA->getTag() == 95 || nodeA->getTag() == 96 || nodeA->getTag() == 102 || nodeA->getTag() == 104 || nodeA->getTag() == 105 || nodeA->getTag() == 31 || nodeA->getTag() == 40 || nodeA->getTag() == 58 || nodeA->getTag() == 67 || nodeA->getTag() == 76 || nodeA->getTag() == 85 || nodeA->getTag() == 94 || nodeA->getTag() == 97)) { //cambiar
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeB->getTag()) {
@@ -418,7 +420,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 			if (nodeA->getTag() == 5) { //si nodeA es el prota
 				
-				if (nodeB->getTag() > 1000) { //cambiar
+				if (nodeB->getTag() > 109) { //cambiar
 						if (placando == true) {
 							for (int i = 0;i < enemigos.size();i++) {
 								if (enemigos[i] != nullptr) {
@@ -536,7 +538,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 			//mismo código que antes, pero mirando si nodeB es prota
 			else if (nodeB->getTag() == 5) {
 
-				if (nodeA->getTag() > 1000) { //cambiar
+				if (nodeA->getTag() > 109) { //cambiar
 					if (placando == true) {
 						for (int i = 0;i < enemigos.size();i++) {
 							if (enemigos[i] != nullptr) {
