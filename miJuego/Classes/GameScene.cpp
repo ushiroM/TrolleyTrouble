@@ -58,7 +58,7 @@ bool GameScene::init()
 			
 	//crear el prota y aádirle su cuerpo de box2d
 	prota = new Prota();
-	Size protasize = Size(prota->sprite->getBoundingBox().size.width - 30, prota->sprite->getBoundingBox().size.height - 30);
+	Size protasize = Size(prota->sprite->getBoundingBox().size.width - 40, prota->sprite->getBoundingBox().size.height - 40);
 	auto body = PhysicsBody::createBox(protasize);
 	prota->sprite->setTag(5);
 	body->setContactTestBitmask(true);
@@ -74,7 +74,8 @@ bool GameScene::init()
 	enemigo5->sprite = Sprite::create("enemifo.png");
 	enemigo5->sprite->setTag(111);
 	enemigo5->tipo = 1;
-	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size);
+	enemigo5->sprite->setOpacity(75);
+	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size/2);
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(true);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
@@ -87,7 +88,8 @@ bool GameScene::init()
 	enemigo4->sprite = Sprite::create("enemifo.png");
 	enemigo4->sprite->setTag(110);
 	enemigo4->tipo = 1;
-	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size);
+	enemigo4->sprite->setOpacity(75);
+	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size/2);
 	bodyenemigo4->setContactTestBitmask(true);
 	bodyenemigo4->setDynamic(true);
 	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
@@ -271,8 +273,20 @@ void GameScene::crearSala() {
 				&& tileGID != 74 && tileGID != 83 && tileGID != 92 && tileGID != 101 && tileGID != 3 
 				&& tileGID != 12 && tileGID != 21 && tileGID != 30 && tileGID != 39 && tileGID != 13 
 				&& tileGID != 22 && tileGID != 33 && tileGID != 42 && tileGID != 51 && tileGID != 60 
-				&& tileGID != 69 && tileGID != 78 && tileGID != 87){ //si no es un tile de raíl recto, vacío, o de suelo
-				addColision(layer->getTileAt(Vec2(x, y)), tileGID); //añadirle una caja de colisión al tile
+				&& tileGID != 69 && tileGID != 78 && tileGID != 87){//si no es un tile de raíl recto, vacío, o de suelo
+				if (tileGID != 48 && tileGID != 66 && tileGID != 68 && tileGID != 86 && tileGID != 57 && tileGID != 77 && tileGID != 24 && tileGID != 4) {
+					addColision(layer->getTileAt(Vec2(x, y)), tileGID); //añadirle una caja de colisión al tile
+				}
+				else {
+					int alrededor_l = layer->getTileGIDAt(Vec2(x - 1, y));
+					int alrededor_r = layer->getTileGIDAt(Vec2(x + 1, y));
+					int alrededor_u = layer->getTileGIDAt(Vec2(x ,y - 1));
+					int alrededor_d = layer->getTileGIDAt(Vec2(x ,y + 1));
+					if (alrededor_l != 5 && alrededor_l != 14 && alrededor_l != 23 && alrededor_l != 32 && alrededor_l != 41 && alrededor_l != 50 && alrededor_l != 59 && alrededor_l != 103 && alrededor_u != 5 && alrededor_u != 14 && alrededor_u != 23 && alrededor_u != 32 && alrededor_u != 41 && alrededor_u != 50 && alrededor_u != 59 && alrededor_u != 103 && alrededor_d != 5 && alrededor_d != 14 && alrededor_d != 23 && alrededor_d != 32 && alrededor_d != 41 && alrededor_d != 50 && alrededor_d != 59 && alrededor_d != 103 && alrededor_r != 5 && alrededor_r != 14 && alrededor_r != 23 && alrededor_r != 32 && alrededor_r != 41 && alrededor_r != 50 && alrededor_r != 59 && alrededor_r != 103) {
+						addColision(layer->getTileAt(Vec2(x, y)), tileGID);
+					}
+					
+				}
 			}
 		}
 	}
@@ -310,13 +324,13 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		break;*/
 
 	default:	//cualquier otro tile
-		if (tipo != 48 && tipo != 66 && tipo != 68 && tipo != 86 && tipo != 57 && tipo != 77 && tipo != 24 && tipo != 4) {
+		//if (tipo != 48 && tipo != 66 && tipo != 68 && tipo != 86 && tipo != 57 && tipo != 77 && tipo != 24 && tipo != 4) {
 			bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
 			bodye->setContactTestBitmask(true);
 			bodye->setDynamic(false);
 			sprite->setTag(tipo);
 			sprite->setPhysicsBody(bodye);
-		}
+		//}
 		break;
 	}
 	
