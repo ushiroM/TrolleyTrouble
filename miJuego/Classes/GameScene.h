@@ -17,7 +17,8 @@ private:
 	Sprite* barraEnergia = Sprite::create("energia.png");
 	Sprite* barraVida = Sprite::create("vida.png");
 	Sprite* hud = Sprite::create("hud/hudtile.png");
-	
+	bool modoDios = false;
+	Label* labelRobo;
 	bool b = true;
 	bool a = true;
 	TMXTiledMap* map = TMXTiledMap::create("piso.tmx");
@@ -43,7 +44,7 @@ public:
 	bool onContactEnd(PhysicsContact &contact);
 	void frenar(float);
 	void crearSala();
-	//void crearEnemigos();
+	void crearEnemigos();
 	void addColision(Sprite* sprite, int tipo);
 	void rotarProta();
 	void centerViewport(float scrollX, float scrollY);

@@ -52,6 +52,7 @@ bool GameScene::init()
 	}
 
 	crearSala();
+	crearEnemigos();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -111,7 +112,11 @@ bool GameScene::init()
 	hud->setPosition(Vec2(190, 670));
 	addChild(hud);
 
-	
+	// Label Medidor [SE BORRARA]
+	labelRobo = Label::create("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ", "Fonts/Arial.ttf", 20);
+	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
+	labelRobo->setColor(Color3B(0, 255, 0));
+	addChild(labelRobo);
 
 	//crear eventos para cuando 2 cajas de box2d empiezan a colisionar, y dejan de colisionar
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -137,8 +142,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 
 	switch (keyCode) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' && girar == true) {
-			if (prota->getOrientacion() == 's') {
+		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' /*&& girar == true*/) {
+			/*if (prota->getOrientacion() == 's') {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -146,7 +151,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			else {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
-			}
+			}*/
 			
 			
 			prota->setOrientacion('w');
@@ -156,9 +161,9 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
+		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' /*&& girar == true*/) {
 			
-			if (prota->getOrientacion() == 's') {
+			/*if (prota->getOrientacion() == 's') {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 45);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -166,15 +171,15 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			else {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
-			}
+			}*/
 			prota->setOrientacion('e');
 			prota->cambiarSprite();
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' && girar == true) {
-			if (prota->getOrientacion() == 'w') {
+		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' /*&& girar == true*/) {
+			/*if (prota->getOrientacion() == 'w') {
 				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -182,7 +187,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			else {
 				prota->posicion = Vec2(posiCruce.x + 67, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
-			}
+			}*/
 			
 			
 			prota->setOrientacion('n');
@@ -192,8 +197,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' && girar == true) {
-			if (prota->getOrientacion() == 'w') {
+		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n'/* && girar == true*/) {
+		/*	if (prota->getOrientacion() == 'w') {
 				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -202,7 +207,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			
+			*/
 			
 			prota->setOrientacion('s');
 			prota->cambiarSprite();
@@ -225,6 +230,13 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 	case EventKeyboard::KeyCode::KEY_ESCAPE:
 		goToPauseScene(this);
 		break;
+
+
+	case EventKeyboard::KeyCode::KEY_D:
+		if (modoDios == false)
+			modoDios = true;
+		else
+			modoDios = false;
 	}
 }
 
@@ -315,23 +327,17 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
 		bodye->setContactTestBitmask(true);
 		bodye->setDynamic(false);
+		bodye->setRotationEnable(false);
 		sprite->setTag(tipo);
 		sprite->setPhysicsBody(bodye);
 		break;
-
-	/*case 48: case 66: case 68: case 86:  //paredes horizontales
-		bodye = PhysicsBody::createBox(Size(sprite->getBoundingBox().size.width/10, sprite->getBoundingBox().size.height));
-		break;
-	
-	case 57: case 77: case 24: case 4:
-		bodye = PhysicsBody::createBox(Size(sprite->getBoundingBox().size.width, sprite->getBoundingBox().size.height/10));
-		break;*/
 
 	default:	//cualquier otro tile
 		//if (tipo != 48 && tipo != 66 && tipo != 68 && tipo != 86 && tipo != 57 && tipo != 77 && tipo != 24 && tipo != 4) {
 			bodye = PhysicsBody::createBox(sprite->getBoundingBox().size);
 			bodye->setContactTestBitmask(true);
 			bodye->setDynamic(false);
+			bodye->setRotationEnable(false);
 			sprite->setTag(tipo);
 			sprite->setPhysicsBody(bodye);
 		//}
@@ -340,24 +346,187 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 	
 }
 
-/*void GameScene::crearEnemigos() {
-	auto layer = map->getLayer("enemigos");
-	map->setPosition(Vec2(-218, -2480));
-	addChild(map, 0, 1);
+void GameScene::crearEnemigos() {
+
+	Enemigo* enemigo1 = new Enemigo();
+	enemigo1->sprite = Sprite::create("enemigos/fantasma.png");
+	enemigo1->sprite->setTag(201);
+	enemigo1->tipo = 2;
+	enemigo1->sprite->setOpacity(75);
+	auto bodyenemigo1 = PhysicsBody::createBox(enemigo1->sprite->getBoundingBox().size / 2);
+	bodyenemigo1->setContactTestBitmask(true);
+	bodyenemigo1->setDynamic(true);
+	bodyenemigo1->setRotationEnable(false);
+	enemigo1->sprite->setPhysicsBody(bodyenemigo1);
+	enemigo1->sprite->setPosition(Vec2(2128, 310));
+	addChild(enemigo1->sprite);
+	enemigos.push_back(enemigo1);
 
 
-}*/
+	Enemigo* enemigo2 = new Enemigo();
+	enemigo2->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo2->sprite->setTag(202);
+	enemigo2->tipo = 2;
+	auto bodyenemigo2 = PhysicsBody::createBox(enemigo2->sprite->getBoundingBox().size / 2);
+	bodyenemigo2->setContactTestBitmask(true);
+	bodyenemigo2->setDynamic(true);
+	bodyenemigo2->setRotationEnable(false);
+	enemigo2->sprite->setPhysicsBody(bodyenemigo2);
+	enemigo2->sprite->setPosition(Vec2(2208, -175));
+	addChild(enemigo2->sprite);
+	enemigos.push_back(enemigo2);
+
+	Enemigo* enemigo3 = new Enemigo();
+	enemigo3->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo3->sprite->setTag(203);
+	enemigo3->tipo = 1;
+	auto bodyenemigo3 = PhysicsBody::createBox(enemigo3->sprite->getBoundingBox().size / 2);
+	bodyenemigo3->setContactTestBitmask(true);
+	bodyenemigo3->setDynamic(true);
+	bodyenemigo3->setRotationEnable(false);
+	enemigo3->sprite->setPhysicsBody(bodyenemigo3);
+	enemigo3->sprite->setPosition(Vec2(2208, -175));
+	addChild(enemigo3->sprite);
+	enemigos.push_back(enemigo3);
+
+	Enemigo* enemigo4 = new Enemigo();
+	enemigo4->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo4->sprite->setTag(204);
+	enemigo4->tipo = 3;
+	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size / 2);
+	bodyenemigo4->setContactTestBitmask(true);
+	bodyenemigo4->setDynamic(true);
+	bodyenemigo4->setRotationEnable(false);
+	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
+	enemigo4->sprite->setPosition(Vec2(2215, -890));
+	addChild(enemigo4->sprite);
+	enemigos.push_back(enemigo4);
+	
+	Enemigo* enemigo5 = new Enemigo();
+	enemigo5->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo5->sprite->setTag(205);
+	enemigo5->tipo = 3;
+	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size / 2);
+	bodyenemigo5->setContactTestBitmask(true);
+	bodyenemigo5->setDynamic(true);
+	bodyenemigo5->setRotationEnable(false);
+	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
+	enemigo5->sprite->setPosition(Vec2(3550, -205));
+	addChild(enemigo5->sprite);
+	enemigos.push_back(enemigo5);
+
+	Enemigo* enemigo6 = new Enemigo();
+	enemigo6->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo6->sprite->setTag(206);
+	enemigo6->tipo = 3;
+	auto bodyenemigo6 = PhysicsBody::createBox(enemigo6->sprite->getBoundingBox().size / 2);
+	bodyenemigo6->setContactTestBitmask(true);
+	bodyenemigo6->setDynamic(true);
+	bodyenemigo6->setRotationEnable(false);
+	enemigo6->sprite->setPhysicsBody(bodyenemigo6);
+	enemigo6->sprite->setPosition(Vec2(3101, -1295));
+	addChild(enemigo6->sprite);
+	enemigos.push_back(enemigo6);
+
+	Enemigo* enemigo7 = new Enemigo();
+	enemigo7->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo7->sprite->setTag(207);
+	enemigo7->tipo = 3;
+	auto bodyenemigo7 = PhysicsBody::createBox(enemigo7->sprite->getBoundingBox().size / 2);
+	bodyenemigo7->setContactTestBitmask(true);
+	bodyenemigo7->setDynamic(true);
+	bodyenemigo7->setRotationEnable(false);
+	enemigo7->sprite->setPhysicsBody(bodyenemigo7);
+	enemigo7->sprite->setPosition(Vec2(3495, -920));
+	addChild(enemigo7->sprite);
+	enemigos.push_back(enemigo7);
+
+	Enemigo* enemigo8 = new Enemigo();
+	enemigo8->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo8->sprite->setTag(208);
+	enemigo8->tipo = 3;
+	auto bodyenemigo8 = PhysicsBody::createBox(enemigo8->sprite->getBoundingBox().size / 2);
+	bodyenemigo8->setContactTestBitmask(true);
+	bodyenemigo8->setDynamic(true);
+	bodyenemigo8->setRotationEnable(false);
+	enemigo8->sprite->setPhysicsBody(bodyenemigo8);
+	enemigo8->sprite->setPosition(Vec2(3556, -1245));
+	addChild(enemigo8->sprite);
+	enemigos.push_back(enemigo8);
+
+	Enemigo* enemigo9 = new Enemigo();
+	enemigo9->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo9->sprite->setTag(209);
+	enemigo9->tipo = 3;
+	auto bodyenemigo9 = PhysicsBody::createBox(enemigo9->sprite->getBoundingBox().size / 2);
+	bodyenemigo9->setContactTestBitmask(true);
+	bodyenemigo9->setDynamic(true);
+	bodyenemigo9->setRotationEnable(false);
+	enemigo9->sprite->setPhysicsBody(bodyenemigo9);
+	enemigo9->sprite->setPosition(Vec2(2066, -345));
+	addChild(enemigo9->sprite);
+	enemigos.push_back(enemigo9);
+
+	Enemigo* enemigo10 = new Enemigo();
+	enemigo10->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo10->sprite->setTag(210);
+	enemigo10->tipo = 3;
+	auto bodyenemigo10 = PhysicsBody::createBox(enemigo10->sprite->getBoundingBox().size / 2);
+	bodyenemigo10->setContactTestBitmask(true);
+	bodyenemigo10->setDynamic(true);
+	bodyenemigo10->setRotationEnable(false);
+	enemigo10->sprite->setPhysicsBody(bodyenemigo10);
+	enemigo10->sprite->setPosition(Vec2(1596, -105));
+	addChild(enemigo10->sprite);
+	enemigos.push_back(enemigo10);
 
 
+	Enemigo* enemigo11 = new Enemigo();
+	enemigo11->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo11->sprite->setTag(211);
+	enemigo11->tipo = 3;
+	auto bodyenemigo11 = PhysicsBody::createBox(enemigo11->sprite->getBoundingBox().size / 2);
+	bodyenemigo11->setContactTestBitmask(true);
+	bodyenemigo11->setDynamic(true);
+	bodyenemigo11->setRotationEnable(false);
+	enemigo11->sprite->setPhysicsBody(bodyenemigo11);
+	enemigo11->sprite->setPosition(Vec2(3341, 310));
+	addChild(enemigo11->sprite);
+	enemigos.push_back(enemigo11);
 
+	Enemigo* enemigo12 = new Enemigo();
+	enemigo12->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo12->sprite->setTag(212);
+	enemigo12->tipo = 3;
+	auto bodyenemigo12 = PhysicsBody::createBox(enemigo12->sprite->getBoundingBox().size / 2);
+	bodyenemigo12->setContactTestBitmask(true);
+	bodyenemigo12->setDynamic(true);
+	bodyenemigo12->setRotationEnable(false);
+	enemigo12->sprite->setPhysicsBody(bodyenemigo12);
+	enemigo12->sprite->setPosition(Vec2(4756, -325));
+	addChild(enemigo12->sprite);
+	enemigos.push_back(enemigo12);
 
+	Enemigo* enemigo13 = new Enemigo();
+	enemigo13->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo13->sprite->setTag(213);
+	enemigo13->tipo = 3;
+	auto bodyenemigo13 = PhysicsBody::createBox(enemigo13->sprite->getBoundingBox().size / 2);
+	bodyenemigo13->setContactTestBitmask(true);
+	bodyenemigo13->setDynamic(true);
+	bodyenemigo13->setRotationEnable(false);
+	enemigo13->sprite->setPhysicsBody(bodyenemigo13);
+	enemigo13->sprite->setPosition(Vec2(2986, 530));
+	addChild(enemigo13->sprite);
+	enemigos.push_back(enemigo13);
 
-
-
+}
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {
 
-	
+	labelRobo->setString("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ");
+
+	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
 
 	a = true;
 
@@ -367,7 +536,7 @@ void GameScene::update(float dt) {
 			else enemigos[i]->sprite->setPosition(enemigos[i]->sprite->getPositionX() + 5, enemigos[i]->sprite->getPositionY());
 		}
 	}
-
+	
 	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
@@ -376,7 +545,7 @@ void GameScene::update(float dt) {
 	if (prota->energia < 100) prota->energia++;
 	barraVida->setScaleX(prota->vida*3);
 	
-	if (cruzarPuerta == false) {
+	if (cruzarPuerta == false && modoDios == true) {
 		//mover al prota según la dirección que mira
 		if (prota->getOrientacion() == 'e') {
 			prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
@@ -444,8 +613,8 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 		if (nodeA && nodeB) //si ninguno es null
 		{
-			if (nodeA->getTag() > 109 || nodeB->getTag() > 109) { //cambiar
-				if (nodeA->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) {
+			if (nodeA->getTag() > 200 || nodeB->getTag() > 200) { //cambiar
+				if (nodeA->getTag() > 200 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) {
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeA->getTag()) {
@@ -456,7 +625,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						}
 					}
 				}
-				else if (nodeB->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) { //cambiar
+				else if (nodeB->getTag() > 200 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) { //cambiar
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeB->getTag()) {
@@ -472,7 +641,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 			if (nodeA->getTag() == 5) { //si nodeA es el prota
 				
-				if (nodeB->getTag() > 109) { //cambiar
+				if (nodeB->getTag() > 200) { //cambiar
 						if (placando == true) {
 							for (int i = 0;i < enemigos.size();i++) {
 								if (enemigos[i] != nullptr) {
