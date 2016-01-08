@@ -43,6 +43,7 @@ public:
 	bool onContactEnd(PhysicsContact &contact);
 	void frenar(float);
 	void crearSala();
+	//void crearEnemigos();
 	void addColision(Sprite* sprite, int tipo);
 	void rotarProta();
 	void centerViewport(float scrollX, float scrollY);

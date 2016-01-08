@@ -63,6 +63,7 @@ bool GameScene::init()
 	prota->sprite->setTag(5);
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
+	body->setRotationEnable(false);
 	prota->sprite->setPhysicsBody(body);
 	prota->posicion = Vec2(218, 280);
 	prota->sprite->setPosition(prota->posicion);
@@ -71,27 +72,28 @@ bool GameScene::init()
 	//crear el enemigo
 	
 	Enemigo* enemigo5 = new Enemigo();
-	enemigo5->sprite = Sprite::create("enemifo.png");
-	enemigo5->sprite->setTag(111);
+	enemigo5->sprite = Sprite::create("enemigos/fantasma.png");
+	enemigo5->sprite->setTag(112);
 	enemigo5->tipo = 1;
 	enemigo5->sprite->setOpacity(75);
 	auto bodyenemigo5 = PhysicsBody::createBox(enemigo5->sprite->getBoundingBox().size/2);
 	bodyenemigo5->setContactTestBitmask(true);
 	bodyenemigo5->setDynamic(true);
+	bodyenemigo5->setRotationEnable(false);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
-	enemigo5->sprite->setPosition(Vec2(750,500));
+	enemigo5->sprite->setPosition(Vec2(750,530));
 	addChild(enemigo5->sprite);
 	enemigos.push_back(enemigo5);
 	
 
 	Enemigo* enemigo4 = new Enemigo();
-	enemigo4->sprite = Sprite::create("enemifo.png");
+	enemigo4->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo4->sprite->setTag(110);
 	enemigo4->tipo = 1;
-	enemigo4->sprite->setOpacity(75);
 	auto bodyenemigo4 = PhysicsBody::createBox(enemigo4->sprite->getBoundingBox().size/2);
 	bodyenemigo4->setContactTestBitmask(true);
 	bodyenemigo4->setDynamic(true);
+	bodyenemigo4->setRotationEnable(false);
 	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
 	enemigo4->sprite->setPosition(Vec2(750, 110));
 	addChild(enemigo4->sprite);
@@ -302,8 +304,10 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		bodye = PhysicsBody::createBox(sprite->getBoundingBox().size / 2);
 		bodye->setContactTestBitmask(true);
 		bodye->setDynamic(false);
+		bodye->setRotationEnable(false);
 		sprite->setTag(tipo);
 		sprite->setPhysicsBody(bodye);
+		bodye->setRotationEnable(false);
 		break;
 		
 
@@ -335,6 +339,20 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 	}
 	
 }
+
+/*void GameScene::crearEnemigos() {
+	auto layer = map->getLayer("enemigos");
+	map->setPosition(Vec2(-218, -2480));
+	addChild(map, 0, 1);
+
+
+}*/
+
+
+
+
+
+
 
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {
@@ -427,7 +445,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 		if (nodeA && nodeB) //si ninguno es null
 		{
 			if (nodeA->getTag() > 109 || nodeB->getTag() > 109) { //cambiar
-				if (nodeA->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 6 || nodeB->getTag() == 7 || nodeB->getTag() == 15 || nodeB->getTag() == 24 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 73 || nodeB->getTag() == 75 || nodeB->getTag() == 77 || nodeB->getTag() == 84 || nodeB->getTag() == 86 || nodeB->getTag() == 93 || nodeB->getTag() == 95 || nodeB->getTag() == 96 || nodeB->getTag() == 102 || nodeB->getTag() == 104 || nodeB->getTag() == 105 || nodeB->getTag() == 31 || nodeB->getTag() == 40 || nodeB->getTag() == 58 || nodeB->getTag() == 67 || nodeB->getTag() == 76 || nodeB->getTag() == 85 || nodeB->getTag() == 94 || nodeB->getTag() == 97)) {
+				if (nodeA->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) {
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeA->getTag()) {
@@ -438,7 +456,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 						}
 					}
 				}
-				else if (nodeB->getTag() > 109 && (nodeA->getTag() == 4 || nodeA->getTag() == 6 || nodeA->getTag() == 7 || nodeA->getTag() == 15 || nodeA->getTag() == 24 || nodeA->getTag() == 48 || nodeA->getTag() == 57 || nodeA->getTag() == 66 || nodeA->getTag() == 68 || nodeA->getTag() == 73 || nodeA->getTag() == 75 || nodeA->getTag() == 77 || nodeA->getTag() == 84 || nodeA->getTag() == 86 || nodeA->getTag() == 93 || nodeA->getTag() == 95 || nodeA->getTag() == 96 || nodeA->getTag() == 102 || nodeA->getTag() == 104 || nodeA->getTag() == 105 || nodeA->getTag() == 31 || nodeA->getTag() == 40 || nodeA->getTag() == 58 || nodeA->getTag() == 67 || nodeA->getTag() == 76 || nodeA->getTag() == 85 || nodeA->getTag() == 94 || nodeA->getTag() == 97)) { //cambiar
+				else if (nodeB->getTag() > 109 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24)) { //cambiar
 					for (int i = 0;i < enemigos.size();i++) {
 						if (enemigos[i] != nullptr) {
 							if (enemigos[i]->sprite->getTag() == nodeB->getTag()) {
