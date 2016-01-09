@@ -47,6 +47,7 @@ public:
 	void crearEnemigos();
 	void addColision(Sprite* sprite, int tipo);
 	void rotarProta();
+	void rotarEnemigos(Enemigo*);
 	void centerViewport(float scrollX, float scrollY);
 	CREATE_FUNC(GameScene);
 

@@ -7,16 +7,27 @@ class Enemigo
 private:
 	int vida;
 	int ataque;
-	int velocidad;
+	char orientacion;
+	/*int pasosDer = 0;
+	int pasosIzq = 100;*/
 	
 
 
 public:
+	int minX;
+	int maxX;
+	int minY;
+	int maxY;
 	int tipo;
+	float velocidad;
 	Vec2 posicion;
 	Enemigo();
-	void atacar();
 	void movimiento();
+	Sprite* imagenIzquierda;
+	Sprite* imagenDerecha;
 	Sprite* sprite;
+	void setOrientacion(char);
+	char getOrientacion();
+	void cambiarSprite();
 };
 
