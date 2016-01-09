@@ -418,7 +418,7 @@ void GameScene::crearEnemigos() {
 	Enemigo* enemigo6 = new Enemigo();
 	enemigo6->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo6->sprite->setTag(206);
-	enemigo6->tipo = 3;
+	enemigo6->tipo = 2;
 	auto bodyenemigo6 = PhysicsBody::createBox(enemigo6->sprite->getBoundingBox().size/1.3);
 	bodyenemigo6->setContactTestBitmask(true);
 	bodyenemigo6->setDynamic(true);
@@ -460,9 +460,9 @@ void GameScene::crearEnemigos() {
 	enemigo8->maxX = 3763;
 	addChild(enemigo8->sprite);
 	enemigos.push_back(enemigo8);
-	/*
+	
 	Enemigo* enemigo9 = new Enemigo();
-	enemigo9->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo9->sprite = Sprite::create("enemigos/fantasma.png");
 	enemigo9->sprite->setTag(209);
 	enemigo9->tipo = 3;
 	auto bodyenemigo9 = PhysicsBody::createBox(enemigo9->sprite->getBoundingBox().size/1.3);
@@ -470,12 +470,14 @@ void GameScene::crearEnemigos() {
 	bodyenemigo9->setDynamic(true);
 	bodyenemigo9->setRotationEnable(false);
 	enemigo9->sprite->setPhysicsBody(bodyenemigo9);
-	enemigo9->sprite->setPosition(Vec2(2066, -345));
+	enemigo9->sprite->setPosition(Vec2(1639, -123));
+	enemigo9->minY = -555;
+	enemigo9->maxY = -270;
 	addChild(enemigo9->sprite);
 	enemigos.push_back(enemigo9);
-
+	
 	Enemigo* enemigo10 = new Enemigo();
-	enemigo10->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo10->sprite = Sprite::create("enemigos/fantasma.png");
 	enemigo10->sprite->setTag(210);
 	enemigo10->tipo = 3;
 	auto bodyenemigo10 = PhysicsBody::createBox(enemigo10->sprite->getBoundingBox().size/1.3);
@@ -483,26 +485,30 @@ void GameScene::crearEnemigos() {
 	bodyenemigo10->setDynamic(true);
 	bodyenemigo10->setRotationEnable(false);
 	enemigo10->sprite->setPhysicsBody(bodyenemigo10);
-	enemigo10->sprite->setPosition(Vec2(1596, -105));
+	enemigo10->sprite->setPosition(Vec2(2133, -860));
+	enemigo9->minY = -1285;
+	enemigo9->maxY = -865;
 	addChild(enemigo10->sprite);
 	enemigos.push_back(enemigo10);
 
-
+	
 	Enemigo* enemigo11 = new Enemigo();
 	enemigo11->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo11->sprite->setTag(211);
-	enemigo11->tipo = 3;
+	enemigo11->tipo = 2;
 	auto bodyenemigo11 = PhysicsBody::createBox(enemigo11->sprite->getBoundingBox().size/1.3);
 	bodyenemigo11->setContactTestBitmask(true);
 	bodyenemigo11->setDynamic(true);
 	bodyenemigo11->setRotationEnable(false);
 	enemigo11->sprite->setPhysicsBody(bodyenemigo11);
-	enemigo11->sprite->setPosition(Vec2(3341, 310));
+	enemigo11->sprite->setPosition(Vec2(3341, 170));
+	enemigo11->minX = 3039;
+	enemigo11->maxX = 3391;
 	addChild(enemigo11->sprite);
 	enemigos.push_back(enemigo11);
-
+	
 	Enemigo* enemigo12 = new Enemigo();
-	enemigo12->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo12->sprite = Sprite::create("enemigos/fantasma.png");
 	enemigo12->sprite->setTag(212);
 	enemigo12->tipo = 3;
 	auto bodyenemigo12 = PhysicsBody::createBox(enemigo12->sprite->getBoundingBox().size/1.3);
@@ -510,12 +516,14 @@ void GameScene::crearEnemigos() {
 	bodyenemigo12->setDynamic(true);
 	bodyenemigo12->setRotationEnable(false);
 	enemigo12->sprite->setPhysicsBody(bodyenemigo12);
-	enemigo12->sprite->setPosition(Vec2(4756, -325));
+	enemigo12->sprite->setPosition(Vec2(4800, -100));
+	enemigo12->minY = -575;
+	enemigo12->maxY = -110;
 	addChild(enemigo12->sprite);
 	enemigos.push_back(enemigo12);
-
+	
 	Enemigo* enemigo13 = new Enemigo();
-	enemigo13->sprite = Sprite::create("enemigos/cosa.png");
+	enemigo13->sprite = Sprite::create("enemigos/fantasma.png");
 	enemigo13->sprite->setTag(213);
 	enemigo13->tipo = 3;
 	auto bodyenemigo13 = PhysicsBody::createBox(enemigo13->sprite->getBoundingBox().size /1.3);
@@ -523,26 +531,14 @@ void GameScene::crearEnemigos() {
 	bodyenemigo13->setDynamic(true);
 	bodyenemigo13->setRotationEnable(false);
 	enemigo13->sprite->setPhysicsBody(bodyenemigo13);
-	enemigo13->sprite->setPosition(Vec2(2986, 530));
+	enemigo13->sprite->setPosition(Vec2(2971, 605));
+	enemigo13->minY = 140;
+	enemigo13->maxY = 310;
 	addChild(enemigo13->sprite);
 	enemigos.push_back(enemigo13);
-	*/
+	
 
-	/*Enemigo* enemigo14 = new Enemigo();
-	enemigo14->sprite = Sprite::create("enemigos/fantasma.png");
-	enemigo14->sprite->setTag(213);
-	enemigo14->tipo = 3;
-	auto bodyenemigo14 = PhysicsBody::createBox(enemigo14->sprite->getBoundingBox().size / 1.3);
-	bodyenemigo14->setContactTestBitmask(true);
-	bodyenemigo14->setDynamic(true);
-	bodyenemigo14->setRotationEnable(false);
-	enemigo14->minY = -1265;
-	enemigo14->maxY = -850;
-	enemigo14->setOrientacion('n');
-	enemigo14->sprite->setPhysicsBody(bodyenemigo14);
-	enemigo14->sprite->setPosition(Vec2(2986, 530));
-	addChild(enemigo14->sprite);
-	enemigos.push_back(enemigo14);*/
+	
 }
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {

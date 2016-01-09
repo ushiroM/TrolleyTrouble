@@ -15,7 +15,7 @@ char Enemigo::getOrientacion() {
 
 void Enemigo::movimiento() {
 	
-	/*switch (tipo) {
+	switch (tipo) {
 	case 1: case 2:
 		
 		if (this->sprite->getPositionX() > maxX) {
@@ -54,7 +54,7 @@ void Enemigo::movimiento() {
 		break;
 	default:
 		break;
-	}*/
+	}
 }
 
 
