@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Prota.h"
 #include "Enemigo.h"
+#include "Objeto.h"
 
 class GameScene: public cocos2d::Layer
 {
@@ -29,6 +30,9 @@ private:
 	Vec2 posiCruce;
 	Vec2 posiCurva;
 	std::vector<Enemigo*> enemigos;
+	bool tieneObjeto = false;
+	int cargaActual = 3;
+	int velocidadenemiga = 5;
 
 	
 	

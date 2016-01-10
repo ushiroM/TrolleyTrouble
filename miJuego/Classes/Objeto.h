@@ -4,12 +4,12 @@ USING_NS_CC;
 
 class Objeto
 {
-
-	int tipo;
-	int carga;
-	Label descripcion;
+	
 public:
 	Objeto();
-	~Objeto();
+	int tipo;
+	Sprite* sprite;
+	int carga;
+	Label descripcion;
 };
 

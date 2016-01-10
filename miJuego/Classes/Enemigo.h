@@ -22,7 +22,7 @@ public:
 	float velocidad;
 	Vec2 posicion;
 	Enemigo();
-	void movimiento();
+	void movimiento(int);
 	Sprite* imagenIzquierda;
 	Sprite* imagenDerecha;
 	Sprite* sprite;
