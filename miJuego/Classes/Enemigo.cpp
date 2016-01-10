@@ -13,7 +13,7 @@ char Enemigo::getOrientacion() {
 	return this->orientacion;
 }
 
-void Enemigo::movimiento(int velocidad) {
+void Enemigo::movimiento() {
 	
 	switch (tipo) {
 	case 1: case 2:
@@ -29,9 +29,9 @@ void Enemigo::movimiento(int velocidad) {
 		}
 
 		if (this->orientacion == 'e') {
-			this->sprite->setPosition(Vec2(this->sprite->getPositionX() + velocidad, this->sprite->getPositionY()));
+			this->sprite->setPosition(Vec2(this->sprite->getPositionX() + 5, this->sprite->getPositionY()));
 		}else {
-			this->sprite->setPosition(Vec2(this->sprite->getPositionX() - velocidad, this->sprite->getPositionY()));
+			this->sprite->setPosition(Vec2(this->sprite->getPositionX() - 5, this->sprite->getPositionY()));
 		}
 		break;
 
@@ -46,10 +46,10 @@ void Enemigo::movimiento(int velocidad) {
 		this->sprite->setPositionY(minY);
 		}
 		if (this->orientacion == 'n') {
-			this->sprite->setPosition(Vec2(this->sprite->getPositionX(), this->sprite->getPositionY() + velocidad));
+			this->sprite->setPosition(Vec2(this->sprite->getPositionX(), this->sprite->getPositionY() + 5));
 		}
 		else {
-			this->sprite->setPosition(Vec2(this->sprite->getPositionX(), this->sprite->getPositionY() - velocidad));
+			this->sprite->setPosition(Vec2(this->sprite->getPositionX(), this->sprite->getPositionY() - 5));
 		}
 		break;
 	default:

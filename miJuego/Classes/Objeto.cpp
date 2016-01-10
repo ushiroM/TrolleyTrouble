@@ -4,8 +4,9 @@
 
 Objeto::Objeto()
 {
-	sprite = Sprite::create("relojtile.png");
-	carga = 3;
 }
 
 
+Objeto::~Objeto()
+{
+}
