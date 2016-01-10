@@ -3,6 +3,7 @@
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
 
+
 USING_NS_CC;
 
 
@@ -68,6 +69,8 @@ bool GameScene::init()
 	prota->sprite->setPhysicsBody(body);
 	prota->posicion = Vec2(218, 280);
 	prota->sprite->setPosition(prota->posicion);
+	prota->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	prota->sprite->getPhysicsBody()->setCollisionBitmask(0x01);
 	addChild(prota->sprite);
 
 
@@ -85,10 +88,10 @@ bool GameScene::init()
 	addChild(hud);
 
 	// Label Medidor [SE BORRARA]
-	labelRobo = Label::create("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ", "Fonts/Arial.ttf", 20);
-	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
-	labelRobo->setColor(Color3B(0, 255, 0));
-	addChild(labelRobo);
+	//labelRobo = Label::create("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ", "Fonts/Arial.ttf", 20);
+	//labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
+	//labelRobo->setColor(Color3B(0, 255, 0));
+	//addChild(labelRobo);
 
 	//crear eventos para cuando 2 cajas de box2d empiezan a colisionar, y dejan de colisionar
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -114,8 +117,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 
 	switch (keyCode) {
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' /*&& girar == true*/) {
-			/*if (prota->getOrientacion() == 's') {
+		if (prota->getOrientacion() != 'w' && prota->getOrientacion() != 'e' && girar == true) {
+			if (prota->getOrientacion() == 's') {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -124,7 +127,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			*/
+			
 			
 			prota->setOrientacion('w');
 			prota->cambiarSprite();
@@ -133,9 +136,9 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' /*&& girar == true*/) {
+		if (prota->getOrientacion() != 'e' && prota->getOrientacion() != 'w' && girar == true) {
 			
-			/*if (prota->getOrientacion() == 's') {
+			if (prota->getOrientacion() == 's') {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y - 45);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -143,15 +146,15 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			else {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
-			}*/
+			}
 			prota->setOrientacion('e');
 			prota->cambiarSprite();
 		}
 		break;
 
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
-		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's'/* && girar == true*/) {
-			/*if (prota->getOrientacion() == 'w') {
+		if (prota->getOrientacion() != 'n' && prota->getOrientacion() != 's' && girar == true) {
+			if (prota->getOrientacion() == 'w') {
 				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -160,7 +163,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x + 67, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			*/
+			
 			
 			prota->setOrientacion('n');
 			prota->cambiarSprite();
@@ -169,8 +172,8 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		break;
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' /*&& girar == true*/) {
-			/*if (prota->getOrientacion() == 'w') {
+		if (prota->getOrientacion() != 's' && prota->getOrientacion() != 'n' && girar == true) {
+			if (prota->getOrientacion() == 'w') {
 				prota->posicion = Vec2(posiCruce.x - 63, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
@@ -179,7 +182,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			*/
+			
 			
 			prota->setOrientacion('s');
 			prota->cambiarSprite();
@@ -203,12 +206,11 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 		goToPauseScene(this);
 		break;
 
-
-	case EventKeyboard::KeyCode::KEY_D:
-		if (modoDios == false)
-			modoDios = true;
-		else
-			modoDios = false;
+	case EventKeyboard::KeyCode::KEY_Z:
+		if (tieneObjeto == true && cargaActual == 3) {
+			velocidadenemiga = 2;
+			cargaActual = 0;
+		}
 	}
 }
 
@@ -291,6 +293,18 @@ void GameScene::crearSala() {
 			}
 		}
 	}
+	Objeto* reloj = new Objeto();
+	reloj->sprite->setPosition(Vec2(1690, -1790));
+	auto body = PhysicsBody::createBox(reloj->sprite->getBoundingBox().size);
+	reloj->sprite->setTag(199);
+	body->setContactTestBitmask(true);
+	body->setDynamic(true);
+	body->setRotationEnable(false);
+	reloj->sprite->setPhysicsBody(body);
+	reloj->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	reloj->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
+	addChild(reloj->sprite);
+
 }
 
 //función que añade cajas de colisión a los tiles, y un tag para las colisiones
@@ -306,6 +320,8 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		bodye->setRotationEnable(false);
 		sprite->setTag(tipo);
 		sprite->setPhysicsBody(bodye);
+		sprite->getPhysicsBody()->setCategoryBitmask(0x01);    
+		sprite->getPhysicsBody()->setCollisionBitmask(0x01);   
 		bodye->setRotationEnable(false);
 		break;
 		
@@ -317,6 +333,8 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		bodye->setRotationEnable(false);
 		sprite->setTag(tipo);
 		sprite->setPhysicsBody(bodye);
+		sprite->getPhysicsBody()->setCategoryBitmask(0x01);
+		sprite->getPhysicsBody()->setCollisionBitmask(0x01);
 		break;
 
 	default:	//cualquier otro tile
@@ -326,6 +344,8 @@ void GameScene::addColision(Sprite * sprite, int tipo)
 		bodye->setRotationEnable(false);
 		sprite->setTag(tipo);
 		sprite->setPhysicsBody(bodye);
+		sprite->getPhysicsBody()->setCategoryBitmask(0x01);
+		sprite->getPhysicsBody()->setCollisionBitmask(0x01);
 		break;
 	}
 	
@@ -342,6 +362,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo1->setDynamic(true);
 	bodyenemigo1->setRotationEnable(false);
 	enemigo1->sprite->setPhysicsBody(bodyenemigo1);
+	enemigo1->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo1->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo1->sprite->setPosition(Vec2(1843, 275));
 	enemigo1->setOrientacion('e');
 	enemigo1->minX = 1618;
@@ -359,6 +381,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo2->setDynamic(true);
 	bodyenemigo2->setRotationEnable(false);
 	enemigo2->sprite->setPhysicsBody(bodyenemigo2);
+	enemigo2->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo2->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo2->sprite->setPosition(Vec2(2208, -175));
 	enemigo2->minX = 1671;
 	enemigo2->maxX = 2446;
@@ -375,6 +399,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo3->setDynamic(true);
 	bodyenemigo3->setRotationEnable(false);
 	enemigo3->sprite->setPhysicsBody(bodyenemigo3);
+	enemigo3->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo3->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo3->sprite->setPosition(Vec2(395, -340));
 	enemigo3->minX = 373;
 	enemigo3->maxX = 1103;
@@ -391,6 +417,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo4->setDynamic(true);
 	bodyenemigo4->setRotationEnable(false);
 	enemigo4->sprite->setPhysicsBody(bodyenemigo4);
+	enemigo4->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo4->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo4->sprite->setPosition(Vec2(2015, -1235));
 	enemigo4->minX = 1650;
 	enemigo4->maxX = 2430;
@@ -407,6 +435,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo5->setDynamic(true);
 	bodyenemigo5->setRotationEnable(false);
 	enemigo5->sprite->setPhysicsBody(bodyenemigo5);
+	enemigo5->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo5->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo5->setOrientacion('n');
 	enemigo5->minY = -580;
 	enemigo5->maxY = -270;
@@ -424,6 +454,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo6->setDynamic(true);
 	bodyenemigo6->setRotationEnable(false);
 	enemigo6->sprite->setPhysicsBody(bodyenemigo6);
+	enemigo6->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo6->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo6->sprite->setPosition(Vec2(3408, 540));
 	enemigo6->minX = 3045;
 	enemigo6->maxX = 3560;
@@ -440,6 +472,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo7->setDynamic(true);
 	bodyenemigo7->setRotationEnable(false);
 	enemigo7->sprite->setPhysicsBody(bodyenemigo7);
+	enemigo7->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo7->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo7->sprite->setPosition(Vec2(3495, -900));
 	enemigo7->minX = 2788;
 	enemigo7->maxX = 3738;
@@ -455,6 +489,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo8->setDynamic(true);
 	bodyenemigo8->setRotationEnable(false);
 	enemigo8->sprite->setPhysicsBody(bodyenemigo8);
+	enemigo8->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo8->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo8->sprite->setPosition(Vec2(3718, -1230));
 	enemigo8->minX = 2783;
 	enemigo8->maxX = 3763;
@@ -470,6 +506,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo9->setDynamic(true);
 	bodyenemigo9->setRotationEnable(false);
 	enemigo9->sprite->setPhysicsBody(bodyenemigo9);
+	enemigo9->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo9->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo9->sprite->setPosition(Vec2(1639, -123));
 	enemigo9->minY = -555;
 	enemigo9->maxY = -270;
@@ -485,6 +523,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo10->setDynamic(true);
 	bodyenemigo10->setRotationEnable(false);
 	enemigo10->sprite->setPhysicsBody(bodyenemigo10);
+	enemigo10->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo10->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo10->sprite->setPosition(Vec2(2133, -860));
 	enemigo9->minY = -1285;
 	enemigo9->maxY = -865;
@@ -501,6 +541,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo11->setDynamic(true);
 	bodyenemigo11->setRotationEnable(false);
 	enemigo11->sprite->setPhysicsBody(bodyenemigo11);
+	enemigo11->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo11->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo11->sprite->setPosition(Vec2(3341, 170));
 	enemigo11->minX = 3039;
 	enemigo11->maxX = 3391;
@@ -516,6 +558,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo12->setDynamic(true);
 	bodyenemigo12->setRotationEnable(false);
 	enemigo12->sprite->setPhysicsBody(bodyenemigo12);
+	enemigo12->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo12->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo12->sprite->setPosition(Vec2(4800, -100));
 	enemigo12->minY = -575;
 	enemigo12->maxY = -110;
@@ -531,6 +575,8 @@ void GameScene::crearEnemigos() {
 	bodyenemigo13->setDynamic(true);
 	bodyenemigo13->setRotationEnable(false);
 	enemigo13->sprite->setPhysicsBody(bodyenemigo13);
+	enemigo13->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	enemigo13->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	enemigo13->sprite->setPosition(Vec2(2971, 605));
 	enemigo13->minY = 140;
 	enemigo13->maxY = 310;
@@ -543,15 +589,15 @@ void GameScene::crearEnemigos() {
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {
 
-	labelRobo->setString("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ");
+	//labelRobo->setString("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ");
 
-	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
+	//labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
 
 	a = true;
 
 	for (int i = 0; i < enemigos.size(); i++) {
 		if (enemigos[i] != nullptr) {
-			enemigos[i]->movimiento();
+			enemigos[i]->movimiento(velocidadenemiga);
 		}
 	}
 	
@@ -563,7 +609,7 @@ void GameScene::update(float dt) {
 	if (prota->energia < 100) prota->energia++;
 	barraVida->setScaleX(prota->vida*3);
 	
-	if (cruzarPuerta == false && modoDios == true) {
+	if (cruzarPuerta == false) {
 		//mover al prota según la dirección que mira
 		if (prota->getOrientacion() == 'e') {
 			prota->posicion = Vec2(prota->posicion.x + 5 * prota->velocidad, prota->posicion.y);
@@ -622,295 +668,300 @@ bool GameScene::onContactEnd(PhysicsContact &contact) {
 //evento que se lanza al empezar a colisionar dos cuerpos de box2d
 bool GameScene::onContactBegin(PhysicsContact &contact) {
 
-	float x = map->getPositionX();
-	float y = map->getPositionY();
-	if (b) {
-		b = false;
-		auto nodeA = contact.getShapeA()->getBody()->getNode();
-		auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (contact.getShapeA()->getCategoryBitmask() == contact.getShapeB()->getCategoryBitmask() || contact.getShapeA()->getCollisionBitmask() == contact.getShapeB()->getCollisionBitmask()) {
+		float x = map->getPositionX();
+		float y = map->getPositionY();
+		if (b) {
+			b = false;
+			auto nodeA = contact.getShapeA()->getBody()->getNode();
+			auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-		if (nodeA && nodeB) //si ninguno es null
-		{
-			/*if (nodeA->getTag() > 200 || nodeB->getTag() > 200) {
-				if (nodeA->getTag() > 200 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24 || nodeB->getTag() == 103 || nodeB->getTag() == 5 || nodeB->getTag() == 14 || nodeB->getTag() == 23 || nodeB->getTag() == 32 || nodeB->getTag() == 41 || nodeB->getTag() == 50 || nodeB->getTag() == 59) || nodeB->getTag() > 200 ) {
-					for (int i = 0; i < enemigos.size(); i++) {
-						if (enemigos[i] != nullptr) {
-							if (enemigos[i]->sprite->getTag() == nodeA->getTag()) {
-								rotarEnemigos(enemigos[i]);
-								break;
+			if (nodeA && nodeB) //si ninguno es null
+			{
+				if (nodeA->getTag() == 5) { //si nodeA es el prota
+
+					if (nodeB->getTag() > 200) { //cambiar
+						if (placando == true) {
+							for (int i = 0; i < enemigos.size(); i++) {
+								if (enemigos[i] != nullptr) {
+									if (enemigos[i]->sprite->getTag() == nodeB->getTag()) enemigos[i] = nullptr;
+								}
 							}
-						}
-					}
-				}
-				else if (nodeB->getTag() > 200 && (nodeB->getTag() == 4 || nodeB->getTag() == 48 || nodeB->getTag() == 57 || nodeB->getTag() == 66 || nodeB->getTag() == 68 || nodeB->getTag() == 77 || nodeB->getTag() == 86 || nodeB->getTag() == 24 || nodeB->getTag() == 103 || nodeB->getTag() == 5 || nodeB->getTag() == 14 || nodeB->getTag() == 23 || nodeB->getTag() == 32 || nodeB->getTag() == 41 || nodeB->getTag() == 50 || nodeB->getTag() == 59) || nodeB->getTag() > 200) {
-					for (int i = 0; i < enemigos.size(); i++) {
-						if (enemigos[i] != nullptr) {
-							if (enemigos[i]->sprite->getTag() == nodeB->getTag()) {
-								rotarEnemigos(enemigos[i]);
-								break;
-							}
-						}
-					}
-				}
-			}
-			*/
-
-			if (nodeA->getTag() == 5) { //si nodeA es el prota
-
-				if (nodeB->getTag() > 200) { //cambiar
-					if (placando == true) {
-						for (int i = 0; i < enemigos.size(); i++) {
-							if (enemigos[i] != nullptr) {
-								if (enemigos[i]->sprite->getTag() == nodeB->getTag()) enemigos[i] = nullptr;
-							}
-						}
-						removeChild(nodeB, true);	//eliminar al enemigo
-						frenar(0.0);
-					}
-					else {
-						//prota->vida = prota->vida - 20;
-						rotarProta();
-					}
-				}
-				else {
-
-					switch (nodeB->getTag())
-					{
-					case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
-						if (a) {
-							a = false;
+							removeChild(nodeB, true);	//eliminar al enemigo
 							frenar(0.0);
+						}
+						else {
 							prota->vida = prota->vida - 20;
 							rotarProta();
 						}
-						break;
-					case 23: case 59:								//colisionar con una puerta hacia la derecha
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
-							prota->sprite->setPosition(prota->posicion);
-							scrollX = -1308;
-							scrollY = 0;
-							cruzarPuerta = true;
-						}
-						break;
-					case 5: case 41:								//colisionar con una puerta hacia la izquierda
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
-							prota->sprite->setPosition(prota->posicion);
-							scrollX = 1308;
-							scrollY = 0;
-							cruzarPuerta = true;
-						}
-						break;
-					case 14: case 50:							//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
-							prota->sprite->setPosition(prota->posicion);
-							scrollX = 0;
-							scrollY = 720;
-							cruzarPuerta = true;
-						}
-						break;
-
-					case 32: case 103:							//colisionar con una puerta hacia abajo en IDIOMA NEL ¬¬
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
-							prota->sprite->setPosition(prota->posicion);
-							scrollX = 0;
-							scrollY = -720;
-							cruzarPuerta = true;
-						}
-						break;
-					case 49: case 88:							//colisionar con un cruce
-						girar = true;
-						posiCruce = nodeA->getPosition();
-						break;
-					case 25: case 70:							//colisionar con una curva de derecha-abajo
-						posiCurva = nodeA->getPosition();
-						if (prota->getOrientacion() == 'w') {
-							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x - 68, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					case 61: case 34:							//colisionar con una curva de derecha-arriba
-						posiCurva = nodeA->getPosition();
-						if (prota->getOrientacion() == 'w') {
-							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 40);
-						}
-						prota->cambiarSprite();
-						prota->sprite->setPosition(prota->posicion);
-						break;
-					case 16: case 52:						//colisionar con una curva de izquierda-abajo
-						posiCurva = nodeA->getPosition();
-						if (prota->getOrientacion() == 'e') {
-							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					case 43: case 79:							//colisionar con una curva de izquierda-arriba
-						posiCurva = nodeA->getPosition();
-						if (prota->getOrientacion() == 'e') {
-							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			//mismo código que antes, pero mirando si nodeB es prota
-			else if (nodeB->getTag() == 5) {
-
-				if (nodeA->getTag() > 109) { //cambiar
-					if (placando == true) {
-						for (int i = 0; i < enemigos.size(); i++) {
-							if (enemigos[i] != nullptr) {
-								if (enemigos[i]->sprite->getTag() == nodeA->getTag()) enemigos[i] = nullptr;
-							}
-						}
-						removeChild(nodeA, true);	//eliminar al enemigo
-						frenar(0.0);
 					}
 					else {
-						//prota->vida = prota->vida - 20;
-						rotarProta();
+
+						switch (nodeB->getTag())
+						{
+						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
+							if (a) {
+								a = false;
+								frenar(0.0);
+								prota->vida = prota->vida - 20;
+								rotarProta();
+							}
+							break;
+						case 23: case 59:								//colisionar con una puerta hacia la derecha
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = -1308;
+								scrollY = 0;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 199:
+							removeChild(nodeB, true);
+							tieneObjeto = true;
+							break;
+
+						case 5: case 41:								//colisionar con una puerta hacia la izquierda
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 1308;
+								scrollY = 0;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 14: case 50:							//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 165);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 0;
+								scrollY = 720;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+
+						case 32: case 103:							//colisionar con una puerta hacia abajo en IDIOMA NEL ¬¬
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 0;
+								scrollY = -720;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 49: case 88:							//colisionar con un cruce
+							girar = true;
+							posiCruce = nodeA->getPosition();
+							break;
+						case 25: case 70:							//colisionar con una curva de derecha-abajo
+							posiCurva = nodeA->getPosition();
+							if (prota->getOrientacion() == 'w') {
+								prota->setOrientacion('s');
+								prota->posicion = Vec2(posiCurva.x - 68, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('e');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+							}
+							prota->sprite->setPosition(prota->posicion);
+							prota->cambiarSprite();
+							break;
+						case 61: case 34:							//colisionar con una curva de derecha-arriba
+							posiCurva = nodeA->getPosition();
+							if (prota->getOrientacion() == 'w') {
+								prota->setOrientacion('n');
+								prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('e');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y - 40);
+							}
+							prota->cambiarSprite();
+							prota->sprite->setPosition(prota->posicion);
+							break;
+						case 16: case 52:						//colisionar con una curva de izquierda-abajo
+							posiCurva = nodeA->getPosition();
+							if (prota->getOrientacion() == 'e') {
+								prota->setOrientacion('s');
+								prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('w');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+							}
+							prota->sprite->setPosition(prota->posicion);
+							prota->cambiarSprite();
+							break;
+						case 43: case 79:							//colisionar con una curva de izquierda-arriba
+							posiCurva = nodeA->getPosition();
+							if (prota->getOrientacion() == 'e') {
+								prota->setOrientacion('n');
+								prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('w');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
+							}
+							prota->sprite->setPosition(prota->posicion);
+							prota->cambiarSprite();
+							break;
+						default:
+							break;
+						}
 					}
 				}
-				else {
+				//mismo código que antes, pero mirando si nodeB es prota
+				else if (nodeB->getTag() == 5) {
 
-					switch (nodeA->getTag())
-					{
-					case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
-						if (a) {
-							a = false;
+					if (nodeA->getTag() > 109) { //cambiar
+						if (placando == true) {
+							for (int i = 0; i < enemigos.size(); i++) {
+								if (enemigos[i] != nullptr) {
+									if (enemigos[i]->sprite->getTag() == nodeA->getTag()) enemigos[i] = nullptr;
+								}
+							}
+							removeChild(nodeA, true);	//eliminar al enemigo
 							frenar(0.0);
+						}
+						else {
 							prota->vida = prota->vida - 20;
 							rotarProta();
 						}
-						break;
-					case 23: case 59:							//colisionar con una puerta hacia la derecha
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+					}
+					else {
+
+						switch (nodeA->getTag())
+						{
+						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
+							if (a) {
+								a = false;
+								frenar(0.0);
+								prota->vida = prota->vida - 20;
+								rotarProta();
+							}
+							break;
+						case 23: case 59:							//colisionar con una puerta hacia la derecha
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x + 220, prota->posicion.y);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = -1308;
+								scrollY = 0;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+
+						case 199:
+							removeChild(nodeB, true);
+							tieneObjeto = true;
+							break;
+
+						case 5: case 41:								//colisionar con una puerta hacia la izquierda
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 1308;
+								scrollY = 0;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 14: case 50:						//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 0;
+								scrollY = 720;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 32: case 103:							//colisionar con una puerta hacia abajo EN IDIOMA NEL ¬¬
+							if (cruzarPuerta == false) {
+								prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
+								prota->sprite->setPosition(prota->posicion);
+								scrollX = 0;
+								scrollY = -720;
+								cruzarPuerta = true;
+								velocidadenemiga = 5;
+								if (cargaActual < 3) cargaActual++;
+							}
+							break;
+						case 49: case 88:							//colisionar con un cruce
+							girar = true;
+							posiCruce = nodeB->getPosition();
+							break;
+						case 25: case 70:						//colisionar con una curva de derecha-abajo
+							posiCurva = nodeB->getPosition();
+							if (prota->getOrientacion() == 'w') {
+								prota->setOrientacion('s');
+								prota->posicion = Vec2(posiCurva.x - 68, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('e');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+							}
+							prota->cambiarSprite();
 							prota->sprite->setPosition(prota->posicion);
-							scrollX = -1308;
-							scrollY = 0;
-							cruzarPuerta = true;
-						}
-						break;
-					case 5: case 41:								//colisionar con una puerta hacia la izquierda
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x - 220, prota->posicion.y);
+							break;
+						case 61: case 34:							//colisionar con una curva de derecha-arriba
+							posiCurva = nodeB->getPosition();
+							if (prota->getOrientacion() == 'w') {
+								prota->setOrientacion('n');
+								prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('e');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y - 40);
+							}
 							prota->sprite->setPosition(prota->posicion);
-							scrollX = 1308;
-							scrollY = 0;
-							cruzarPuerta = true;
-						}
-						break;
-					case 14: case 50:						//colisionar con una puerta hacia arriba en IDIOMA NEL ¬¬
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y - 175);
+							prota->cambiarSprite();
+							break;
+						case 16: case 52:							//colisionar con una curva de izquierda-abajo
+							posiCurva = nodeB->getPosition();
+							if (prota->getOrientacion() == 'e') {
+								prota->setOrientacion('s');
+								prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('w');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
+							}
 							prota->sprite->setPosition(prota->posicion);
-							scrollX = 0;
-							scrollY = 720;
-							cruzarPuerta = true;
-						}
-						break;
-					case 32: case 103:							//colisionar con una puerta hacia abajo EN IDIOMA NEL ¬¬
-						if (cruzarPuerta == false) {
-							prota->posicion = Vec2(prota->posicion.x, prota->posicion.y + 165);
+							prota->cambiarSprite();
+							break;
+						case 43: case 79:						//colisionar con una curva de izquierda-arriba
+							posiCurva = nodeB->getPosition();
+							if (prota->getOrientacion() == 'e') {
+								prota->setOrientacion('n');
+								prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
+							}
+							else {
+								prota->setOrientacion('w');
+								prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
+							}
 							prota->sprite->setPosition(prota->posicion);
-							scrollX = 0;
-							scrollY = -720;
-							cruzarPuerta = true;
+							prota->cambiarSprite();
+							break;
+						default:
+							break;
 						}
-						break;
-					case 49: case 88:							//colisionar con un cruce
-						girar = true;
-						posiCruce = nodeB->getPosition();
-						break;
-					case 25: case 70:						//colisionar con una curva de derecha-abajo
-						posiCurva = nodeB->getPosition();
-						if (prota->getOrientacion() == 'w') {
-							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x - 68, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
-						}
-						prota->cambiarSprite();
-						prota->sprite->setPosition(prota->posicion);
-						break;
-					case 61: case 34:							//colisionar con una curva de derecha-arriba
-						posiCurva = nodeB->getPosition();
-						if (prota->getOrientacion() == 'w') {
-							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x - 60, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('e');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 40);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					case 16: case 52:							//colisionar con una curva de izquierda-abajo
-						posiCurva = nodeB->getPosition();
-						if (prota->getOrientacion() == 'e') {
-							prota->setOrientacion('s');
-							prota->posicion = Vec2(posiCurva.x + 70, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y + 50);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					case 43: case 79:						//colisionar con una curva de izquierda-arriba
-						posiCurva = nodeB->getPosition();
-						if (prota->getOrientacion() == 'e') {
-							prota->setOrientacion('n');
-							prota->posicion = Vec2(posiCurva.x + 68, posiCurva.y);
-						}
-						else {
-							prota->setOrientacion('w');
-							prota->posicion = Vec2(posiCurva.x, posiCurva.y - 45);
-						}
-						prota->sprite->setPosition(prota->posicion);
-						prota->cambiarSprite();
-						break;
-					default:
-						break;
 					}
 				}
 			}
 		}
+		b = true;
+		return true;
 	}
-	b = true;
-	return true;
 }
