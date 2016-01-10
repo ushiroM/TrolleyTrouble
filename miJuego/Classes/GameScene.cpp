@@ -2,6 +2,7 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
+#define COCOS2D_DEBUG 1
 
 
 USING_NS_CC;
@@ -88,10 +89,10 @@ bool GameScene::init()
 	addChild(hud);
 
 	// Label Medidor [SE BORRARA]
-	//labelRobo = Label::create("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ", "Fonts/Arial.ttf", 20);
-	//labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
-	//labelRobo->setColor(Color3B(0, 255, 0));
-	//addChild(labelRobo);
+	/*labelRobo = Label::create(std::to_string(girar), "Fonts/Arial.ttf", 20);
+	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
+	labelRobo->setColor(Color3B(0, 255, 0));
+	addChild(labelRobo);*/
 
 	//crear eventos para cuando 2 cajas de box2d empiezan a colisionar, y dejan de colisionar
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -653,17 +654,7 @@ void GameScene::centerViewport(float scrollX, float scrollY) {
 }
 
 //evento que se lanza cuando dos cuerpos de box2d dejan de colisionar
-bool GameScene::onContactEnd(PhysicsContact &contact) {
-	//guardamos los nodos que han dejado de colisionar en variables
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
-	if (nodeA && nodeB) { //si ninguno es null, porque si hemos embestido con un enemigo 
-		//lo habremos eliminado, por tanto un nodo sería null y el siguiente if daría error al comprobar
-		if (nodeA->getTag() == 49 || nodeB->getTag() == 49 || nodeA->getTag() == 88 || nodeB->getTag() == 88) girar = false; //si es un cruce, girar es false
-	}
-	cruzarPuerta = false; //poner cruzar puerta a false, porque ya habremos terminado de cruzarla
-	return true;
-}
+
 
 //evento que se lanza al empezar a colisionar dos cuerpos de box2d
 bool GameScene::onContactBegin(PhysicsContact &contact) {
@@ -964,4 +955,24 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 		b = true;
 		return true;
 	}
+}
+
+bool GameScene::onContactEnd(PhysicsContact &contact) {
+	//guardamos los nodos que han dejado de colisionar en variables
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA && nodeB) { //si ninguno es null, porque si hemos embestido con un enemigo 
+						  //lo habremos eliminado, por tanto un nodo sería null y el siguiente if daría error al comprobar
+		
+		if (nodeA->getTag() == 5 || nodeB->getTag() == 5) {
+			if (nodeA->getTag() == 49 || nodeB->getTag() == 49 || nodeA->getTag() == 88 || nodeB->getTag() == 88) {  //si es un cruce, girar es false
+				girar = false;
+			}
+			cruzarPuerta = false;
+		}
+	}
+			 
+		
+		//poner cruzar puerta a false, porque ya habremos terminado de cruzarla
+		return true;
 }

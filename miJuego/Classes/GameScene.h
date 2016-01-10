@@ -18,7 +18,7 @@ private:
 	Sprite* barraEnergia = Sprite::create("energia.png");
 	Sprite* barraVida = Sprite::create("vida.png");
 	Sprite* hud = Sprite::create("hud/hudtile.png");
-	bool modoDios = false;
+	//bool modoDios = false;
 	Label* labelRobo;
 	bool b = true;
 	bool a = true;
