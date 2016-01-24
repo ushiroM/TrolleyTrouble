@@ -1,5 +1,6 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -31,8 +32,9 @@ bool MainMenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	auto background = Sprite::create("menus/MainMenuScreen/MainMenu.jpg");
+//	auto audio = SimpleAudioEngine::getInstance();
+	
+	auto background = Sprite::create("menus/MainMenuScreen/MainMenu.png");
 	background->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height)/2));
 	addChild(background, 0);
 

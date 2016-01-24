@@ -2,6 +2,7 @@
 #include "PauseScene.h"
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
+#include "VictoryScene.h"
 #define COCOS2D_DEBUG 1
 
 
@@ -44,6 +45,11 @@ void GameScene::goToGameOverScene(Ref *pSender) {
 	Director::getInstance()->replaceScene(escenaGameOver); //reemplazar la escena actual con game over en la pila
 }
 
+void GameScene::goToVictoryScene(Ref *pSender) {
+	auto escenaVictoria = VictoryScene::createScene();
+	Director::getInstance()->replaceScene(escenaVictoria); //reemplazar la escena actual con game over en la pila
+}
+
 bool GameScene::init()
 {
 	//////////////////////////////
@@ -74,6 +80,17 @@ bool GameScene::init()
 	prota->sprite->getPhysicsBody()->setCollisionBitmask(0x01);
 	addChild(prota->sprite);
 
+	Objeto* reloj = new Objeto();
+	reloj->sprite->setPosition(Vec2(1690, -1790));
+	auto bodyr = PhysicsBody::createBox(reloj->sprite->getBoundingBox().size);
+	reloj->sprite->setTag(190);
+	bodyr->setContactTestBitmask(true);
+	bodyr->setDynamic(false);
+	bodyr->setRotationEnable(false);
+	reloj->sprite->setPhysicsBody(bodyr);
+	reloj->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
+	reloj->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
+	addChild(reloj->sprite);
 
 	
 	//crear el HUD
@@ -294,17 +311,6 @@ void GameScene::crearSala() {
 			}
 		}
 	}
-	Objeto* reloj = new Objeto();
-	reloj->sprite->setPosition(Vec2(1690, -1790));
-	auto body = PhysicsBody::createBox(reloj->sprite->getBoundingBox().size);
-	reloj->sprite->setTag(199);
-	body->setContactTestBitmask(true);
-	body->setDynamic(true);
-	body->setRotationEnable(false);
-	reloj->sprite->setPhysicsBody(body);
-	reloj->sprite->getPhysicsBody()->setCategoryBitmask(0x03);
-	reloj->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
-	addChild(reloj->sprite);
 
 }
 
@@ -679,6 +685,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								}
 							}
 							removeChild(nodeB, true);	//eliminar al enemigo
+							enemigosRestantes--;
 							frenar(0.0);
 						}
 						else {
@@ -690,12 +697,24 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 						switch (nodeB->getTag())
 						{
-						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
+						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
 							if (a) {
 								a = false;
 								frenar(0.0);
 								prota->vida = prota->vida - 20;
 								rotarProta();
+							}
+							break;
+						case 31:
+							if (a) {
+								if (enemigosRestantes != 0) {
+									a = false;
+									frenar(0.0);
+									prota->vida = prota->vida - 20;
+									rotarProta();
+								}else{
+									goToVictoryScene(this);
+								}
 							}
 							break;
 						case 23: case 59:								//colisionar con una puerta hacia la derecha
@@ -709,7 +728,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								if (cargaActual < 3) cargaActual++;
 							}
 							break;
-						case 199:
+						case 190:
 							removeChild(nodeB, true);
 							tieneObjeto = true;
 							break;
@@ -812,7 +831,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 				//mismo código que antes, pero mirando si nodeB es prota
 				else if (nodeB->getTag() == 5) {
 
-					if (nodeA->getTag() > 109) { //cambiar
+					if (nodeA->getTag() > 200) { 
 						if (placando == true) {
 							for (int i = 0; i < enemigos.size(); i++) {
 								if (enemigos[i] != nullptr) {
@@ -820,6 +839,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								}
 							}
 							removeChild(nodeA, true);	//eliminar al enemigo
+							enemigosRestantes--;
 							frenar(0.0);
 						}
 						else {
@@ -831,12 +851,24 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 						switch (nodeA->getTag())
 						{
-						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 31: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
+						case 4: case 6: case 7: case 15: case 24: case 48: case 57: case 66: case 68: case 73: case 75: case 77: case 84: case 86: case 93: case 95: case 96: case 102: case 104: case 105: case 40: case 58: case 67: case 76: case 85: case 94: case 97:								//colisionar con una pared
 							if (a) {
 								a = false;
 								frenar(0.0);
 								prota->vida = prota->vida - 20;
 								rotarProta();
+							}
+							break;
+						case 31:
+							if (a) {
+								if (enemigosRestantes != 0) {
+									a = false;
+									frenar(0.0);
+									prota->vida = prota->vida - 20;
+									rotarProta();
+								}else{
+									goToVictoryScene(this);
+								}
 							}
 							break;
 						case 23: case 59:							//colisionar con una puerta hacia la derecha
@@ -851,8 +883,8 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 							}
 							break;
 
-						case 199:
-							removeChild(nodeB, true);
+						case 190:
+							removeChild(nodeA, true);
 							tieneObjeto = true;
 							break;
 

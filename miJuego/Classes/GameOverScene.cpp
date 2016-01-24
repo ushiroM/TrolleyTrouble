@@ -49,19 +49,19 @@ bool GameOverScene::init() {
 	addChild(background, 0);
 
 
-	auto RetryGame = MenuItemImage::create("Play_Button.png",
-		"images/MainMenuScreen/Play_Button(Click).png",
+	auto RetryGame = MenuItemImage::create("menus/GameOverScreen/reintentar.png",
+		"menus/GameOverScreen/reintentar_pulsado.png",
 		CC_CALLBACK_1(GameOverScene::retryGameScene, this));
 
-	auto MainMenu = MenuItemImage::create("Menu_Button.png",
-		"images/MainMenuScreen/Play_Button(Click).png",
+	auto MainMenu = MenuItemImage::create("menus/PauseScreen/salir.png",
+		"menus/PauseScreen/salir_pulsado.png",
 		CC_CALLBACK_1(GameOverScene::goToMainMenu, this));
 
 
 
-	RetryGame->setPosition(Vec2(0, 100));
+	RetryGame->setPosition(Vec2(250,-75));
 
-	MainMenu->setPosition(Vec2(0, -100));
+	MainMenu->setPosition(Vec2(250, -150));
 
 	auto menu = Menu::create(RetryGame, MainMenu, NULL);
 

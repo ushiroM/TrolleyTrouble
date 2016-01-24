@@ -33,6 +33,7 @@ private:
 	bool tieneObjeto = false;
 	int cargaActual = 3;
 	int velocidadenemiga = 5;
+	int enemigosRestantes = 13;
 
 	
 	
@@ -40,6 +41,7 @@ public:
 	static cocos2d::Scene* createScene();
 	void goToPauseScene(Ref *pSender);
 	void goToGameOverScene(Ref *pSender);
+	void goToVictoryScene(Ref *pSender);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
 	void update(float dt);
 	virtual bool init();
