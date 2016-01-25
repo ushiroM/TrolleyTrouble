@@ -32,7 +32,9 @@ bool MainMenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-//	auto audio = SimpleAudioEngine::getInstance();
+	//auto audio = CocosDeshion::SimpleAudioEngine::getInstance();
+
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("music/mainmenu.mp3", true);
 	
 	auto background = Sprite::create("menus/MainMenuScreen/MainMenu.png");
 	background->setPosition(Vec2((visibleSize.width)/2, (visibleSize.height)/2));

@@ -17,10 +17,6 @@ public:
 
 	void GoToGameScene(Ref *pSender);
 
-	//void onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event);
-
-	//void update(float dt);
-
     virtual bool init();
     
     // a selector callback

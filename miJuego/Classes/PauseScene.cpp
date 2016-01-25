@@ -4,8 +4,6 @@
 
 USING_NS_CC;
 
-
-
 Scene* PauseScene::createScene()
 {
 	// 'scene' is an autorelease object
@@ -61,24 +59,11 @@ bool PauseScene::init() {
 		"menus/PauseScreen/salir_pulsado.png",
 		CC_CALLBACK_1(PauseScene::goToMainMenu, this));
 
-
-
 	ResumeGame->setPosition(Vec2(-20, -25));
-
 	MainMenu->setPosition(Vec2(-20, -100));
-
 	auto menu = Menu::create(ResumeGame, MainMenu, NULL);
-
-
-	//menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
-
 	addChild(menu, 1);
 
-
-
 	return true;
-
-
-
 
 }

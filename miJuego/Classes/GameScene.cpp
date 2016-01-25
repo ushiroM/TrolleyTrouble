@@ -3,11 +3,10 @@
 #include "MainMenuScene.h"
 #include "GameOverScene.h"
 #include "VictoryScene.h"
+#include "SimpleAudioEngine.h"
 #define COCOS2D_DEBUG 1
 
-
 USING_NS_CC;
-
 
 Scene* GameScene::createScene()
 {
@@ -30,7 +29,6 @@ Scene* GameScene::createScene()
 	return scene;
 }
 
-
 void GameScene::setPhysicsWorld(PhysicsWorld *world) {
 	mWorld = world;
 	mWorld->setGravity(Vec2::ZERO);
@@ -40,6 +38,7 @@ void GameScene::goToPauseScene(Ref *pSender) {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene); //meter la escena de pausa en la pila
 }
+
 void GameScene::goToGameOverScene(Ref *pSender) {
 	auto escenaGameOver = GameOverScene::createScene();
 	Director::getInstance()->replaceScene(escenaGameOver); //reemplazar la escena actual con game over en la pila
@@ -65,7 +64,7 @@ bool GameScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 			
-	//crear el prota y aádirle su cuerpo de box2d
+	//crear el prota y añadirle su cuerpo de box2d
 	prota = new Prota();
 	Size protasize = Size(prota->sprite->getBoundingBox().size.width - 30, prota->sprite->getBoundingBox().size.height - 30);
 	auto body = PhysicsBody::createBox(protasize);
@@ -92,7 +91,6 @@ bool GameScene::init()
 	reloj->sprite->getPhysicsBody()->setCollisionBitmask(0x02);
 	addChild(reloj->sprite);
 
-	
 	//crear el HUD
 	barraEnergia->setPosition(Vec2(55, 660));
 	barraEnergia->setAnchorPoint(Vec2(0.f, 0.5f));
@@ -105,11 +103,11 @@ bool GameScene::init()
 	hud->setPosition(Vec2(190, 670));
 	addChild(hud);
 
-	// Label Medidor [SE BORRARA]
-	/*labelRobo = Label::create(std::to_string(girar), "Fonts/Arial.ttf", 20);
-	labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
-	labelRobo->setColor(Color3B(0, 255, 0));
-	addChild(labelRobo);*/
+	relojHUD->setPosition(Vec2(420, 670));
+	relojHUD->setVisible(false);
+	addChild(relojHUD);
+
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("music/ingame.mp3", true);
 
 	//crear eventos para cuando 2 cajas de box2d empiezan a colisionar, y dejan de colisionar
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -145,8 +143,6 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x, posiCruce.y + 50);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			
-			
 			prota->setOrientacion('w');
 			prota->cambiarSprite();
 			
@@ -181,8 +177,6 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x + 67, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			
-			
 			prota->setOrientacion('n');
 			prota->cambiarSprite();
 			
@@ -200,8 +194,6 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 				prota->posicion = Vec2(posiCruce.x + 65, posiCruce.y);
 				prota->sprite->setPosition(prota->posicion);
 			}
-			
-			
 			prota->setOrientacion('s');
 			prota->cambiarSprite();
 			
@@ -217,6 +209,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 			if (prota->getOrientacion() == 'e') prota->sprite->setTexture("prota/embestirDerecho.png");
 			else if (prota->getOrientacion() == 'w') prota->sprite->setTexture("prota/embestirIzquierdo.png");
 			this->schedule(schedule_selector(GameScene::frenar), 0.3f);
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/embestir.wav");
 		}
 		break;
 
@@ -226,6 +219,7 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event *event) {
 
 	case EventKeyboard::KeyCode::KEY_Z:
 		if (tieneObjeto == true && cargaActual == 3) {
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/usarReloj.wav");
 			velocidadenemiga = 2;
 			cargaActual = 0;
 		}
@@ -274,6 +268,7 @@ void GameScene::rotarEnemigos(Enemigo* e) {
 	}
 	e->cambiarSprite();
 }
+
 //crear el mapa
 void GameScene::crearSala() {
 
@@ -378,7 +373,6 @@ void GameScene::crearEnemigos() {
 	addChild(enemigo1->sprite);
 	enemigos.push_back(enemigo1);
 
-
 	Enemigo* enemigo2 = new Enemigo();
 	enemigo2->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo2->sprite->setTag(202);
@@ -395,7 +389,6 @@ void GameScene::crearEnemigos() {
 	enemigo2->maxX = 2446;
 	addChild(enemigo2->sprite);
 	enemigos.push_back(enemigo2);
-
 
 	Enemigo* enemigo3 = new Enemigo();
 	enemigo3->sprite = Sprite::create("enemigos/cosa.png");
@@ -414,7 +407,6 @@ void GameScene::crearEnemigos() {
 	addChild(enemigo3->sprite);
 	enemigos.push_back(enemigo3);
 
-
 	Enemigo* enemigo4 = new Enemigo();
 	enemigo4->sprite = Sprite::create("enemigos/fantasma.png");
 	enemigo4->sprite->setTag(204);
@@ -431,7 +423,6 @@ void GameScene::crearEnemigos() {
 	enemigo4->maxX = 2430;
 	addChild(enemigo4->sprite);
 	enemigos.push_back(enemigo4);
-	
 	
 	Enemigo* enemigo5 = new Enemigo();
 	enemigo5->sprite = Sprite::create("enemigos/fantasma.png");
@@ -451,7 +442,6 @@ void GameScene::crearEnemigos() {
 	addChild(enemigo5->sprite);
 	enemigos.push_back(enemigo5);
 	
-
 	Enemigo* enemigo6 = new Enemigo();
 	enemigo6->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo6->sprite->setTag(206);
@@ -469,7 +459,6 @@ void GameScene::crearEnemigos() {
 	addChild(enemigo6->sprite);
 	enemigos.push_back(enemigo6);
 	
-
 	Enemigo* enemigo7 = new Enemigo();
 	enemigo7->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo7->sprite->setTag(207);
@@ -538,7 +527,6 @@ void GameScene::crearEnemigos() {
 	addChild(enemigo10->sprite);
 	enemigos.push_back(enemigo10);
 
-	
 	Enemigo* enemigo11 = new Enemigo();
 	enemigo11->sprite = Sprite::create("enemigos/cosa.png");
 	enemigo11->sprite->setTag(211);
@@ -589,16 +577,11 @@ void GameScene::crearEnemigos() {
 	enemigo13->maxY = 310;
 	addChild(enemigo13->sprite);
 	enemigos.push_back(enemigo13);
-	
 
-	
 }
+
 //función que se ejecuta periódicamente
 void GameScene::update(float dt) {
-
-	//labelRobo->setString("X: " + std::to_string(prota->sprite->getPositionX()) + ", Y: " + std::to_string(prota->sprite->getPositionY()) + ", ");
-
-	//labelRobo->setPosition(Point(prota->sprite->getPositionX() + 200, prota->sprite->getPositionY()));
 
 	a = true;
 
@@ -607,7 +590,6 @@ void GameScene::update(float dt) {
 			enemigos[i]->movimiento(velocidadenemiga);
 		}
 	}
-	
 	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	
@@ -645,7 +627,16 @@ void GameScene::update(float dt) {
 	}
 
 	//si no queda vida, ir a la pantalla de game over
-	if (prota->vida <= 0) goToGameOverScene(this); //HUAAAAAAAAAAOOOO
+	if (prota->vida <= 0) {
+		goToGameOverScene(this);
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/muerte.mp3");
+	}
+	
+	if (cargaActual == 3) {
+		relojHUD->setTexture("relojTile.png");
+	}else{
+		relojHUD->setTexture("relojTileDescargado.png");
+	}
 }
 
 //función que centra la cámara en la sala actual
@@ -656,11 +647,9 @@ void GameScene::centerViewport(float scrollX, float scrollY) {
 	hud->setPosition(Vec2(hud->getPositionX() - scrollX, hud->getPositionY() - scrollY));
 	barraEnergia->setPosition(Vec2(barraEnergia->getPositionX() - scrollX, barraEnergia->getPositionY() - scrollY));
 	barraVida->setPosition(Vec2(barraVida->getPositionX() - scrollX, barraVida->getPositionY() - scrollY));
+	relojHUD->setPosition(Vec2(relojHUD->getPositionX() - scrollX, relojHUD->getPositionY() - scrollY));
 	this->setPosition(Vec2(x+scrollX, y+scrollY));
 }
-
-//evento que se lanza cuando dos cuerpos de box2d dejan de colisionar
-
 
 //evento que se lanza al empezar a colisionar dos cuerpos de box2d
 bool GameScene::onContactBegin(PhysicsContact &contact) {
@@ -686,10 +675,12 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 							}
 							removeChild(nodeB, true);	//eliminar al enemigo
 							enemigosRestantes--;
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/muerteEnemigo.wav");
 							frenar(0.0);
 						}
 						else {
 							prota->vida = prota->vida - 20;
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 							rotarProta();
 						}
 					}
@@ -702,6 +693,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								a = false;
 								frenar(0.0);
 								prota->vida = prota->vida - 20;
+								CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 								rotarProta();
 							}
 							break;
@@ -711,6 +703,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 									a = false;
 									frenar(0.0);
 									prota->vida = prota->vida - 20;
+									CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 									rotarProta();
 								}else{
 									goToVictoryScene(this);
@@ -730,6 +723,8 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 							break;
 						case 190:
 							removeChild(nodeB, true);
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/item.wav");
+							relojHUD->setVisible(true);
 							tieneObjeto = true;
 							break;
 
@@ -784,6 +779,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 							prota->sprite->setPosition(prota->posicion);
 							prota->cambiarSprite();
 							break;
+
 						case 61: case 34:							//colisionar con una curva de derecha-arriba
 							posiCurva = nodeA->getPosition();
 							if (prota->getOrientacion() == 'w') {
@@ -839,11 +835,13 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								}
 							}
 							removeChild(nodeA, true);	//eliminar al enemigo
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/muerteEnemigo.wav");
 							enemigosRestantes--;
 							frenar(0.0);
 						}
 						else {
 							prota->vida = prota->vida - 20;
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 							rotarProta();
 						}
 					}
@@ -856,6 +854,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 								a = false;
 								frenar(0.0);
 								prota->vida = prota->vida - 20;
+								CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 								rotarProta();
 							}
 							break;
@@ -865,6 +864,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 									a = false;
 									frenar(0.0);
 									prota->vida = prota->vida - 20;
+									CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/dolor.mp3");
 									rotarProta();
 								}else{
 									goToVictoryScene(this);
@@ -885,6 +885,8 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 
 						case 190:
 							removeChild(nodeA, true);
+							CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fx/item.wav");
+							relojHUD->setVisible(true);
 							tieneObjeto = true;
 							break;
 
@@ -989,6 +991,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact) {
 	}
 }
 
+//evento que se lanza cuando dos cuerpos de box2d dejan de colisionar
 bool GameScene::onContactEnd(PhysicsContact &contact) {
 	//guardamos los nodos que han dejado de colisionar en variables
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
@@ -1000,11 +1003,9 @@ bool GameScene::onContactEnd(PhysicsContact &contact) {
 			if (nodeA->getTag() == 49 || nodeB->getTag() == 49 || nodeA->getTag() == 88 || nodeB->getTag() == 88) {  //si es un cruce, girar es false
 				girar = false;
 			}
-			cruzarPuerta = false;
+			cruzarPuerta = false;	//poner cruzar puerta a false, porque ya habremos terminado de cruzarla
 		}
-	}
-			 
-		
-		//poner cruzar puerta a false, porque ya habremos terminado de cruzarla
-		return true;
+	}		 
+	return true;
+
 }

@@ -12,13 +12,9 @@ Prota::Prota()
 		
 }
 
-
 Prota::~Prota()
 {
 }
-
-
-
 
 void Prota::setOrientacion(char orientacion) {
 	this->orientacion = orientacion;
@@ -50,12 +46,6 @@ void Prota::cambiarSprite() {
 	case 's':
 		sprite->setTexture("prota/frontal.png");
 		break;
-	
-	
-	
-	
+
 	}
-
-
-
 }

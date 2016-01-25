@@ -3,10 +3,6 @@
 #include "Consumible.h"
 #include "Objeto.h"
 
-
-
-
-
 class Prota
 {
 private:
@@ -27,9 +23,6 @@ public:
 	Vec2 posicion;
 	Prota();
 	~Prota();
-	void saltar();
-	void usarObjeto();
-	void usarConsumible();
 	void setOrientacion(char);
 	char getOrientacion();
 	void setVelocidad(int);

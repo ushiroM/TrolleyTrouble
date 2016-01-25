@@ -8,6 +8,7 @@
 
 class GameScene: public cocos2d::Layer
 {
+
 private:
 	Prota* prota;
 	EventKeyboard::KeyCode _pressedKey;
@@ -17,8 +18,8 @@ private:
 	bool placando = false;
 	Sprite* barraEnergia = Sprite::create("energia.png");
 	Sprite* barraVida = Sprite::create("vida.png");
+	Sprite* relojHUD = Sprite::create("relojtile.png");
 	Sprite* hud = Sprite::create("hud/hudtile.png");
-	//bool modoDios = false;
 	Label* labelRobo;
 	bool b = true;
 	bool a = true;
@@ -33,10 +34,8 @@ private:
 	bool tieneObjeto = false;
 	int cargaActual = 3;
 	int velocidadenemiga = 5;
-	int enemigosRestantes = 13;
+	int enemigosRestantes = 12;
 
-	
-	
 public:
 	static cocos2d::Scene* createScene();
 	void goToPauseScene(Ref *pSender);

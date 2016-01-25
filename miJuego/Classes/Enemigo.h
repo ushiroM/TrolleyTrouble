@@ -4,14 +4,11 @@ USING_NS_CC;
 
 class Enemigo
 {
+
 private:
 	int vida;
 	int ataque;
 	char orientacion;
-	/*int pasosDer = 0;
-	int pasosIzq = 100;*/
-	
-
 
 public:
 	int minX;
